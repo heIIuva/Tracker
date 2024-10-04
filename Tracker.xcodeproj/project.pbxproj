@@ -11,10 +11,10 @@
 		B50ABA3D2CAD487000C251F0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B50ABA352CAD487000C251F0 /* LaunchScreen.storyboard */; };
 		B50ABA3F2CAD487000C251F0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50ABA312CAD487000C251F0 /* AppDelegate.swift */; };
 		B50ABA402CAD487000C251F0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50ABA382CAD487000C251F0 /* SceneDelegate.swift */; };
-		B50ABA412CAD487000C251F0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50ABA392CAD487000C251F0 /* ViewController.swift */; };
-		B50ABA442CAD63B800C251F0 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50ABA432CAD63B000C251F0 /* TabBarViewController.swift */; };
-		B50ABA482CAD645300C251F0 /* TrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50ABA472CAD644A00C251F0 /* TrackerViewController.swift */; };
+		B50ABA442CAD63B800C251F0 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50ABA432CAD63B000C251F0 /* TabBarController.swift */; };
+		B50ABA482CAD645300C251F0 /* TrackersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50ABA472CAD644A00C251F0 /* TrackersViewController.swift */; };
 		B50ABA4A2CAD647700C251F0 /* StatisticsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50ABA492CAD646B00C251F0 /* StatisticsViewController.swift */; };
+		B587A06E2CB0160A00DD98FD /* DateFormatter+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B587A06D2CB015FB00DD98FD /* DateFormatter+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,10 +24,10 @@
 		B50ABA332CAD487000C251F0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B50ABA342CAD487000C251F0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B50ABA382CAD487000C251F0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		B50ABA392CAD487000C251F0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		B50ABA432CAD63B000C251F0 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
-		B50ABA472CAD644A00C251F0 /* TrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerViewController.swift; sourceTree = "<group>"; };
+		B50ABA432CAD63B000C251F0 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		B50ABA472CAD644A00C251F0 /* TrackersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersViewController.swift; sourceTree = "<group>"; };
 		B50ABA492CAD646B00C251F0 /* StatisticsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewController.swift; sourceTree = "<group>"; };
+		B587A06D2CB015FB00DD98FD /* DateFormatter+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,14 +61,14 @@
 			isa = PBXGroup;
 			children = (
 				B50ABA312CAD487000C251F0 /* AppDelegate.swift */,
+				B50ABA382CAD487000C251F0 /* SceneDelegate.swift */,
 				B50ABA422CAD63A000C251F0 /* TabBar */,
 				B50ABA452CAD641500C251F0 /* TrakcersScreen */,
 				B50ABA462CAD642400C251F0 /* StatisticsScreen */,
+				B587A06C2CB015EE00DD98FD /* Helpers */,
 				B50ABA322CAD487000C251F0 /* Assets.xcassets */,
 				B50ABA332CAD487000C251F0 /* Info.plist */,
 				B50ABA352CAD487000C251F0 /* LaunchScreen.storyboard */,
-				B50ABA382CAD487000C251F0 /* SceneDelegate.swift */,
-				B50ABA392CAD487000C251F0 /* ViewController.swift */,
 			);
 			path = Tracker;
 			sourceTree = "<group>";
@@ -76,7 +76,7 @@
 		B50ABA422CAD63A000C251F0 /* TabBar */ = {
 			isa = PBXGroup;
 			children = (
-				B50ABA432CAD63B000C251F0 /* TabBarViewController.swift */,
+				B50ABA432CAD63B000C251F0 /* TabBarController.swift */,
 			);
 			path = TabBar;
 			sourceTree = "<group>";
@@ -84,7 +84,7 @@
 		B50ABA452CAD641500C251F0 /* TrakcersScreen */ = {
 			isa = PBXGroup;
 			children = (
-				B50ABA472CAD644A00C251F0 /* TrackerViewController.swift */,
+				B50ABA472CAD644A00C251F0 /* TrackersViewController.swift */,
 			);
 			path = TrakcersScreen;
 			sourceTree = "<group>";
@@ -95,6 +95,14 @@
 				B50ABA492CAD646B00C251F0 /* StatisticsViewController.swift */,
 			);
 			path = StatisticsScreen;
+			sourceTree = "<group>";
+		};
+		B587A06C2CB015EE00DD98FD /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				B587A06D2CB015FB00DD98FD /* DateFormatter+Extensions.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -170,12 +178,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B50ABA482CAD645300C251F0 /* TrackerViewController.swift in Sources */,
+				B50ABA482CAD645300C251F0 /* TrackersViewController.swift in Sources */,
 				B50ABA3F2CAD487000C251F0 /* AppDelegate.swift in Sources */,
-				B50ABA442CAD63B800C251F0 /* TabBarViewController.swift in Sources */,
+				B587A06E2CB0160A00DD98FD /* DateFormatter+Extensions.swift in Sources */,
+				B50ABA442CAD63B800C251F0 /* TabBarController.swift in Sources */,
 				B50ABA4A2CAD647700C251F0 /* StatisticsViewController.swift in Sources */,
 				B50ABA402CAD487000C251F0 /* SceneDelegate.swift in Sources */,
-				B50ABA412CAD487000C251F0 /* ViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
