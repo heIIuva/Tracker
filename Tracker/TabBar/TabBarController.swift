@@ -20,16 +20,17 @@ final class TabBarController: UITabBarController {
                                                         image: UIImage(named: "trackersBarInactive"),
                                                         selectedImage: UIImage(named: "trackersBarActive"))
         
+        let trackersNavigationController = UINavigationController(rootViewController: trackersViewController)
+        trackersNavigationController.navigationBar.prefersLargeTitles = true
+        
         let statisticsViewController = StatisticsViewController()
         statisticsViewController.tabBarItem = UITabBarItem(title: "Статистика",
                                                            image: UIImage(named: "statisticsBarInactive"),
                                                            selectedImage: UIImage(named: "statisticsBarActive"))
         
-        let trackerNavigationController = UINavigationController(rootViewController: trackersViewController)
-        trackerNavigationController.navigationBar.prefersLargeTitles = true
-        let statisticNavigationController = UINavigationController(rootViewController: statisticsViewController)
-        statisticNavigationController.navigationBar.prefersLargeTitles = true
+        let statisticsNavigationController = UINavigationController(rootViewController: statisticsViewController)
+        statisticsNavigationController.navigationBar.prefersLargeTitles = true
         
-        setViewControllers([trackerNavigationController, statisticNavigationController], animated: true)
+        setViewControllers([trackersNavigationController, statisticsNavigationController], animated: true)
     }
 }
