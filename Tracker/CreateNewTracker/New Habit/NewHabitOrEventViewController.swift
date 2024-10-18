@@ -90,6 +90,9 @@ final class NewHabitOrEventViewController: UIViewController {
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
         button.titleLabel?.textColor = .white
         button.setTitle("Создать", for: .normal)
+        button.addTarget(self,
+                         action: #selector(didTapCreateButton),
+                         for: .touchUpInside)
         return button
     }()
     
@@ -128,14 +131,17 @@ final class NewHabitOrEventViewController: UIViewController {
     
     //MARK: - Properties
     
+    private var categories = TrackerStorage.shared
+    
     private var cellTitle: [String]
     
     private var trackerName: String = ""
     private var timeTable: Set<Weekday> = []
-    //TODO: - sprint 15
-    private var categoryName: String = ""
-    private var selectedColor: UIColor = UIColor()
-    private var selectedEmoji: String = ""
+    
+    //TODO: - add category, color, emoji selection sprint 15
+    private var categoryName: String = "Важное"
+    private var selectedColor: UIColor = .ypRed
+    private var selectedEmoji: String = "🤨"
     
     
     
@@ -200,13 +206,35 @@ final class NewHabitOrEventViewController: UIViewController {
     }
     
     private func checkIfAllFieldsAreFilled() {
-        guard trackerName.count > 0 && trackerName.count <= 38 else {
-            return
-        }
+        guard !trackerName.isEmpty,
+        !timeTable.isEmpty
+        //TODO: - category, colors, emoji check
+        else { return }
+        
+        enableCreateButton()
     }
     
+    //TODO: - category, color, emoji sprint 15
     private func createNewTracker() {
+        let tracker = Tracker(id: UUID(),
+                              name: self.trackerName,
+                              color: self.selectedColor,
+                              emoji: self.selectedEmoji,
+                              timeTable: Array(self.timeTable))
         
+        if let categoryIndex = categories.categoriesStorage.firstIndex(where: { $0.title.lowercased() == self.categoryName.lowercased() }) {
+            var trackersInCategory = categories.categoriesStorage[categoryIndex].trackers
+            trackersInCategory.append(tracker)
+            let categoryForTracker = categories.categoriesStorage[categoryIndex].title
+            let updatedCategory = TrackerCategory(title: categoryForTracker,
+                                              trackers: trackersInCategory)
+            categories.categoriesStorage[categoryIndex] = updatedCategory
+            print("new tracker added to an existing category \(categories.categoriesStorage)")
+        } else {
+            let newCategory = TrackerCategory(title: self.categoryName, trackers: [tracker])
+            categories.categoriesStorage.append(newCategory)
+            print("new tracker added to a new category \(categories.categoriesStorage)")
+        }
     }
     
     //MARK: - Obj-C methods
@@ -216,7 +244,8 @@ final class NewHabitOrEventViewController: UIViewController {
     }
     
     @objc private func didTapCreateButton() {
-        
+        createNewTracker()
+        dismiss(animated: true)
     }
 }
 
@@ -300,9 +329,16 @@ extension NewHabitOrEventViewController: UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
+        guard let text = textField.text else { return }
+        
+        if text.count < 38 && text.count > 0 {
+            self.trackerName = text
+            checkIfAllFieldsAreFilled()
+            warningLabel.isHidden = true
+        } else if text.count > 38 {
+            warningLabel.isHidden = false
+        }
     }
-    
-
 }
 
 

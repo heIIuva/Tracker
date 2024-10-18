@@ -31,7 +31,7 @@ final class TrackerStorage {
             storage.sync { categories }
         }
         set {
-            storage.sync { categories = newValue }
+            storage.sync(flags: .barrier) { categories = newValue }
         }
     }
 }

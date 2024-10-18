@@ -77,7 +77,7 @@ final class TrackersViewController: UIViewController {
     
     private let dateFormatter = DateFormatter.dateFormatter
     
-    private var categories = TrackerStorage.shared.categoriesStorage
+    private let categories = TrackerStorage.shared
     private var completedTrackers: Set<TrackerRecord> = []
     
     private var visibleCategories: [TrackerCategory] = []
@@ -94,6 +94,13 @@ final class TrackersViewController: UIViewController {
         setupNavigationBar()
         configureCollectionView()
 }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        visibleCategories = categories.categoriesStorage
+        collectionView.reloadData()
+    }
     
     //MARK: UI methods
     
