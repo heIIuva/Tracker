@@ -141,8 +141,8 @@ final class TrackersViewController: UIViewController {
                           $0.id == tracker.id &&
                           $0.date != currentDate})
                 else {
-                    tracker.timeTable.forEach { schedule in
-                        if schedule.int == weekDay {
+                    tracker.timeTable.forEach { timeTable in
+                        if timeTable.int == weekDay {
                             trackers.append(tracker)
                         }
                     }
@@ -157,7 +157,6 @@ final class TrackersViewController: UIViewController {
         }
         self.visibleCategories = visibleCategories
         collectionView.reloadData()
-
     }
     
     @objc private func addTrackerButtonTapped() {
@@ -177,16 +176,7 @@ extension TrackersViewController: UISearchResultsUpdating {
         guard let searchText = searchController.searchBar.text?.lowercased(),
               searchText.count > 2 else { return }
         
-        for category in visibleCategories {
-            for tracker in category.trackers {
-                if (tracker.name.lowercased().contains(searchText) || tracker.name.lowercased() == searchText) && !category.trackers.contains(where: { $0.id == tracker.id }) {
-                    visibleCategories.removeAll()
-                    visibleCategories.append(category)
-                    collectionView.reloadData()
-                }
-            }
-        }
-        collectionView.reloadData()
+        
     }
 }
 
@@ -194,15 +184,14 @@ extension TrackersViewController: UISearchResultsUpdating {
 extension TrackersViewController: UISearchControllerDelegate {
     
     func willPresentSearchController(_ searchController: UISearchController) {
-        visibleCategories = categories.categoriesStorage
-        collectionView.reloadData()
         isSearch = true
+        collectionView.reloadData()
     }
     
     func willDismissSearchController(_ searchController: UISearchController) {
-        visibleCategories = categories.categoriesStorage
         datePickerUpdated(datePicker)
         isSearch = false
+        collectionView.reloadData()
     }
 }
 
