@@ -64,7 +64,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .systemFont(ofSize: 12, weight: .medium)
-        label.textColor = .black
+        label.textColor = .label
         return label
     }()
     
@@ -75,6 +75,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
                          for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 17
+        button.tintColor = .systemBackground
         return button
     }()
     
@@ -132,12 +133,10 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         self.isCompleted = isCompleted
         switch isCompleted {
         case true:
-            completeTrackerButton.setImage(.done, for: .normal)
-            completeTrackerButton.tintColor = .white
+            completeTrackerButton.setImage(UIImage(systemName: "checkmark"), for: .normal)
             completeTrackerButton.backgroundColor = bodyView.backgroundColor?.withAlphaComponent(0.3)
         case false:
             completeTrackerButton.setImage(UIImage(systemName: "plus"), for:  .normal)
-            completeTrackerButton.tintColor = .white
             completeTrackerButton.backgroundColor = bodyView.backgroundColor
         }
     }

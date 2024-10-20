@@ -20,9 +20,11 @@ final class NewHabitOrEventViewController: UIViewController {
     
     //MARK: - Init
     
-    init(nibName nibNameOrNil: String?,
+    init(
+        nibName nibNameOrNil: String?,
          bundle nibBundleOrNil: Bundle?,
-         options: [String]) {
+         options: [String]
+    ) {
         self.cellTitle = options
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
@@ -146,9 +148,7 @@ final class NewHabitOrEventViewController: UIViewController {
     private var categoryName: String = "Важное"
     private var selectedColor: UIColor = .ypRed
     private var selectedEmoji: String = "🤨"
-    
-    
-    
+
     //MARK: - Lifecycle methods
     
     override func viewDidLoad() {
@@ -210,10 +210,8 @@ final class NewHabitOrEventViewController: UIViewController {
     }
     
     private func checkIfAllFieldsAreFilled() {
-        guard !trackerName.isEmpty,
-        !timeTable.isEmpty
         //TODO: - category, colors, emoji check
-        else { return }
+        guard !trackerName.isEmpty, !timeTable.isEmpty else { return }
         
         enableCreateButton()
     }

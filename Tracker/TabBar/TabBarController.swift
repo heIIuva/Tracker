@@ -14,7 +14,7 @@ final class TabBarController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+                
         let trackersViewController = TrackersViewController()
         trackersViewController.tabBarItem = UITabBarItem(title: "Трекеры",
                                                         image: UIImage(named: "trackersBarInactive"),
@@ -22,6 +22,8 @@ final class TabBarController: UITabBarController {
         
         let trackersNavigationController = UINavigationController(rootViewController: trackersViewController)
         trackersNavigationController.navigationBar.prefersLargeTitles = true
+        trackersViewController.view.backgroundColor = .systemBackground
+        trackersNavigationController.navigationBar.backgroundColor = .systemBackground
         
         let statisticsViewController = StatisticsViewController()
         statisticsViewController.tabBarItem = UITabBarItem(title: "Статистика",

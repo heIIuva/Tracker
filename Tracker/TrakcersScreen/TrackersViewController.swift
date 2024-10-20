@@ -56,7 +56,7 @@ final class TrackersViewController: UIViewController {
         let button = UIButton.systemButton(with: image,
                                            target: self,
                                            action: #selector(addTrackerButtonTapped))
-        button.tintColor = .black
+        button.tintColor = .label
         return button
     }()
     
@@ -74,7 +74,7 @@ final class TrackersViewController: UIViewController {
                             withReuseIdentifier: trackerHeaderReuseIdentifier)
         collection.translatesAutoresizingMaskIntoConstraints = false
         collection.isScrollEnabled = true
-        collection.backgroundColor = .white
+        collection.backgroundColor = .systemBackground
         collection.showsVerticalScrollIndicator = false
         return collection
     }()
@@ -111,6 +111,7 @@ final class TrackersViewController: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: datePicker)
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: addTrackerButton)
         navigationItem.searchController = searchController
+        navigationItem.searchController?.searchBar.tintColor = .label
         navigationItem.hidesSearchBarWhenScrolling = false
         navigationItem.title = trackersLabel.text
         navigationItem.largeTitleDisplayMode = .always
