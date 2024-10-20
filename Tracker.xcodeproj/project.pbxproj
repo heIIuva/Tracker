@@ -20,6 +20,8 @@
 		B514AE3E2CB41AC000490BEA /* TrackerRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = B514AE3D2CB41ABA00490BEA /* TrackerRecord.swift */; };
 		B514AE402CB5608700490BEA /* TrackerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B514AE3F2CB5607B00490BEA /* TrackerCollectionViewCell.swift */; };
 		B514AE422CB566CF00490BEA /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B514AE412CB566C600490BEA /* UIView+Extensions.swift */; };
+		B53F2CF62CC4687D0039F466 /* Int+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53F2CF52CC468710039F466 /* Int+Extensions.swift */; };
+		B53F2CF82CC483E60039F466 /* Calendar+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53F2CF72CC483DD0039F466 /* Calendar+Extensions.swift */; };
 		B5642A9B2CB6C67800B1942B /* NewHabitOrEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5642A9A2CB6C66800B1942B /* NewHabitOrEventViewController.swift */; };
 		B5642A9F2CB6EACF00B1942B /* UITextField+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5642A9E2CB6EAC200B1942B /* UITextField+Extensions.swift */; };
 		B587A06E2CB0160A00DD98FD /* DateFormatter+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B587A06D2CB015FB00DD98FD /* DateFormatter+Extensions.swift */; };
@@ -48,6 +50,8 @@
 		B514AE3D2CB41ABA00490BEA /* TrackerRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerRecord.swift; sourceTree = "<group>"; };
 		B514AE3F2CB5607B00490BEA /* TrackerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCollectionViewCell.swift; sourceTree = "<group>"; };
 		B514AE412CB566C600490BEA /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
+		B53F2CF52CC468710039F466 /* Int+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Extensions.swift"; sourceTree = "<group>"; };
+		B53F2CF72CC483DD0039F466 /* Calendar+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar+Extensions.swift"; sourceTree = "<group>"; };
 		B5642A9A2CB6C66800B1942B /* NewHabitOrEventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewHabitOrEventViewController.swift; sourceTree = "<group>"; };
 		B5642A9E2CB6EAC200B1942B /* UITextField+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extensions.swift"; sourceTree = "<group>"; };
 		B587A06D2CB015FB00DD98FD /* DateFormatter+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+Extensions.swift"; sourceTree = "<group>"; };
@@ -151,29 +155,24 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		B5642A9C2CB6C67D00B1942B /* New Habit */ = {
+		B5642A9C2CB6C67D00B1942B /* New Tracker */ = {
 			isa = PBXGroup;
 			children = (
 				B5AF9F242CBDC11C00A263D8 /* TimeTable */,
 				B5642A9A2CB6C66800B1942B /* NewHabitOrEventViewController.swift */,
 			);
-			path = "New Habit";
-			sourceTree = "<group>";
-		};
-		B5642A9D2CB6C68D00B1942B /* New Event */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "New Event";
+			path = "New Tracker";
 			sourceTree = "<group>";
 		};
 		B587A06C2CB015EE00DD98FD /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
 				B5AF9F202CBD586800A263D8 /* Placeholder.swift */,
+				B53F2CF52CC468710039F466 /* Int+Extensions.swift */,
 				B5642A9E2CB6EAC200B1942B /* UITextField+Extensions.swift */,
 				B514AE412CB566C600490BEA /* UIView+Extensions.swift */,
 				B587A06D2CB015FB00DD98FD /* DateFormatter+Extensions.swift */,
+				B53F2CF72CC483DD0039F466 /* Calendar+Extensions.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -183,8 +182,7 @@
 			children = (
 				B5A9ECC02CB667AA002AE00D /* TrackerCreationViewController.swift */,
 				B5AF9F1E2CBD580000A263D8 /* CategoryViewController.swift */,
-				B5642A9C2CB6C67D00B1942B /* New Habit */,
-				B5642A9D2CB6C68D00B1942B /* New Event */,
+				B5642A9C2CB6C67D00B1942B /* New Tracker */,
 			);
 			path = CreateNewTracker;
 			sourceTree = "<group>";
@@ -278,6 +276,7 @@
 				B5AF9F1F2CBD581100A263D8 /* CategoryViewController.swift in Sources */,
 				B514AE3C2CB41A9700490BEA /* TrackerCategory.swift in Sources */,
 				B587A06E2CB0160A00DD98FD /* DateFormatter+Extensions.swift in Sources */,
+				B53F2CF62CC4687D0039F466 /* Int+Extensions.swift in Sources */,
 				B50ABA442CAD63B800C251F0 /* TabBarController.swift in Sources */,
 				B5AF9F282CBDC45D00A263D8 /* Weekday.swift in Sources */,
 				B514AE3E2CB41AC000490BEA /* TrackerRecord.swift in Sources */,
@@ -285,6 +284,7 @@
 				B5AE80BD2CBB166D00C19A5C /* TrackerCollectionViewHeader.swift in Sources */,
 				B5642A9F2CB6EACF00B1942B /* UITextField+Extensions.swift in Sources */,
 				B50ABA402CAD487000C251F0 /* SceneDelegate.swift in Sources */,
+				B53F2CF82CC483E60039F466 /* Calendar+Extensions.swift in Sources */,
 				B514AE402CB5608700490BEA /* TrackerCollectionViewCell.swift in Sources */,
 				B5642A9B2CB6C67800B1942B /* NewHabitOrEventViewController.swift in Sources */,
 				B514AE3A2CB419C100490BEA /* Tracker.swift in Sources */,

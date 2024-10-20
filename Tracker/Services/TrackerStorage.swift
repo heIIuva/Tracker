@@ -18,7 +18,21 @@ final class TrackerStorage {
     
     //MARK: - Properties
     
-    private var categories: [TrackerCategory] = []
+    private var categories: [TrackerCategory] = [TrackerCategory(title: "Mock",
+                                                                 trackers:
+                                                                  [Tracker(id: UUID(),
+                                                                           name: "firstTracker",
+                                                                           color: .ypBlue,
+                                                                           emoji: "😄",
+                                                                           timeTable: [.monday]),
+                                                                   Tracker(id: UUID(),
+                                                                           name: "secondTracker",
+                                                                           color: .ypRed,
+                                                                           emoji: "😊",
+                                                                           timeTable: [.friday])
+                                                                 ]),
+      
+  ]
     
     //MARK: - Storage
     

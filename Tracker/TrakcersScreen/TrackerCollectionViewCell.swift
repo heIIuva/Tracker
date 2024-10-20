@@ -51,7 +51,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         return view
     }()
     
-    private lazy var trackerlabel: UILabel = {
+    private lazy var trackerLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .systemFont(ofSize: 12, weight: .medium)
@@ -60,7 +60,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-    private lazy var daysLeftLabel: UILabel = {
+    private lazy var trackerCounterLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .systemFont(ofSize: 12, weight: .medium)
@@ -80,14 +80,17 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Properties
     
+    weak var delegate: TrackerCollectionViewCellDelegate?
+    
+    private var id: UUID? = nil
     private var isCompleted: Bool = false
     private var counter: Int = 0
     
     //MARK: - Methods
     
     private func layoutCell() {
-        bodyView.addSubviews(emojiView, emojiLabel, trackerlabel)
-        addSubviews(bodyView, completeTrackerButton, daysLeftLabel)
+        bodyView.addSubviews(emojiView, emojiLabel, trackerLabel)
+        addSubviews(bodyView, completeTrackerButton, trackerCounterLabel)
         
         NSLayoutConstraint.activate([
             bodyView.heightAnchor.constraint(equalToConstant: 90),
@@ -103,11 +106,11 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
             emojiLabel.centerXAnchor.constraint(equalTo: emojiView.centerXAnchor),
             emojiLabel.centerYAnchor.constraint(equalTo: emojiView.centerYAnchor),
             
-            trackerlabel.leadingAnchor.constraint(equalTo: bodyView.leadingAnchor,
+            trackerLabel.leadingAnchor.constraint(equalTo: bodyView.leadingAnchor,
                                                   constant: 12),
-            trackerlabel.trailingAnchor.constraint(equalTo: bodyView.trailingAnchor,
+            trackerLabel.trailingAnchor.constraint(equalTo: bodyView.trailingAnchor,
                                                    constant: -12),
-            trackerlabel.bottomAnchor.constraint(equalTo: bodyView.bottomAnchor,
+            trackerLabel.bottomAnchor.constraint(equalTo: bodyView.bottomAnchor,
                                                  constant: -12),
             
             completeTrackerButton.widthAnchor.constraint(equalToConstant: 34),
@@ -115,23 +118,55 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
             completeTrackerButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
             completeTrackerButton.topAnchor.constraint(equalTo: bodyView.bottomAnchor, constant: 8),
             
-            daysLeftLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
-            daysLeftLabel.topAnchor.constraint(equalTo: bodyView.bottomAnchor, constant: 16)
+            trackerCounterLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
+            trackerCounterLabel.topAnchor.constraint(equalTo: bodyView.bottomAnchor, constant: 16)
         ])
+    }
+    
+    private func updateTrackerCounterLabel(isCompleted: Bool) {
+        counter = isCompleted ? counter + 1 : counter - 1
+        trackerCounterLabel.text = counter.string()
+    }
+    
+    private func updateCompleteTrackerButton(isCompleted: Bool) {
+        self.isCompleted = isCompleted
+        switch isCompleted {
+        case true:
+            completeTrackerButton.setImage(.done, for: .normal)
+            completeTrackerButton.tintColor = .white
+            completeTrackerButton.backgroundColor = bodyView.backgroundColor?.withAlphaComponent(0.3)
+        case false:
+            completeTrackerButton.setImage(UIImage(systemName: "plus"), for:  .normal)
+            completeTrackerButton.tintColor = .white
+            completeTrackerButton.backgroundColor = bodyView.backgroundColor
+        }
     }
     
     func setupCell(trackers: [Tracker], indexPath: IndexPath, isCompleted: Bool, counter: Int) {
         self.bodyView.backgroundColor = trackers[indexPath.row].color
         self.emojiLabel.text = trackers[indexPath.row].emoji
-        self.trackerlabel.text = trackers[indexPath.row].name
+        self.trackerLabel.text = trackers[indexPath.row].name
+        self.trackerCounterLabel.text = counter.string()
         self.completeTrackerButton.backgroundColor = trackers[indexPath.row].color
+        self.id = trackers[indexPath.row].id
+        
         self.isCompleted = isCompleted
         self.counter = counter
+        
+        updateCompleteTrackerButton(isCompleted: isCompleted)
     }
     
     //MARK: - Obj-C methods
     
     @objc private func completeTrackerButtonTapped() {
-        print("completed")
+        guard let id else { return }
+        
+        delegate?.didTapCompleteTrackerButton(isCompleted: !isCompleted,
+                                              id: id) { [weak self] in
+            guard let self else { return }
+            
+            updateCompleteTrackerButton(isCompleted: !isCompleted)
+            updateTrackerCounterLabel(isCompleted: isCompleted)
+        }
     }
 }

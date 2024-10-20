@@ -8,6 +8,11 @@
 import UIKit
 
 
+protocol NewTrackerVCDelegate: AnyObject {
+    func reloadCollectionView()
+}
+
+
 final class TrackerCreationViewController: UIViewController {
     
     //MARK: - Properties
@@ -35,6 +40,10 @@ final class TrackerCreationViewController: UIViewController {
         button.addTarget(self, action: #selector(didTapEventButton), for: .touchUpInside)
         return button
     }()
+    
+    //MARK: - Properties
+    
+    weak var delegate: TrackerCreationDelegate?
     
     //MARK: - Lifecycle methods
     
@@ -72,17 +81,25 @@ final class TrackerCreationViewController: UIViewController {
     //MARK: - Obj-C methods
     
     @objc private func didTapHabitButton() {
-        let newHabitOrEventVC = UINavigationController(rootViewController: NewHabitOrEventViewController(nibName: nil,
+        let newHabitOrEventVC = NewHabitOrEventViewController(nibName: nil,
                                    bundle: nil,
-                                   options: ["Категория", "Расписание"]))
-        self.present(newHabitOrEventVC, animated: true, completion: nil)
+                                   options: ["Категория", "Расписание"])
+        newHabitOrEventVC.delegate = self
+        self.present(UINavigationController(rootViewController: newHabitOrEventVC), animated: true, completion: nil)
     }
     
     @objc private func didTapEventButton() {
-        let newHabitOrEventVC = UINavigationController(rootViewController: NewHabitOrEventViewController(nibName: nil,
+        let newHabitOrEventVC = NewHabitOrEventViewController(nibName: nil,
                                    bundle: nil,
-                                   options: ["Категория"]))
-        self.present(newHabitOrEventVC, animated: true, completion: nil)
+                                   options: ["Категория"])
+        newHabitOrEventVC.delegate = self
+        self.present(UINavigationController(rootViewController: newHabitOrEventVC), animated: true, completion: nil)
     }
+}
+
+extension TrackerCreationViewController: NewTrackerVCDelegate {
     
+    func reloadCollectionView() {
+        delegate?.reloadCollectionView()
+    }
 }

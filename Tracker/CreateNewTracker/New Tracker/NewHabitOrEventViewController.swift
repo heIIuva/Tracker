@@ -12,6 +12,7 @@ protocol TimeTableViewControllerDelegate: AnyObject {
     func timeTable(_ timeTable: Set<Weekday>)
 }
 
+
 protocol CategoryTableViewControllerDelegate: AnyObject { }
 
 
@@ -20,8 +21,8 @@ final class NewHabitOrEventViewController: UIViewController {
     //MARK: - Init
     
     init(nibName nibNameOrNil: String?,
-                  bundle nibBundleOrNil: Bundle?,
-                  options: [String]) {
+         bundle nibBundleOrNil: Bundle?,
+         options: [String]) {
         self.cellTitle = options
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
@@ -29,6 +30,7 @@ final class NewHabitOrEventViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     
     //MARK: - UI properties
     
@@ -130,6 +132,8 @@ final class NewHabitOrEventViewController: UIViewController {
     }()
     
     //MARK: - Properties
+    
+    weak var delegate: NewTrackerVCDelegate?
     
     private var categories = TrackerStorage.shared
     
@@ -246,6 +250,7 @@ final class NewHabitOrEventViewController: UIViewController {
     @objc private func didTapCreateButton() {
         createNewTracker()
         dismiss(animated: true)
+        delegate?.reloadCollectionView()
     }
 }
 
