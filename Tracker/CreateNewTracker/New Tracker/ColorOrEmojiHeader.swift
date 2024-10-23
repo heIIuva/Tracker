@@ -1,18 +1,14 @@
 //
-//  TrackerCollectionViewHeader.swift
+//  Untitled.swift
 //  Tracker
 //
-//  Created by big stepper on 12/10/2024.
+//  Created by big stepper on 22/10/2024.
 //
 
 import UIKit
 
 
-final class TrackerCollectionViewHeader: UICollectionReusableView {
-    
-    //MARK: - Reuse identifier
-    
-    static let reuseIdentifier: String = "TrackerCollectionViewHeader"
+final class ColorOrEmojiHeader: UICollectionReusableView {
     
     //MARK: - Init
     
@@ -25,9 +21,13 @@ final class TrackerCollectionViewHeader: UICollectionReusableView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    //MARK: - Reuse identifier
+    
+    static let reuseIdentifier: String = "ColorOrEmojiHeader"
+    
     //MARK: - UI properties
     
-    private lazy var title: UILabel = {
+    private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .systemFont(ofSize: 19, weight: .bold)
@@ -38,16 +38,16 @@ final class TrackerCollectionViewHeader: UICollectionReusableView {
     //MARK: - UI methods
     
     private func layoutHeader() {
-        addSubview(title)
+        addSubview(titleLabel)
         
         NSLayoutConstraint.activate([
-            title.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 28),
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 28),
         ])
     }
     
     //MARK: - Methods
     
-    func configureHeader(categories: [TrackerCategory], indexPath: IndexPath) {
-        title.text = categories[indexPath.section].title
+    func configureHeader(text: String) {
+        self.titleLabel.text = text
     }
 }
