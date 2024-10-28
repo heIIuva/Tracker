@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		B500C9EA2CC0275100163087 /* TrackerStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B500C9E92CC0274C00163087 /* TrackerStorage.swift */; };
+		B50A74DE2CCFD6FD001A23F3 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B50A74DC2CCFD6FD001A23F3 /* Model.xcdatamodeld */; };
 		B50ABA3B2CAD487000C251F0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B50ABA322CAD487000C251F0 /* Assets.xcassets */; };
 		B50ABA3D2CAD487000C251F0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B50ABA352CAD487000C251F0 /* LaunchScreen.storyboard */; };
 		B50ABA3F2CAD487000C251F0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50ABA312CAD487000C251F0 /* AppDelegate.swift */; };
@@ -25,6 +26,9 @@
 		B5642A9B2CB6C67800B1942B /* NewHabitOrEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5642A9A2CB6C66800B1942B /* NewHabitOrEventViewController.swift */; };
 		B5642A9F2CB6EACF00B1942B /* UITextField+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5642A9E2CB6EAC200B1942B /* UITextField+Extensions.swift */; };
 		B587A06E2CB0160A00DD98FD /* DateFormatter+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B587A06D2CB015FB00DD98FD /* DateFormatter+Extensions.swift */; };
+		B5A635462CC7A45E00BC64D9 /* ColorOrEmojiHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A635452CC7A45A00BC64D9 /* ColorOrEmojiHeader.swift */; };
+		B5A635482CC7A49800BC64D9 /* ColorCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A635472CC7A48D00BC64D9 /* ColorCollectionViewCell.swift */; };
+		B5A6354A2CC7A4A600BC64D9 /* EmojiCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A635492CC7A4A000BC64D9 /* EmojiCollectionViewCell.swift */; };
 		B5A9ECC12CB667B3002AE00D /* TrackerCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A9ECC02CB667AA002AE00D /* TrackerCreationViewController.swift */; };
 		B5AE80BD2CBB166D00C19A5C /* TrackerCollectionViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AE80BC2CBB165F00C19A5C /* TrackerCollectionViewHeader.swift */; };
 		B5AF9F1F2CBD581100A263D8 /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AF9F1E2CBD580000A263D8 /* CategoryViewController.swift */; };
@@ -36,6 +40,7 @@
 
 /* Begin PBXFileReference section */
 		B500C9E92CC0274C00163087 /* TrackerStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerStorage.swift; sourceTree = "<group>"; };
+		B50A74DD2CCFD6FD001A23F3 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		B50ABA192CAD486800C251F0 /* Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B50ABA312CAD487000C251F0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B50ABA322CAD487000C251F0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -55,6 +60,9 @@
 		B5642A9A2CB6C66800B1942B /* NewHabitOrEventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewHabitOrEventViewController.swift; sourceTree = "<group>"; };
 		B5642A9E2CB6EAC200B1942B /* UITextField+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extensions.swift"; sourceTree = "<group>"; };
 		B587A06D2CB015FB00DD98FD /* DateFormatter+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+Extensions.swift"; sourceTree = "<group>"; };
+		B5A635452CC7A45A00BC64D9 /* ColorOrEmojiHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorOrEmojiHeader.swift; sourceTree = "<group>"; };
+		B5A635472CC7A48D00BC64D9 /* ColorCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorCollectionViewCell.swift; sourceTree = "<group>"; };
+		B5A635492CC7A4A000BC64D9 /* EmojiCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiCollectionViewCell.swift; sourceTree = "<group>"; };
 		B5A9ECC02CB667AA002AE00D /* TrackerCreationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCreationViewController.swift; sourceTree = "<group>"; };
 		B5AE80BC2CBB165F00C19A5C /* TrackerCollectionViewHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCollectionViewHeader.swift; sourceTree = "<group>"; };
 		B5AF9F1E2CBD580000A263D8 /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
@@ -78,9 +86,18 @@
 		B500C9E82CC0274500163087 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				B50A74D92CCFD6CB001A23F3 /* Storage */,
 				B500C9E92CC0274C00163087 /* TrackerStorage.swift */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		B50A74D92CCFD6CB001A23F3 /* Storage */ = {
+			isa = PBXGroup;
+			children = (
+				B50A74DC2CCFD6FD001A23F3 /* Model.xcdatamodeld */,
+			);
+			path = Storage;
 			sourceTree = "<group>";
 		};
 		B50ABA102CAD486800C251F0 = {
@@ -158,8 +175,11 @@
 		B5642A9C2CB6C67D00B1942B /* New Tracker */ = {
 			isa = PBXGroup;
 			children = (
-				B5AF9F242CBDC11C00A263D8 /* TimeTable */,
 				B5642A9A2CB6C66800B1942B /* NewHabitOrEventViewController.swift */,
+				B5A635452CC7A45A00BC64D9 /* ColorOrEmojiHeader.swift */,
+				B5A635472CC7A48D00BC64D9 /* ColorCollectionViewCell.swift */,
+				B5A635492CC7A4A000BC64D9 /* EmojiCollectionViewCell.swift */,
+				B5AF9F242CBDC11C00A263D8 /* TimeTable */,
 			);
 			path = "New Tracker";
 			sourceTree = "<group>";
@@ -274,19 +294,23 @@
 				B5AF9F262CBDC13500A263D8 /* TimeTableCell.swift in Sources */,
 				B50ABA3F2CAD487000C251F0 /* AppDelegate.swift in Sources */,
 				B5AF9F1F2CBD581100A263D8 /* CategoryViewController.swift in Sources */,
+				B5A635482CC7A49800BC64D9 /* ColorCollectionViewCell.swift in Sources */,
 				B514AE3C2CB41A9700490BEA /* TrackerCategory.swift in Sources */,
+				B50A74DE2CCFD6FD001A23F3 /* Model.xcdatamodeld in Sources */,
 				B587A06E2CB0160A00DD98FD /* DateFormatter+Extensions.swift in Sources */,
 				B53F2CF62CC4687D0039F466 /* Int+Extensions.swift in Sources */,
 				B50ABA442CAD63B800C251F0 /* TabBarController.swift in Sources */,
 				B5AF9F282CBDC45D00A263D8 /* Weekday.swift in Sources */,
 				B514AE3E2CB41AC000490BEA /* TrackerRecord.swift in Sources */,
 				B50ABA4A2CAD647700C251F0 /* StatisticsViewController.swift in Sources */,
+				B5A6354A2CC7A4A600BC64D9 /* EmojiCollectionViewCell.swift in Sources */,
 				B5AE80BD2CBB166D00C19A5C /* TrackerCollectionViewHeader.swift in Sources */,
 				B5642A9F2CB6EACF00B1942B /* UITextField+Extensions.swift in Sources */,
 				B50ABA402CAD487000C251F0 /* SceneDelegate.swift in Sources */,
 				B53F2CF82CC483E60039F466 /* Calendar+Extensions.swift in Sources */,
 				B514AE402CB5608700490BEA /* TrackerCollectionViewCell.swift in Sources */,
 				B5642A9B2CB6C67800B1942B /* NewHabitOrEventViewController.swift in Sources */,
+				B5A635462CC7A45E00BC64D9 /* ColorOrEmojiHeader.swift in Sources */,
 				B514AE3A2CB419C100490BEA /* Tracker.swift in Sources */,
 				B5AF9F212CBD587400A263D8 /* Placeholder.swift in Sources */,
 				B5A9ECC12CB667B3002AE00D /* TrackerCreationViewController.swift in Sources */,
@@ -514,6 +538,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		B50A74DC2CCFD6FD001A23F3 /* Model.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				B50A74DD2CCFD6FD001A23F3 /* Model.xcdatamodel */,
+			);
+			currentVersion = B50A74DD2CCFD6FD001A23F3 /* Model.xcdatamodel */;
+			path = Model.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = B50ABA112CAD486800C251F0 /* Project object */;
 }
