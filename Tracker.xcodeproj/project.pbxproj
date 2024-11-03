@@ -36,6 +36,8 @@
 		B5AF9F262CBDC13500A263D8 /* TimeTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AF9F252CBDC12F00A263D8 /* TimeTableCell.swift */; };
 		B5AF9F282CBDC45D00A263D8 /* Weekday.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AF9F272CBDC45600A263D8 /* Weekday.swift */; };
 		B5D111B32CD80F9E00AEF71C /* TrackerStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D111B22CD80F9600AEF71C /* TrackerStorage.swift */; };
+		B5D111B82CD81DDB00AEF71C /* UIColorMarshalling.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D111B72CD81DD300AEF71C /* UIColorMarshalling.swift */; };
+		B5D111BB2CD81E7D00AEF71C /* WeekdayTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D111BA2CD81E6E00AEF71C /* WeekdayTransformer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -70,6 +72,8 @@
 		B5AF9F252CBDC12F00A263D8 /* TimeTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTableCell.swift; sourceTree = "<group>"; };
 		B5AF9F272CBDC45600A263D8 /* Weekday.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weekday.swift; sourceTree = "<group>"; };
 		B5D111B22CD80F9600AEF71C /* TrackerStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerStorage.swift; sourceTree = "<group>"; };
+		B5D111B72CD81DD300AEF71C /* UIColorMarshalling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorMarshalling.swift; sourceTree = "<group>"; };
+		B5D111BA2CD81E6E00AEF71C /* WeekdayTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekdayTransformer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,17 +91,18 @@
 			isa = PBXGroup;
 			children = (
 				B5D111B22CD80F9600AEF71C /* TrackerStorage.swift */,
-				B50A74D92CCFD6CB001A23F3 /* Storage */,
+				B5D111B42CD81D9300AEF71C /* Stores */,
+				B50A74D92CCFD6CB001A23F3 /* CoreData */,
 			);
 			path = Services;
 			sourceTree = "<group>";
 		};
-		B50A74D92CCFD6CB001A23F3 /* Storage */ = {
+		B50A74D92CCFD6CB001A23F3 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
 				B50A74DC2CCFD6FD001A23F3 /* Model.xcdatamodeld */,
 			);
-			path = Storage;
+			path = CoreData;
 			sourceTree = "<group>";
 		};
 		B50ABA102CAD486800C251F0 = {
@@ -187,6 +192,8 @@
 		B587A06C2CB015EE00DD98FD /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				B5D111BA2CD81E6E00AEF71C /* WeekdayTransformer.swift */,
+				B5D111B72CD81DD300AEF71C /* UIColorMarshalling.swift */,
 				B5AF9F202CBD586800A263D8 /* Placeholder.swift */,
 				B53F2CF52CC468710039F466 /* Int+Extensions.swift */,
 				B5642A9E2CB6EAC200B1942B /* UITextField+Extensions.swift */,
@@ -214,6 +221,13 @@
 				B5AF9F252CBDC12F00A263D8 /* TimeTableCell.swift */,
 			);
 			path = TimeTable;
+			sourceTree = "<group>";
+		};
+		B5D111B42CD81D9300AEF71C /* Stores */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Stores;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -290,11 +304,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				B50ABA482CAD645300C251F0 /* TrackersViewController.swift in Sources */,
+				B5D111BB2CD81E7D00AEF71C /* WeekdayTransformer.swift in Sources */,
 				B5AF9F262CBDC13500A263D8 /* TimeTableCell.swift in Sources */,
 				B50ABA3F2CAD487000C251F0 /* AppDelegate.swift in Sources */,
 				B5AF9F1F2CBD581100A263D8 /* CategoryViewController.swift in Sources */,
 				B5A635482CC7A49800BC64D9 /* ColorCollectionViewCell.swift in Sources */,
 				B514AE3C2CB41A9700490BEA /* TrackerCategory.swift in Sources */,
+				B5D111B82CD81DDB00AEF71C /* UIColorMarshalling.swift in Sources */,
 				B50A74DE2CCFD6FD001A23F3 /* Model.xcdatamodeld in Sources */,
 				B587A06E2CB0160A00DD98FD /* DateFormatter+Extensions.swift in Sources */,
 				B53F2CF62CC4687D0039F466 /* Int+Extensions.swift in Sources */,
