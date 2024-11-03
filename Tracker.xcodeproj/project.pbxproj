@@ -35,6 +35,7 @@
 		B5AF9F232CBD5A6500A263D8 /* TimeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AF9F222CBD5A5500A263D8 /* TimeTableViewController.swift */; };
 		B5AF9F262CBDC13500A263D8 /* TimeTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AF9F252CBDC12F00A263D8 /* TimeTableCell.swift */; };
 		B5AF9F282CBDC45D00A263D8 /* Weekday.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AF9F272CBDC45600A263D8 /* Weekday.swift */; };
+		B5D111B32CD80F9E00AEF71C /* TrackerStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D111B22CD80F9600AEF71C /* TrackerStorage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -68,6 +69,7 @@
 		B5AF9F222CBD5A5500A263D8 /* TimeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTableViewController.swift; sourceTree = "<group>"; };
 		B5AF9F252CBDC12F00A263D8 /* TimeTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTableCell.swift; sourceTree = "<group>"; };
 		B5AF9F272CBDC45600A263D8 /* Weekday.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weekday.swift; sourceTree = "<group>"; };
+		B5D111B22CD80F9600AEF71C /* TrackerStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerStorage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +86,7 @@
 		B500C9E82CC0274500163087 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				B5D111B22CD80F9600AEF71C /* TrackerStorage.swift */,
 				B50A74D92CCFD6CB001A23F3 /* Storage */,
 			);
 			path = Services;
@@ -310,6 +313,7 @@
 				B514AE3A2CB419C100490BEA /* Tracker.swift in Sources */,
 				B5AF9F212CBD587400A263D8 /* Placeholder.swift in Sources */,
 				B5A9ECC12CB667B3002AE00D /* TrackerCreationViewController.swift in Sources */,
+				B5D111B32CD80F9E00AEF71C /* TrackerStorage.swift in Sources */,
 				B5AF9F232CBD5A6500A263D8 /* TimeTableViewController.swift in Sources */,
 				B514AE422CB566CF00490BEA /* UIView+Extensions.swift in Sources */,
 			);

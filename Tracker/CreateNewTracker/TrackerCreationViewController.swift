@@ -81,17 +81,19 @@ final class TrackerCreationViewController: UIViewController {
     //MARK: - Obj-C methods
     
     @objc private func didTapHabitButton() {
-        let newHabitOrEventVC = NewHabitOrEventViewController(nibName: nil,
-                                   bundle: nil,
-                                   options: ["Категория", "Расписание"])
+        let newHabitOrEventVC = NewHabitOrEventViewController(
+            nibName: nil,
+            bundle: nil,
+            isHabit: true)
         newHabitOrEventVC.delegate = self
         self.present(UINavigationController(rootViewController: newHabitOrEventVC), animated: true, completion: nil)
     }
     
     @objc private func didTapEventButton() {
-        let newHabitOrEventVC = NewHabitOrEventViewController(nibName: nil,
-                                   bundle: nil,
-                                   options: ["Категория"])
+        let newHabitOrEventVC = NewHabitOrEventViewController(
+            nibName: nil,
+            bundle: nil,
+            isHabit: false)
         newHabitOrEventVC.delegate = self
         self.present(UINavigationController(rootViewController: newHabitOrEventVC), animated: true, completion: nil)
     }

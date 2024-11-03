@@ -23,9 +23,10 @@ final class NewHabitOrEventViewController: UIViewController {
     init(
          nibName nibNameOrNil: String?,
          bundle nibBundleOrNil: Bundle?,
-         options: [String]
+         isHabit: Bool
     ) {
-        self.tableCellTitle = options
+        self.isHabit = isHabit
+        self.tableCellTitle = isHabit ? ["Категория", "Расписание"] : ["Категория"]
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
@@ -216,6 +217,8 @@ final class NewHabitOrEventViewController: UIViewController {
     //TODO: - add category selection
     private var categoryName: String = "Важное"
     
+    private var isHabit: Bool
+    
     //MARK: - Lifecycle methods
     
     override func viewDidLoad() {
@@ -236,7 +239,7 @@ final class NewHabitOrEventViewController: UIViewController {
     }
     
     func setupUI() {
-        self.title = tableCellTitle.count == 2 ? "Новая привычка" : "Новое нерегулярное событие"
+        self.title = isHabit ? "Новая привычка" : "Новое нерегулярное событие"
         view.backgroundColor = .systemBackground
         view.addSubview(scrollView)
         scrollView.addSubviews(textFieldStackView,
@@ -294,23 +297,32 @@ final class NewHabitOrEventViewController: UIViewController {
     
     private func checkIfAllFieldsAreFilled() {
         //TODO: - category check
-        guard
-            !trackerName.isEmpty,
-            !timeTable.isEmpty,
-            selectedColor != .clear,
-            !selectedEmoji.isEmpty
-        else { return }
-        
+        if isHabit {
+            guard
+                !trackerName.isEmpty,
+                !timeTable.isEmpty,
+                selectedColor != .clear,
+                !selectedEmoji.isEmpty
+            else { return }
+        } else {
+            guard
+                !trackerName.isEmpty,
+                selectedColor != .clear,
+                !selectedEmoji.isEmpty
+            else { return }
+        }
+
         enableCreateButton()
     }
     
     //TODO: - category sprint 16
     private func createNewTracker() {
+        
         let tracker = Tracker(id: UUID(),
                               name: self.trackerName,
                               color: self.selectedColor,
                               emoji: self.selectedEmoji,
-                              timeTable: Array(self.timeTable))
+                              timeTable: isHabit ? Array(self.timeTable) : [])
         
         if let categoryIndex = categories.categoriesStorage.firstIndex(where: { $0.title.lowercased() == self.categoryName.lowercased() }) {
             var trackersInCategory = categories.categoriesStorage[categoryIndex].trackers
