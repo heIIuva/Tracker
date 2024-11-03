@@ -8,11 +8,11 @@
 import Foundation
 
 
-final class TrackerStorage {
+final class TrackersStorage {
     
     //MARK: - Singletone
     
-    static let shared = TrackerStorage()
+    static let shared = TrackersStorage()
     
     private init(){}
     

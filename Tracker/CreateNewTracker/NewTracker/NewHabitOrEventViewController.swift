@@ -304,7 +304,7 @@ final class NewHabitOrEventViewController: UIViewController {
         enableCreateButton()
     }
     
-    //TODO: - category sprint 15
+    //TODO: - category sprint 16
     private func createNewTracker() {
         let tracker = Tracker(id: UUID(),
                               name: self.trackerName,
