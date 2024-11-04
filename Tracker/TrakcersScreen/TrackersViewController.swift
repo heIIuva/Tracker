@@ -81,13 +81,15 @@ final class TrackersViewController: UIViewController {
     
     //MARK: - Properties
     
+    private var categoryStore: TrackerCategoryStoreProtocol?
+    
     private let trackerCellReuseIdentifier = TrackerCollectionViewCell.reuseIdentifier
     private let trackerHeaderReuseIdentifier = TrackerCollectionViewHeader.reuseIdentifier
     private let placeholder = Placeholder.shared
     
     private let dateFormatter = DateFormatter.dateFormatter
     
-    private let categories = TrackerStorage.shared
+    private var categories: [TrackerCategory] = []
     private var completedTrackers: Set<TrackerRecord> = []
     
     private var visibleCategories: [TrackerCategory] = []
@@ -103,6 +105,12 @@ final class TrackersViewController: UIViewController {
         
         setupNavigationBar()
         configureCollectionView()
+        
+        let categoryStore = TrackerCategoryStore()
+        categoryStore.delegate = self
+        self.categoryStore = categoryStore
+        
+        self.categories = categoryStore.provideCategories()
     }
     
     //MARK: UI methods
@@ -134,7 +142,7 @@ final class TrackersViewController: UIViewController {
         currentDate = sender.date
         let weekDay = Calendar.current.component(.weekday, from: currentDate)
         var visibleCategories: [TrackerCategory] = []
-        categories.categoriesStorage.forEach { category in
+        categories.forEach { category in
             var trackers: [Tracker] = []
             category.trackers.forEach { tracker in
                 guard tracker.timeTable.isEmpty,
@@ -167,9 +175,8 @@ final class TrackersViewController: UIViewController {
     }
 }
 
-//MARK: - Extensions
 
-
+//MARK: - UISearchResultsUpdating
 extension TrackersViewController: UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {
@@ -181,7 +188,7 @@ extension TrackersViewController: UISearchResultsUpdating {
     }
 }
 
-
+//MARK: - UISearchControllerDelegate
 extension TrackersViewController: UISearchControllerDelegate {
     
     func willPresentSearchController(_ searchController: UISearchController) {
@@ -196,7 +203,7 @@ extension TrackersViewController: UISearchControllerDelegate {
     }
 }
 
-
+//MARK: - UICollectionViewDelegateFlowLayout
 extension TrackersViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView,
@@ -248,7 +255,7 @@ extension TrackersViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-
+//MARK: - UICollectionViewDataSource
 extension TrackersViewController: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -268,12 +275,14 @@ extension TrackersViewController: UICollectionViewDataSource {
         }
         
         placeholder.removePlaceholder()
-        return visibleCategories.count
+//        return visibleCategories.count
+        return categoryStore?.numberOfSections ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView,
                         numberOfItemsInSection section: Int) -> Int {
-        return visibleCategories[section].trackers.count
+//        return visibleCategories[section].trackers.count
+        return categoryStore?.numberOfItemsInSection(section) ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView,
@@ -311,7 +320,7 @@ extension TrackersViewController: UICollectionViewDataSource {
     }
 }
 
-
+//MARK: - TrackerCollectionViewCellDelegate
 extension TrackersViewController: TrackerCollectionViewCellDelegate {
     
     func didTapCompleteTrackerButton(isCompleted: Bool, id: UUID, completion: @escaping () -> Void) {
@@ -328,12 +337,24 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
     }
 }
 
-
+//MARK: - TrackerCreationDelegate
 extension TrackersViewController: TrackerCreationDelegate {
     
     func reloadCollectionView() {
         visibleCategories = categories.categoriesStorage
         collectionView.reloadData()
         datePickerUpdated(datePicker)
+    }
+}
+
+
+extension TrackersViewController: TrackerCategoryStoreDelegate {
+    func didUpdate(_ update: TrackerCategoryStoreUpdate) {
+        collectionView.performBatchUpdates {
+            let insertedIndexes = update.insertedIndexes.map { IndexPath(item: $0, section: $0) }
+            let deletedIndexes = update.deletedIndexes.map { IndexPath(item: $0, section: $0) }
+            collectionView.insertItems(at: insertedIndexes)
+            collectionView.deleteItems(at: deletedIndexes)
+        }
     }
 }

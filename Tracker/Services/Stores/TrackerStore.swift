@@ -12,32 +12,25 @@ import CoreData
 
 protocol TrackerStoreProtocol: AnyObject {
     func fetchTracker(from coreData: TrackerCoreData) -> Tracker?
-    func fetchTrackerCoreData(from tracker: Tracker) -> TrackerCoreData?
+    func fetchTrackerCoreData(from tracker: Tracker) -> TrackerCoreData
     func fetchTrackerFromCoreDataById(_ id: UUID) -> TrackerCoreData?
 }
 
 
 final class TrackerStore: NSObject {
     
-    //MARK: - Init
+    //MARK: - Init/Singletone
     
-    private init(
-        context: NSManagedObjectContext,
-        appDelegate: AppDelegate
-    ) {
+    private init(context: NSManagedObjectContext) {
         self.context = context
-        self.appDelegate = appDelegate
     }
     
     private convenience override init() {
-        guard
-            let appDelegate = UIApplication.shared.delegate as? AppDelegate
+        guard let context = (UIApplication.shared.delegate as?
+                             AppDelegate)?.persistentContainer.viewContext
         else { fatalError("Could not initialize TrackerStore") }
         
-        self.init(
-            context: appDelegate.persistentContainer.viewContext,
-            appDelegate: appDelegate
-        )
+        self.init(context: context)
     }
     
     static let shared = TrackerStore()
@@ -46,7 +39,6 @@ final class TrackerStore: NSObject {
     
     private let uiColorMarshalling = UIColorMarshalling()
     private let context: NSManagedObjectContext
-    private let appDelegate: AppDelegate
 }
 
 //MARK: - TrackerStoreProtocol
@@ -70,7 +62,7 @@ extension TrackerStore: TrackerStoreProtocol {
         )
     }
     
-    func fetchTrackerCoreData(from tracker: Tracker) -> TrackerCoreData? {
+    func fetchTrackerCoreData(from tracker: Tracker) -> TrackerCoreData {
         let trackerCoreData = TrackerCoreData(context: context)
         trackerCoreData.id = tracker.id
         trackerCoreData.name = tracker.name
