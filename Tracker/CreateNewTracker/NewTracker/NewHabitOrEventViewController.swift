@@ -23,8 +23,10 @@ final class NewHabitOrEventViewController: UIViewController {
     init(
          nibName nibNameOrNil: String?,
          bundle nibBundleOrNil: Bundle?,
-         isHabit: Bool
+         isHabit: Bool,
+         dataProvider: DataProviderProtocol
     ) {
+        self.dataProvider = dataProvider
         self.isHabit = isHabit
         self.tableCellTitle = isHabit ? ["Категория", "Расписание"] : ["Категория"]
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -185,7 +187,7 @@ final class NewHabitOrEventViewController: UIViewController {
     
     weak var delegate: NewTrackerVCDelegate?
     
-    private var categories = TrackerStorage.shared
+    private var dataProvider: DataProviderProtocol?
 
     private let collectionHeaderIdentifier = TrackerCollectionViewHeader.reuseIdentifier
     private let colorCollectionIdentifier = ColorCollectionViewCell.reuseIdentifier
@@ -324,18 +326,17 @@ final class NewHabitOrEventViewController: UIViewController {
                               emoji: self.selectedEmoji,
                               timeTable: isHabit ? Array(self.timeTable) : [])
         
-        if let categoryIndex = categories.categoriesStorage.firstIndex(where: { $0.title.lowercased() == self.categoryName.lowercased() }) {
-            var trackersInCategory = categories.categoriesStorage[categoryIndex].trackers
-            trackersInCategory.append(tracker)
-            let categoryForTracker = categories.categoriesStorage[categoryIndex].title
-            let updatedCategory = TrackerCategory(title: categoryForTracker,
-                                              trackers: trackersInCategory)
-            categories.categoriesStorage[categoryIndex] = updatedCategory
-            print("new tracker added to an existing category \(categories.categoriesStorage)")
+        var categories = dataProvider?.getCategories() ?? []
+        
+        if let categoryIndex = categories.firstIndex(where: { $0.title.lowercased() == self.categoryName.lowercased() }) {
+            let categoryForTracker = categories[categoryIndex]
+            dataProvider?.addTrackerToCategory(tracker: tracker, category: categoryForTracker)
+            
+            print("new tracker added to an existing category \(categories)")
         } else {
             let newCategory = TrackerCategory(title: self.categoryName, trackers: [tracker])
-            categories.categoriesStorage.append(newCategory)
-            print("new tracker added to a new category \(categories.categoriesStorage)")
+            dataProvider?.addCategory(category: newCategory)
+            print("new tracker added to a new category \(categories)")
         }
     }
     
