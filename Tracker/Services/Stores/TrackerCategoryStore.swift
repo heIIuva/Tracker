@@ -16,16 +16,17 @@ struct TrackerCategoryStoreUpdate {
 
 
 protocol TrackerCategoryStoreProtocol: AnyObject {
+    var delegate: TrackerCategoryStoreDelegate? { get set }
+    var categories: [TrackerCategory] { get }
     var numberOfSections: Int { get }
     func numberOfItemsInSection(_ section: Int) -> Int
     func addCategoryToCoreData(_ category: TrackerCategory)
     func addTrackerToCategory(_ tracker: Tracker, _ category: TrackerCategory)
-    func provideCategories() -> [TrackerCategory]
 }
 
 
 protocol TrackerCategoryStoreDelegate: AnyObject {
-    func didUpdate(_ update: TrackerCategoryStoreUpdate)
+    func didUpdateCategory()
 }
 
 
@@ -53,7 +54,7 @@ final class TrackerCategoryStore: NSObject {
     
     //MARK: - Properties
     
-    private var categories: [TrackerCategory] {
+    var categories: [TrackerCategory] {
         guard let categoriesCoreData = fetchedResultsController.fetchedObjects
         else { return [] }
         let categories = categoriesCoreData.compactMap({ fetchCategory(from: $0) })
@@ -142,10 +143,6 @@ extension TrackerCategoryStore: TrackerCategoryStoreProtocol {
         category.trackersInCategory = trackers.union([trackerCoreData]) as NSSet
         appDelegate.saveContext()
     }
-    
-    func provideCategories() -> [TrackerCategory] {
-        categories
-    }
 }
 
 //MARK: - NSFetchedResultsControllerDelegate
@@ -156,13 +153,7 @@ extension TrackerCategoryStore: NSFetchedResultsControllerDelegate {
     }
 
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        delegate?.didUpdate(TrackerCategoryStoreUpdate(
-                insertedIndexes: insertedIndexes!,
-                deletedIndexes: deletedIndexes!
-            )
-        )
-        insertedIndexes = nil
-        deletedIndexes = nil
+        delegate?.didUpdateCategory()
     }
 }
 
