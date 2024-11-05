@@ -84,7 +84,8 @@ final class TrackerCreationViewController: UIViewController {
         let newHabitOrEventVC = NewHabitOrEventViewController(
             nibName: nil,
             bundle: nil,
-            isHabit: true)
+            isHabit: true,
+            dataProvider: DataProvider())
         newHabitOrEventVC.delegate = self
         self.present(UINavigationController(rootViewController: newHabitOrEventVC), animated: true, completion: nil)
     }
@@ -93,7 +94,8 @@ final class TrackerCreationViewController: UIViewController {
         let newHabitOrEventVC = NewHabitOrEventViewController(
             nibName: nil,
             bundle: nil,
-            isHabit: false)
+            isHabit: false,
+            dataProvider: DataProvider())
         newHabitOrEventVC.delegate = self
         self.present(UINavigationController(rootViewController: newHabitOrEventVC), animated: true, completion: nil)
     }

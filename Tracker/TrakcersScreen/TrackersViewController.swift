@@ -80,6 +80,8 @@ final class TrackersViewController: UIViewController {
     }()
     
     //MARK: - Properties
+    
+    private var dataProvider: DataProviderProtocol?
         
     private let trackerCellReuseIdentifier = TrackerCollectionViewCell.reuseIdentifier
     private let trackerHeaderReuseIdentifier = TrackerCollectionViewHeader.reuseIdentifier
@@ -87,9 +89,9 @@ final class TrackersViewController: UIViewController {
     
     private let dateFormatter = DateFormatter.dateFormatter
     
-    private let categories = TrackerStorage.shared
     private var completedTrackers: Set<TrackerRecord> = []
     
+    private var categories: [TrackerCategory] = []
     private var visibleCategories: [TrackerCategory] = []
     
     private var isSearch: Bool = false
@@ -103,6 +105,15 @@ final class TrackersViewController: UIViewController {
         
         setupNavigationBar()
         configureCollectionView()
+        
+        let dataProvider = DataProvider()
+        dataProvider.delegate = self
+        self.dataProvider = dataProvider
+        
+        categories = dataProvider.getCategories()
+        completedTrackers = dataProvider.getRecords()
+        
+        datePickerUpdated(datePicker)
     }
     
     //MARK: UI methods
@@ -134,7 +145,7 @@ final class TrackersViewController: UIViewController {
         currentDate = sender.date
         let weekDay = Calendar.current.component(.weekday, from: currentDate)
         var visibleCategories: [TrackerCategory] = []
-        categories.categoriesStorage.forEach { category in
+        categories.forEach { category in
             var trackers: [Tracker] = []
             category.trackers.forEach { tracker in
                 guard tracker.timeTable.isEmpty,
@@ -312,15 +323,14 @@ extension TrackersViewController: UICollectionViewDataSource {
 
 //MARK: - TrackerCollectionViewCellDelegate
 extension TrackersViewController: TrackerCollectionViewCellDelegate {
-    
     func didTapCompleteTrackerButton(isCompleted: Bool, id: UUID, completion: @escaping () -> Void) {
         let record = TrackerRecord(id: id, date: currentDate)
         switch isCompleted {
         case true:
             guard let days = Calendar.current.numberOfDaysBetween(currentDate), days >= 0 else { return }
-            completedTrackers.insert(record)
+            dataProvider?.addRecord(record: record)
         case false:
-            completedTrackers.remove(record)
+            dataProvider?.deleteRecord(record: record)
         }
         completion()
         print(completedTrackers)
@@ -331,8 +341,20 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
 extension TrackersViewController: TrackerCreationDelegate {
     
     func reloadCollectionView() {
-        visibleCategories = categories.categoriesStorage
+        visibleCategories = categories
         collectionView.reloadData()
         datePickerUpdated(datePicker)
+    }
+}
+
+//MARK: - DataProviderDelegate
+extension TrackersViewController: DataProviderDelegate {
+    func updateCategories(categories: [TrackerCategory]) {
+        self.categories = categories
+        collectionView.reloadData()
+    }
+    
+    func updateRecords(records: Set<TrackerRecord>) {
+        self.completedTrackers = records
     }
 }

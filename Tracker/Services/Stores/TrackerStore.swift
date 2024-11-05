@@ -66,8 +66,10 @@ extension TrackerStore: TrackerStoreProtocol {
         let trackerCoreData = TrackerCoreData(context: context)
         trackerCoreData.id = tracker.id
         trackerCoreData.name = tracker.name
+        trackerCoreData.emoji = tracker.emoji
         trackerCoreData.color = uiColorMarshalling.hexString(from: tracker.color)
         trackerCoreData.timeTable = tracker.timeTable as NSObject
+        print(trackerCoreData)
         return trackerCoreData
     }
     

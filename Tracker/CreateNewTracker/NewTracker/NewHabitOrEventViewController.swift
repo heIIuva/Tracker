@@ -319,25 +319,13 @@ final class NewHabitOrEventViewController: UIViewController {
     
     //TODO: - category sprint 16
     private func createNewTracker() {
-        
         let tracker = Tracker(id: UUID(),
                               name: self.trackerName,
                               color: self.selectedColor,
                               emoji: self.selectedEmoji,
                               timeTable: isHabit ? Array(self.timeTable) : [])
         
-        var categories = dataProvider?.getCategories() ?? []
-        
-        if let categoryIndex = categories.firstIndex(where: { $0.title.lowercased() == self.categoryName.lowercased() }) {
-            let categoryForTracker = categories[categoryIndex]
-            dataProvider?.addTrackerToCategory(tracker: tracker, category: categoryForTracker)
-            
-            print("new tracker added to an existing category \(categories)")
-        } else {
-            let newCategory = TrackerCategory(title: self.categoryName, trackers: [tracker])
-            dataProvider?.addCategory(category: newCategory)
-            print("new tracker added to a new category \(categories)")
-        }
+        dataProvider?.addTrackerToCategory(tracker: tracker, category: categoryName)
     }
     
     //MARK: - Obj-C methods

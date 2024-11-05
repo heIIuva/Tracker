@@ -9,7 +9,7 @@
 import UIKit
 
 
-@objc
+@objc(DaysValueTransformer)
 final class DaysValueTransformer: ValueTransformer {
     
     override class func transformedValueClass() -> AnyClass { NSData.self }

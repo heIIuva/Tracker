@@ -9,19 +9,11 @@ import UIKit
 import CoreData
 
 
-struct TrackerCategoryStoreUpdate {
-    let insertedIndexes: IndexSet
-    let deletedIndexes: IndexSet
-}
-
-
 protocol TrackerCategoryStoreProtocol: AnyObject {
     var delegate: TrackerCategoryStoreDelegate? { get set }
     var categories: [TrackerCategory] { get }
-    var numberOfSections: Int { get }
-    func numberOfItemsInSection(_ section: Int) -> Int
     func addCategoryToCoreData(_ category: TrackerCategory)
-    func addTrackerToCategory(_ tracker: Tracker, _ category: TrackerCategory)
+    func addTrackerToCategory(_ tracker: Tracker, _ category: String)
 }
 
 
@@ -105,23 +97,15 @@ final class TrackerCategoryStore: NSObject {
         )
     }
     
-    private func fetchCategoryCoreData(from category: TrackerCategory) -> TrackerCategoryCoreData? {
+    private func fetchCategoryCoreData(from category: String) -> TrackerCategoryCoreData? {
         let request = fetchedResultsController.fetchRequest
-        request.predicate = NSPredicate(format: "title == %@", category.title)
+        request.predicate = NSPredicate(format: "title == %@", category)
         return try? context.fetch(request).first
     }
 }
 
 //MARK: - TrackerCategoryStoreProtocol
 extension TrackerCategoryStore: TrackerCategoryStoreProtocol {
-    var numberOfSections: Int {
-        fetchedResultsController.sections?.count ?? 0
-    }
-    
-    func numberOfItemsInSection(_ section: Int) -> Int {
-        fetchedResultsController.sections?[section].numberOfObjects ?? 0
-    }
-    
     func addCategoryToCoreData(_ category: TrackerCategory) {
         let categoryCoreData = TrackerCategoryCoreData(context: context)
         categoryCoreData.title = category.title
@@ -129,29 +113,27 @@ extension TrackerCategoryStore: TrackerCategoryStoreProtocol {
         appDelegate.saveContext()
     }
     
-    func addTrackerToCategory(_ tracker: Tracker, _ category: TrackerCategory) {
+    func addTrackerToCategory(_ tracker: Tracker, _ category: String) {
         let trackerCoreData = trackerStore.fetchTrackerCoreData(from: tracker)
         guard
             let category = fetchCategoryCoreData(from: category),
             let trackers = category.trackersInCategory as? Set<TrackerCoreData>
         else {
             let newCategory = TrackerCategoryCoreData(context: context)
-            newCategory.title = category.title
+            newCategory.title = category
             newCategory.trackersInCategory = NSSet(array: [trackerCoreData])
-            return appDelegate.saveContext()
+            appDelegate.saveContext()
+            return
         }
         category.trackersInCategory = trackers.union([trackerCoreData]) as NSSet
         appDelegate.saveContext()
+        
+        print("called addTrackerToCategory method in TrackerCategoryStore")
     }
 }
 
 //MARK: - NSFetchedResultsControllerDelegate
 extension TrackerCategoryStore: NSFetchedResultsControllerDelegate {
-    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        insertedIndexes = IndexSet()
-        deletedIndexes = IndexSet()
-    }
-
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         delegate?.didUpdateCategory()
     }
