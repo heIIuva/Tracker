@@ -97,6 +97,7 @@ final class TrackersViewController: UIViewController {
     private var isSearch: Bool = false
     
     private var currentDate = Date()
+    private let calendar = Calendar.current
     
     //MARK: - Lifecycle methods
     
@@ -295,7 +296,7 @@ extension TrackersViewController: UICollectionViewDataSource {
         
         let isCompleted = completedTrackers.contains(where: {
             $0.id == visibleCategories[indexPath.section].trackers[indexPath.row].id &&
-            $0.date == currentDate})
+            calendar.numberOfDaysBetween($0.date, and: currentDate) == 0})
         let counter = completedTrackers.filter({$0.id == visibleCategories[indexPath.section].trackers[indexPath.row].id}).count
         
         cell.setupCell(trackers: visibleCategories[indexPath.section].trackers,
@@ -351,7 +352,7 @@ extension TrackersViewController: TrackerCreationDelegate {
 extension TrackersViewController: DataProviderDelegate {
     func updateCategories(categories: [TrackerCategory]) {
         self.categories = categories
-        collectionView.reloadData()
+        datePickerUpdated(datePicker)
     }
     
     func updateRecords(records: Set<TrackerRecord>) {
