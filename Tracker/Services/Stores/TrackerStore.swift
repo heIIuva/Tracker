@@ -37,7 +37,7 @@ final class TrackerStore: NSObject {
     
     //MARK: - Properties
     
-    private let uiColorMarshalling = UIColorMarshalling()
+    private let uiColorMarshalling = UIColorMarshalling.shared
     private let context: NSManagedObjectContext
 }
 
