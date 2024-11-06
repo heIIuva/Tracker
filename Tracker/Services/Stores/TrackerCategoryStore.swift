@@ -100,7 +100,12 @@ final class TrackerCategoryStore: NSObject {
     private func fetchCategoryCoreData(from category: String) -> TrackerCategoryCoreData? {
         let request = fetchedResultsController.fetchRequest
         request.predicate = NSPredicate(format: "title == %@", category)
-        return try? context.fetch(request).first
+        do {
+            return try context.fetch(request).first
+        } catch {
+            print("Error fetching TrackerCategoryCoreData: \(error)")
+            return nil
+        }
     }
 }
 

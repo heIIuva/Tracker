@@ -76,6 +76,11 @@ extension TrackerStore: TrackerStoreProtocol {
     func fetchTrackerFromCoreDataById(_ id: UUID) -> TrackerCoreData? {
         let request: NSFetchRequest<TrackerCoreData> = TrackerCoreData.fetchRequest()
         request.predicate = NSPredicate(format: "id == %@", id as CVarArg)
-        return try? context.fetch(request).first
+        do {
+            return try context.fetch(request).first
+        } catch {
+            print("Error fetching tracker by id: \(error)")
+            return nil
+        }
     }
 }
