@@ -43,7 +43,7 @@ final class TrackersViewController: UIViewController {
         let datePicker = UIDatePicker()
         datePicker.datePickerMode = .date
         datePicker.preferredDatePickerStyle = .compact
-        datePicker.locale = Locale(identifier: "Ru-ru")
+        datePicker.locale = Locale(identifier: "ru_Ru")
         datePicker.translatesAutoresizingMaskIntoConstraints = false
         datePicker.widthAnchor.constraint(equalToConstant: 110).isActive = true
         datePicker.addTarget(self, action: #selector(datePickerUpdated), for: .valueChanged)
@@ -111,12 +111,11 @@ final class TrackersViewController: UIViewController {
             categoryStore: TrackerCategoryStore(),
             recordStore: TrackerRecordStore()
         )
-        
         dataProvider.delegate = self
         self.dataProvider = dataProvider
         
-        categories = dataProvider.getCategories()
-        completedTrackers = dataProvider.getRecords()
+        self.categories = dataProvider.getCategories()
+        self.completedTrackers = dataProvider.getRecords()
         
         datePickerUpdated(datePicker)
     }
@@ -147,8 +146,8 @@ final class TrackersViewController: UIViewController {
     //MARK: - Obj-C Methods
     
     @objc private func datePickerUpdated(_ sender: UIDatePicker) {
-        currentDate = sender.date
-        let weekDay = Calendar.current.component(.weekday, from: currentDate)
+        currentDate = calendar.date(from: sender.date)
+        let weekDay = calendar.component(.weekday, from: currentDate)
         var visibleCategories: [TrackerCategory] = []
         categories.forEach { category in
             var trackers: [Tracker] = []
@@ -332,13 +331,12 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
         let record = TrackerRecord(id: id, date: currentDate)
         switch isCompleted {
         case true:
-            guard let days = Calendar.current.numberOfDaysBetween(currentDate), days >= 0 else { return }
+            guard let days = calendar.numberOfDaysBetween(currentDate), days >= 0 else { return }
             dataProvider?.addRecord(record: record)
         case false:
             dataProvider?.deleteRecord(record: record)
         }
         completion()
-        print(completedTrackers)
     }
 }
 
@@ -356,7 +354,7 @@ extension TrackersViewController: TrackerCreationDelegate {
 extension TrackersViewController: DataProviderDelegate {
     func updateCategories(categories: [TrackerCategory]) {
         self.categories = categories
-        datePickerUpdated(datePicker)
+        collectionView.reloadData()
     }
     
     func updateRecords(records: Set<TrackerRecord>) {

@@ -107,12 +107,14 @@ extension TrackerRecordStore: TrackerRecordStoreProtocol {
     
     func deleteRecord(_ record: TrackerRecord) {
         let request = TrackerRecordCoreData.fetchRequest()
-        request.predicate = NSPredicate(format: "id == %@ && date == %@",
-                                        record.id as CVarArg,
-                                        record.date as CVarArg)
+        request.predicate = NSPredicate(format: "date == %@ && id == %@",
+                                        record.date as CVarArg,
+                                        record.id as CVarArg)
         
         guard let coreData = try? context.fetch(request).first
-        else { return }
+        else {
+            return
+        }
         
         context.delete(coreData)
         appDelegate.saveContext()

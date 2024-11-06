@@ -61,8 +61,6 @@ extension DataProvider: DataProviderProtocol {
     
     func addTrackerToCategory(tracker: Tracker, category: String) {
         categoryStore?.addTrackerToCategory(tracker, category)
-        
-        print("called addTrackerToCategory method in DataProvider")
     }
     
     func getRecords() -> Set<TrackerRecord> {
