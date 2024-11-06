@@ -29,8 +29,8 @@ final class DataProvider {
     //MARK: - Init
     
     init(
-        categoryStore: TrackerCategoryStoreProtocol = TrackerCategoryStore(),
-        recordStore: TrackerRecordStoreProtocol = TrackerRecordStore()
+        categoryStore: TrackerCategoryStoreProtocol,
+        recordStore: TrackerRecordStoreProtocol
     ) {
         self.categoryStore = categoryStore
         self.recordStore = recordStore

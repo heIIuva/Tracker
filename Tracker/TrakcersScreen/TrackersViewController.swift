@@ -107,7 +107,11 @@ final class TrackersViewController: UIViewController {
         setupNavigationBar()
         configureCollectionView()
         
-        let dataProvider = DataProvider()
+        let dataProvider = DataProvider(
+            categoryStore: TrackerCategoryStore(),
+            recordStore: TrackerRecordStore()
+        )
+        
         dataProvider.delegate = self
         self.dataProvider = dataProvider
         
