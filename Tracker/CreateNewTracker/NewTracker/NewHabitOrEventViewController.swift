@@ -36,7 +36,6 @@ final class NewHabitOrEventViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
     //MARK: - UI properties
     
     private lazy var scrollView: UIScrollView = {

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B501CC5D2CE55A3F00D41692 /* OnboardingPageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B501CC5C2CE55A3600D41692 /* OnboardingPageVC.swift */; };
+		B501CC5F2CE55B0300D41692 /* OnboardingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B501CC5E2CE55AF800D41692 /* OnboardingVC.swift */; };
+		B501CC612CE5641E00D41692 /* UserDefaults+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B501CC602CE5641200D41692 /* UserDefaults+Extensions.swift */; };
 		B50A74DE2CCFD6FD001A23F3 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B50A74DC2CCFD6FD001A23F3 /* Model.xcdatamodeld */; };
 		B50ABA3B2CAD487000C251F0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B50ABA322CAD487000C251F0 /* Assets.xcassets */; };
 		B50ABA3D2CAD487000C251F0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B50ABA352CAD487000C251F0 /* LaunchScreen.storyboard */; };
@@ -44,6 +47,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B501CC5C2CE55A3600D41692 /* OnboardingPageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageVC.swift; sourceTree = "<group>"; };
+		B501CC5E2CE55AF800D41692 /* OnboardingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingVC.swift; sourceTree = "<group>"; };
+		B501CC602CE5641200D41692 /* UserDefaults+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Extensions.swift"; sourceTree = "<group>"; };
 		B50A74DD2CCFD6FD001A23F3 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		B50ABA192CAD486800C251F0 /* Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B50ABA312CAD487000C251F0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -103,6 +109,15 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
+		B501CC5B2CE55A2D00D41692 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				B501CC5C2CE55A3600D41692 /* OnboardingPageVC.swift */,
+				B501CC5E2CE55AF800D41692 /* OnboardingVC.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
 		B50A74D92CCFD6CB001A23F3 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
@@ -130,6 +145,7 @@
 		B50ABA3A2CAD487000C251F0 /* Tracker */ = {
 			isa = PBXGroup;
 			children = (
+				B501CC5B2CE55A2D00D41692 /* Onboarding */,
 				B500C9E82CC0274500163087 /* Services */,
 				B50ABA422CAD63A000C251F0 /* TabBar */,
 				B50ABA452CAD641500C251F0 /* TrakcersScreen */,
@@ -199,6 +215,7 @@
 		B587A06C2CB015EE00DD98FD /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				B501CC602CE5641200D41692 /* UserDefaults+Extensions.swift */,
 				B5D111BA2CD81E6E00AEF71C /* DaysValueTransformer.swift */,
 				B5D111B72CD81DD300AEF71C /* UIColorMarshalling.swift */,
 				B5AF9F202CBD586800A263D8 /* Placeholder.swift */,
@@ -327,6 +344,7 @@
 				B5AF9F1F2CBD581100A263D8 /* CategoryViewController.swift in Sources */,
 				B5A635482CC7A49800BC64D9 /* ColorCollectionViewCell.swift in Sources */,
 				B514AE3C2CB41A9700490BEA /* TrackerCategory.swift in Sources */,
+				B501CC5F2CE55B0300D41692 /* OnboardingVC.swift in Sources */,
 				B5D111B82CD81DDB00AEF71C /* UIColorMarshalling.swift in Sources */,
 				B50A74DE2CCFD6FD001A23F3 /* Model.xcdatamodeld in Sources */,
 				B587A06E2CB0160A00DD98FD /* DateFormatter+Extensions.swift in Sources */,
@@ -337,7 +355,9 @@
 				B514AE3E2CB41AC000490BEA /* TrackerRecord.swift in Sources */,
 				B5D111BD2CD81EFD00AEF71C /* TrackerStore.swift in Sources */,
 				B50ABA4A2CAD647700C251F0 /* StatisticsViewController.swift in Sources */,
+				B501CC612CE5641E00D41692 /* UserDefaults+Extensions.swift in Sources */,
 				B5A6354A2CC7A4A600BC64D9 /* EmojiCollectionViewCell.swift in Sources */,
+				B501CC5D2CE55A3F00D41692 /* OnboardingPageVC.swift in Sources */,
 				B5AE80BD2CBB166D00C19A5C /* TrackerCollectionViewHeader.swift in Sources */,
 				B5642A9F2CB6EACF00B1942B /* UITextField+Extensions.swift in Sources */,
 				B50ABA402CAD487000C251F0 /* SceneDelegate.swift in Sources */,
