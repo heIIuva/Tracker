@@ -408,7 +408,7 @@ extension NewHabitOrEventViewController: UITableViewDelegate {
     }
 }
 
-//MARK: - Text Field Delegate
+//MARK: - UITextFieldDelegate
 
 extension NewHabitOrEventViewController: UITextFieldDelegate {
     
