@@ -219,7 +219,7 @@ final class NewHabitOrEventViewController: UIViewController {
     private var selectedEmoji: String = ""
     
     //TODO: - add category selection
-    private var categoryName: String = "Важное"
+    private var categoryName: String = ""
     
     private var isHabit: Bool
     
@@ -467,6 +467,7 @@ extension NewHabitOrEventViewController: CategoryViewModelDelegate {
         self.categoryName = category
         tableView.reloadData()
         checkIfAllFieldsAreFilled()
+        print("called category  method from delegate")
     }
 }
 

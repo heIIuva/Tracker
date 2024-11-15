@@ -60,9 +60,6 @@ final class TrackerCategoryStore: NSObject {
     
     weak var delegate: TrackerCategoryStoreDelegate?
     
-    private var insertedIndexes: IndexSet?
-    private var deletedIndexes: IndexSet?
-    
     private let trackerStore = TrackerStore.shared
     private let context: NSManagedObjectContext
     private let appDelegate: AppDelegate

@@ -44,9 +44,11 @@ final class CategoryViewController: UIViewController {
                                     style: .plain)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.separatorStyle = .singleLine
+        tableView.allowsMultipleSelection = false
         tableView.separatorInset = .init(top: 0, left: 16, bottom: 1, right: 16)
         tableView.layer.cornerRadius = 16
         tableView.isScrollEnabled = true
+        tableView.showsVerticalScrollIndicator = false
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(UITableViewCell.self,
@@ -56,13 +58,33 @@ final class CategoryViewController: UIViewController {
     
     private lazy var doneButton: UIButton = {
         let button = UIButton()
-        
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.layer.cornerRadius = 16
+        button.backgroundColor = .black
+        button.titleLabel?.textColor = .white
+        button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
+        button.setTitle("Готово", for: .normal)
+        button.addTarget(
+            self,
+            action: #selector(didTapDoneButton),
+            for: .touchUpInside
+        )
         return button
     }()
     
     private lazy var addCategoryButton: UIButton = {
         let button = UIButton()
-        
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.layer.cornerRadius = 16
+        button.backgroundColor = .black
+        button.titleLabel?.textColor = .white
+        button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
+        button.setTitle("Добавить категорию", for: .normal)
+        button.addTarget(
+            self,
+            action: #selector(didTapAddCategoryButton),
+            for: .touchUpInside
+        )
         return button
     }()
     
@@ -86,38 +108,104 @@ final class CategoryViewController: UIViewController {
     //MARK: - Methods
     
     private func setupUI() {
-        title = "Расписание"
         view.backgroundColor = .white
-        view.addSubviews(tableView, doneButton)
+        
+        view.addSubviews(textField, tableView, addCategoryButton, doneButton)
         
         NSLayoutConstraint.activate([
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
-                                           constant: 16),
-            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
-                                              constant: 541),
+                                           constant: 24),
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+                                              constant: -115),
+            tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor,
+                                               constant: 16),
+            tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor,
+                                                constant: -16),
             
-            doneButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            doneButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            textField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
+                                           constant: 24),
+            textField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor,
+                                               constant: 16),
+            textField.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor,
+                                                constant: -16),
+            textField.heightAnchor.constraint(equalToConstant: 75),
+            
             doneButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
                                                constant: -16),
-            doneButton.heightAnchor.constraint(equalToConstant: 60)
+            doneButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor,
+                                                constant: 20),
+            doneButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor,
+                                                 constant: -20),
+            doneButton.heightAnchor.constraint(equalToConstant: 60),
+            
+            addCategoryButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+                                               constant: -16),
+            addCategoryButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            addCategoryButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+            addCategoryButton.heightAnchor.constraint(equalToConstant: 60),
         ])
     }
     
     private func bind() {
-        viewModel.onCategoriesTableChange = { [weak self] isChanged in
-            
-        }
-        
         viewModel.onDoneButtonStateChange = { [weak self] isChanged in
-            
+            guard let self else { return }
+            self.switchDoneButtonState(isChanged)
         }
         
-        viewModel.presentingAlert = { [weak self] isPresenting in
-            
+        viewModel.onCategoriesUpdate = { [weak self] in
+            guard let self else { return }
+            self.updateTableView()
         }
+    }
+    
+    private func OnboardingState() {
+        title = "Категория"
+        placeholder.showPlaceholder(
+            image: .dizzy,
+            text: "Привычки и события можно объединить по смыслу",
+            view: self.view
+        )
+        doneButton.isHidden = true
+        tableView.isHidden = true
+        textField.isHidden = true
+        addCategoryButton.isHidden = false
+    }
+    
+    private func selectCategoryState() {
+        title = "Категория"
+        addCategoryButton.isHidden = false
+        doneButton.isHidden = true
+        tableView.isHidden = false
+        textField.isHidden = true
+    }
+    
+    private func addCategoryState() {
+        title = "Новая категория"
+        addCategoryButton.isHidden = true
+        doneButton.isHidden = false
+        tableView.isHidden = true
+        textField.isHidden = false
+    }
+    
+    private func switchDoneButtonState(_ isChanged: Bool) {
+        doneButton.isEnabled = isChanged
+        doneButton.backgroundColor = isChanged ? .black : .ypGray
+    }
+    
+    private func updateTableView() {
+        categories = viewModel.categories()
+        tableView.reloadData()
+    }
+    
+    //MARK: - Obj-C Methods
+    
+    @objc func didTapAddCategoryButton() {
+        addCategoryState()
+    }
+    
+    @objc func didTapDoneButton() {
+        selectCategoryState()
+        viewModel.doneButtonTapped()
     }
 }
 
@@ -128,20 +216,29 @@ extension CategoryViewController: UITableViewDataSource {
         _ tableView: UITableView,
         numberOfRowsInSection section: Int
     ) -> Int {
-        guard let categories, !categories.isEmpty else {
-                placeholder.showPlaceholder(image: .dizzy,
-                                             text: "Привычки и события можно объединить по смыслу",
-                                             view: self.view)
+        guard
+            let categories,
+            !categories.isEmpty
+        else {
+            OnboardingState()
             return 0
         }
-        
         placeholder.removePlaceholder()
+        selectCategoryState()
         return categories.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(
+        _ tableView: UITableView,
+        cellForRowAt indexPath: IndexPath
+    ) -> UITableViewCell {
+        
+        guard let categories else { return UITableViewCell() }
+        
         let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
         cell.backgroundColor = .ypGray.withAlphaComponent(0.3)
+        cell.textLabel?.text = categories[indexPath.row].title
+        cell.selectionStyle = .none
         
         if viewModel.isSelected(indexPath: indexPath) {
             cell.accessoryType = .checkmark
@@ -149,12 +246,17 @@ extension CategoryViewController: UITableViewDataSource {
             cell.accessoryType = .none
         }
         
-        if indexPath.row == 0 {
+        if indexPath.row == categories.count - 1 {
             cell.separatorInset = .init(top: 0,
                                         left: 0,
                                         bottom: 0,
                                         right: .greatestFiniteMagnitude)
+            cell.layer.cornerRadius = 16
+            cell.layer.maskedCorners = [.layerMaxXMaxYCorner,
+                                        .layerMinXMaxYCorner]
         }
+        
+        tableView.reloadRows(at: [indexPath], with: .automatic)
         
         return cell
     }
@@ -174,7 +276,10 @@ extension CategoryViewController: UITableViewDelegate {
         didSelectRowAt indexPath: IndexPath
     ) {
         viewModel.seletectedCategory(indexPath: indexPath)
+        tableView.reloadData()
     }
+    
+    //TODO: - UIContextMenuConfiguration
 }
 
 //MARK: - UITextFieldDelegate
@@ -190,7 +295,10 @@ extension CategoryViewController: UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        guard let text = textField.text else { return }
+        guard
+            let text = textField.text,
+            !viewModel.сategoryAlreadyExists(category: text)
+        else { return }
         
         viewModel.setCategory(
             category: TrackerCategory(

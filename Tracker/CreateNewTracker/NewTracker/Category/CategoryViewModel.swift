@@ -9,18 +9,16 @@ import Foundation
 
 
 protocol CategoryViewModelProtocol: AnyObject {
-    var onCategoriesTableChange: ((TrackerCategory) -> Void)? { get set }
     var onDoneButtonStateChange: ((Bool) -> Void)? { get set }
-    var presentingAlert: ((Bool) -> Void)? { get set }
+    var onCategoriesUpdate: (() -> Void)? { get set }
     func categories() -> [TrackerCategory]
     func setCategory(category: TrackerCategory)
-    func tryToAddCategory()
     func deleteCategory(category: TrackerCategory)
-    func setupAlertViewModel(viewModel: AlertModel)
-    func showAlert()
+    func showAlert(viewModel: AlertModel)
     func seletectedCategory(indexPath: IndexPath)
     func isSelected(indexPath: IndexPath) -> Bool
     func doneButtonTapped()
+    func сategoryAlreadyExists(category: String) -> Bool
 }
 
 
@@ -42,9 +40,8 @@ final class CategoryViewModel: CategoryViewModelProtocol {
     
     weak var delegate: CategoryViewModelDelegate?
     
-    var onCategoriesTableChange: ((TrackerCategory) -> Void)?
     var onDoneButtonStateChange: ((Bool) -> Void)?
-    var presentingAlert: ((Bool) -> Void)?
+    var onCategoriesUpdate: (() -> Void)?
     
     private var alertPresenter: AlertPresenterProtocol?
     private var dataProvider: DataProviderProtocol?
@@ -55,7 +52,6 @@ final class CategoryViewModel: CategoryViewModelProtocol {
     //MARK: - Methods
     
     func categories() -> [TrackerCategory] {
-        print("called categories method from viewmodel")
         return dataProvider?.getCategories() ?? []
     }
     
@@ -63,27 +59,12 @@ final class CategoryViewModel: CategoryViewModelProtocol {
         self.newCategory = category
     }
     
-    func tryToAddCategory() {
-        guard
-            let newCategory,
-            сategoryAlreadyExists(category: newCategory) == false
-        else {
-            showAlert()
-            return
-        }
-        
-        dataProvider?.addCategory(category: newCategory)
-    }
-    
     func deleteCategory(category: TrackerCategory) {
         dataProvider?.deleteCategory(category: category)
     }
     
-    func setupAlertViewModel(viewModel: AlertModel) {
-        self.alertViewModel = viewModel
-    }
-    
-    func showAlert() {
+    //MARK: - for UIContextMenuConfiguration
+    func showAlert(viewModel: AlertModel) {
         guard let alertViewModel else { return }
         alertPresenter?.showAlert(result: alertViewModel)
     }
@@ -91,6 +72,7 @@ final class CategoryViewModel: CategoryViewModelProtocol {
     func seletectedCategory(indexPath: IndexPath) {
         let category = categories()[indexPath.row]
         self.selectedCategory = category.title
+        delegate?.category(category.title)
     }
     
     func isSelected(indexPath: IndexPath) -> Bool {
@@ -98,10 +80,25 @@ final class CategoryViewModel: CategoryViewModelProtocol {
     }
     
     func doneButtonTapped() {
-        delegate?.category(selectedCategory ?? "")
+        guard let newCategory else { return }
+        delegate?.category(newCategory.title)
+        addCategory()
+        onCategoriesUpdate?()
     }
     
-    private func сategoryAlreadyExists(category: TrackerCategory) -> Bool {
-        categories().contains(where: { $0.title == category.title })
+    func сategoryAlreadyExists(category: String) -> Bool {
+        guard
+            !categories().contains(where: { $0.title == category })
+        else {
+            onDoneButtonStateChange?(false)
+            return true
+        }
+        onDoneButtonStateChange?(true)
+        return false
+    }
+    
+    private func addCategory() {
+        guard let newCategory else { return }
+        dataProvider?.addCategory(category: newCategory)
     }
 }
