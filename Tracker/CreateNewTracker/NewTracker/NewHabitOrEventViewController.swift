@@ -12,8 +12,9 @@ protocol TimeTableViewControllerDelegate: AnyObject {
     func timeTable(_ timeTable: Set<Weekday>)
 }
 
-
-protocol CategoryTableViewControllerDelegate: AnyObject { }
+protocol CategoryViewModelDelegate: AnyObject {
+    func category(_ category: String)
+}
 
 
 final class NewHabitOrEventViewController: UIViewController {
@@ -187,6 +188,8 @@ final class NewHabitOrEventViewController: UIViewController {
     weak var delegate: NewTrackerVCDelegate?
     
     private var dataProvider: DataProviderProtocol?
+    
+    private var viewModel: CategoryViewModelProtocol?
 
     private let collectionHeaderIdentifier = TrackerCollectionViewHeader.reuseIdentifier
     private let colorCollectionIdentifier = ColorCollectionViewCell.reuseIdentifier
@@ -225,6 +228,16 @@ final class NewHabitOrEventViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        
+        guard let dataProvider else { return }
+        
+        let viewModel = CategoryViewModel(
+            alertPresenter: AlertPresenter(),
+            dataProvider: dataProvider,
+            selectedCategory: self.categoryName
+        )
+        viewModel.delegate = self
+        self.viewModel = viewModel
     }
     
     //MARK: - UI methods
@@ -361,8 +374,8 @@ extension NewHabitOrEventViewController: UITableViewDataSource {
         
         switch indexPath.row {
         case 0:
-            //TODO: - Category VC
             cell.textLabel?.text = tableCellTitle[0]
+            cell.detailTextLabel?.text = categoryName
         case 1:
             cell.textLabel?.text = tableCellTitle[1]
             cell.detailTextLabel?.text = timeTable.count == 7 ? "Каждый день" : timeTable.map { $0.shortened }.joined(separator: ", ")
@@ -398,10 +411,13 @@ extension NewHabitOrEventViewController: UITableViewDelegate {
         switch indexPath.row {
         case 0:
             //TODO: - Category View Controller sprint 15
-            break
+            guard let viewModel else { return }
+            
+            let categoryNC = UINavigationController(rootViewController: CategoryViewController(viewModel: viewModel))
+            self.present(categoryNC, animated: true)
         case 1:
-            let timeTableVC = UINavigationController(rootViewController: TimeTableViewController(delegate: self, timeTable: self.timeTable))
-            self.present(timeTableVC, animated: true)
+            let timeTableNC = UINavigationController(rootViewController: TimeTableViewController(delegate: self, timeTable: self.timeTable))
+            self.present(timeTableNC, animated: true)
         default:
             break
         }
@@ -439,6 +455,16 @@ extension NewHabitOrEventViewController: UITextFieldDelegate {
 extension NewHabitOrEventViewController: TimeTableViewControllerDelegate {
     func timeTable(_ timeTable: Set<Weekday>) {
         self.timeTable = timeTable
+        tableView.reloadData()
+        checkIfAllFieldsAreFilled()
+    }
+}
+
+//MARK: - CategoryViewModelDelegate
+
+extension NewHabitOrEventViewController: CategoryViewModelDelegate {
+    func category(_ category: String) {
+        self.categoryName = category
         tableView.reloadData()
         checkIfAllFieldsAreFilled()
     }

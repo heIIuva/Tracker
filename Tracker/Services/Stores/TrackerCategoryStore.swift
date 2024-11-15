@@ -14,6 +14,7 @@ protocol TrackerCategoryStoreProtocol: AnyObject {
     var categories: [TrackerCategory] { get }
     func addCategoryToCoreData(_ category: TrackerCategory)
     func addTrackerToCategory(_ tracker: Tracker, _ category: String)
+    func deleteCategoryFromCoreData(_ category: TrackerCategory)
 }
 
 
@@ -138,6 +139,20 @@ extension TrackerCategoryStore: TrackerCategoryStoreProtocol {
         appDelegate.saveContext()
         
         print("called addTrackerToCategory method in TrackerCategoryStore")
+    }
+    
+    func deleteCategoryFromCoreData(_ category: TrackerCategory) {
+        let request = TrackerCategoryCoreData.fetchRequest()
+        request.predicate = NSPredicate(format: "title == %@",
+                                        category.title as CVarArg)
+
+        guard let coreData = try? context.fetch(request).first
+        else {
+            return
+        }
+        
+        context.delete(coreData)
+        appDelegate.saveContext()
     }
 }
 
