@@ -18,7 +18,6 @@ protocol CategoryViewModelProtocol: AnyObject {
     func seletectedCategory(indexPath: IndexPath)
     func isSelected(indexPath: IndexPath) -> Bool
     func doneButtonTapped()
-//    func сategoryAlreadyExists(category: String) -> Bool
 }
 
 
