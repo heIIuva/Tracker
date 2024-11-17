@@ -86,7 +86,6 @@ final class CategoryViewModel: CategoryViewModelProtocol {
     }
     
     func doneButtonTapped() {
-        guard let newCategory else { return }
         tryToAddCategory()
         onCategoriesUpdate?()
         onDoneButtonStateChange?(false)
