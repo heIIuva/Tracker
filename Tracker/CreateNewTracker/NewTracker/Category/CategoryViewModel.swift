@@ -18,7 +18,7 @@ protocol CategoryViewModelProtocol: AnyObject {
     func seletectedCategory(indexPath: IndexPath)
     func isSelected(indexPath: IndexPath) -> Bool
     func doneButtonTapped()
-    func сategoryAlreadyExists(category: String) -> Bool
+//    func сategoryAlreadyExists(category: String) -> Bool
 }
 
 
@@ -56,6 +56,12 @@ final class CategoryViewModel: CategoryViewModelProtocol {
     }
     
     func setCategory(category: TrackerCategory) {
+        guard
+            !сategoryAlreadyExists(category: category.title)
+        else {
+            return
+        }
+        
         self.newCategory = category
     }
     
@@ -81,12 +87,12 @@ final class CategoryViewModel: CategoryViewModelProtocol {
     
     func doneButtonTapped() {
         guard let newCategory else { return }
-        delegate?.category(newCategory.title)
-        addCategory()
+        tryToAddCategory()
         onCategoriesUpdate?()
+        onDoneButtonStateChange?(false)
     }
     
-    func сategoryAlreadyExists(category: String) -> Bool {
+    private func сategoryAlreadyExists(category: String) -> Bool {
         guard
             !categories().contains(where: { $0.title == category })
         else {
@@ -97,8 +103,11 @@ final class CategoryViewModel: CategoryViewModelProtocol {
         return false
     }
     
-    private func addCategory() {
-        guard let newCategory else { return }
+    private func tryToAddCategory() {
+        guard
+            let newCategory,
+            сategoryAlreadyExists(category: newCategory.title) == false
+        else { return }
         dataProvider?.addCategory(category: newCategory)
     }
 }

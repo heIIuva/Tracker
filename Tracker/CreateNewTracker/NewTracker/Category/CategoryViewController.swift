@@ -34,7 +34,7 @@ final class CategoryViewController: UIViewController {
         textField.layer.cornerRadius = 16
         textField.font = .systemFont(ofSize: 17, weight: .regular)
         textField.textColor = .black
-        textField.placeholder = "Введите название трекера"
+        textField.placeholder = "Введите название категории"
         textField.delegate = self
         return textField
     }()
@@ -103,6 +103,7 @@ final class CategoryViewController: UIViewController {
         self.categories = viewModel.categories()
         setupUI()
         bind()
+        switchDoneButtonState(false)
     }
     
     //MARK: - Methods
@@ -177,6 +178,7 @@ final class CategoryViewController: UIViewController {
         doneButton.isHidden = true
         tableView.isHidden = false
         textField.isHidden = true
+        placeholder.removePlaceholder()
     }
     
     private func addCategoryState() {
@@ -185,6 +187,7 @@ final class CategoryViewController: UIViewController {
         doneButton.isHidden = false
         tableView.isHidden = true
         textField.isHidden = false
+        placeholder.removePlaceholder()
     }
     
     private func switchDoneButtonState(_ isChanged: Bool) {
@@ -199,13 +202,14 @@ final class CategoryViewController: UIViewController {
     
     //MARK: - Obj-C Methods
     
-    @objc func didTapAddCategoryButton() {
+    @objc private func didTapAddCategoryButton() {
         addCategoryState()
     }
     
-    @objc func didTapDoneButton() {
+    @objc private func didTapDoneButton() {
         selectCategoryState()
         viewModel.doneButtonTapped()
+        textField.text = nil
     }
 }
 
@@ -223,7 +227,6 @@ extension CategoryViewController: UITableViewDataSource {
             OnboardingState()
             return 0
         }
-        placeholder.removePlaceholder()
         selectCategoryState()
         return categories.count
     }
@@ -277,6 +280,7 @@ extension CategoryViewController: UITableViewDelegate {
     ) {
         viewModel.seletectedCategory(indexPath: indexPath)
         tableView.reloadData()
+        self.dismiss(animated: true)
     }
     
     //TODO: - UIContextMenuConfiguration
@@ -296,8 +300,7 @@ extension CategoryViewController: UITextFieldDelegate {
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         guard
-            let text = textField.text,
-            !viewModel.сategoryAlreadyExists(category: text)
+            let text = textField.text
         else { return }
         
         viewModel.setCategory(

@@ -467,7 +467,6 @@ extension NewHabitOrEventViewController: CategoryViewModelDelegate {
         self.categoryName = category
         tableView.reloadData()
         checkIfAllFieldsAreFilled()
-        print("called category  method from delegate")
     }
 }
 
