@@ -126,7 +126,10 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     
     private func updateTrackerCounterLabel(isCompleted: Bool) {
         counter = isCompleted ? counter + 1 : counter - 1
-        trackerCounterLabel.text = counter.string()
+        trackerCounterLabel.text = .localizedStringWithFormat(
+            NSLocalizedString("numberOfDays", comment: "counter"),
+            counter
+        )
     }
     
     private func updateCompleteTrackerButton(isCompleted: Bool) {
@@ -145,7 +148,10 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         self.bodyView.backgroundColor = trackers[indexPath.row].color
         self.emojiLabel.text = trackers[indexPath.row].emoji
         self.trackerLabel.text = trackers[indexPath.row].name
-        self.trackerCounterLabel.text = counter.string()
+        self.trackerCounterLabel.text = .localizedStringWithFormat(
+            NSLocalizedString("numberOfDays", comment: "counter"),
+            counter
+        )
         self.completeTrackerButton.backgroundColor = trackers[indexPath.row].color
         self.id = trackers[indexPath.row].id
         

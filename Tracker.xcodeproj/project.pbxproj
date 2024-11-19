@@ -25,7 +25,6 @@
 		B514AE422CB566CF00490BEA /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B514AE412CB566C600490BEA /* UIView+Extensions.swift */; };
 		B52ADB1C2CED375200C6AC77 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B52ADB1A2CED375200C6AC77 /* Localizable.strings */; };
 		B52ADB202CED379500C6AC77 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = B52ADB1E2CED379500C6AC77 /* Localizable.stringsdict */; };
-		B53F2CF62CC4687D0039F466 /* Int+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53F2CF52CC468710039F466 /* Int+Extensions.swift */; };
 		B53F2CF82CC483E60039F466 /* Calendar+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53F2CF72CC483DD0039F466 /* Calendar+Extensions.swift */; };
 		B5642A9B2CB6C67800B1942B /* NewHabitOrEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5642A9A2CB6C66800B1942B /* NewHabitOrEventViewController.swift */; };
 		B5642A9F2CB6EACF00B1942B /* UITextField+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5642A9E2CB6EAC200B1942B /* UITextField+Extensions.swift */; };
@@ -74,7 +73,6 @@
 		B52ADB1D2CED375E00C6AC77 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B52ADB1F2CED379500C6AC77 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		B52ADB212CED37A600C6AC77 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = ru; path = ru.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
-		B53F2CF52CC468710039F466 /* Int+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Extensions.swift"; sourceTree = "<group>"; };
 		B53F2CF72CC483DD0039F466 /* Calendar+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar+Extensions.swift"; sourceTree = "<group>"; };
 		B5642A9A2CB6C66800B1942B /* NewHabitOrEventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewHabitOrEventViewController.swift; sourceTree = "<group>"; };
 		B5642A9E2CB6EAC200B1942B /* UITextField+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extensions.swift"; sourceTree = "<group>"; };
@@ -243,7 +241,6 @@
 				B5D111BA2CD81E6E00AEF71C /* DaysValueTransformer.swift */,
 				B5D111B72CD81DD300AEF71C /* UIColorMarshalling.swift */,
 				B5AF9F202CBD586800A263D8 /* Placeholder.swift */,
-				B53F2CF52CC468710039F466 /* Int+Extensions.swift */,
 				B5642A9E2CB6EAC200B1942B /* UITextField+Extensions.swift */,
 				B514AE412CB566C600490BEA /* UIView+Extensions.swift */,
 				B587A06D2CB015FB00DD98FD /* DateFormatter+Extensions.swift */,
@@ -377,7 +374,6 @@
 				B5D111B82CD81DDB00AEF71C /* UIColorMarshalling.swift in Sources */,
 				B50A74DE2CCFD6FD001A23F3 /* Model.xcdatamodeld in Sources */,
 				B587A06E2CB0160A00DD98FD /* DateFormatter+Extensions.swift in Sources */,
-				B53F2CF62CC4687D0039F466 /* Int+Extensions.swift in Sources */,
 				B5D111C12CD81F1300AEF71C /* TrackerRecordStore.swift in Sources */,
 				B50ABA442CAD63B800C251F0 /* TabBarController.swift in Sources */,
 				B5AF9F282CBDC45D00A263D8 /* Weekday.swift in Sources */,
