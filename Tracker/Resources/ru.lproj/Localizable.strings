@@ -1,0 +1,43 @@
+/* 
+  Localizable.strings
+  Tracker
+
+  Created by big stepper on 20/11/2024.
+  
+*/
+
+
+//Onboarding
+"bluescreen" = "Отслеживайте только то, что хотите";
+"redscreen" = "Даже если это не литры воды и йога";
+"onboardingtitle" = "Вот это технологии!";
+
+//Main flow
+"tracker" = "Трекеры";
+"stats" = "Статистика";
+"searchbarplaceholder" = "Поиск";
+
+//Context menu
+"pin" = "Закрепить";
+"unpin" = "Открепить";
+"edit" = "Редактировать";
+"delete" = "Удалить";
+
+//Action Sheet
+"actionsheettitle" = "Уверены что хотите удалить трекер?";
+"delete" = "Удалить";
+"cancel" = "Отменить";
+
+//Filters
+"filtertitle" = "Фильтры";
+"alltrackers" = "Все трекеры";
+"todaytrackers" = "Трекеры на сегодня";
+"completetrackers" = "Завершенные";
+"incompletetrackers" = "Не завершенные";
+
+//Placeholder
+"trackerplaceholder" = "Что будем отслеживать?";
+"emptysearchresults" = "Ничего не найдено";
+"statisticsplaceholder" = "Анализировать пока нечего";
+"categoryplaceholder" = "Привычки и события можно объединить по смыслу";
+

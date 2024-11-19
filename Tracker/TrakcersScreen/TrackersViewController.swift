@@ -43,7 +43,7 @@ final class TrackersViewController: UIViewController {
         let datePicker = UIDatePicker()
         datePicker.datePickerMode = .date
         datePicker.preferredDatePickerStyle = .compact
-        datePicker.locale = Locale(identifier: "ru_Ru")
+        datePicker.locale = .current
         datePicker.translatesAutoresizingMaskIntoConstraints = false
         datePicker.widthAnchor.constraint(equalToConstant: 110).isActive = true
         datePicker.addTarget(self, action: #selector(datePickerUpdated), for: .valueChanged)

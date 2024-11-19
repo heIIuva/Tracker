@@ -1,0 +1,42 @@
+/* 
+  Localizable.strings
+  Tracker
+
+  Created by big stepper on 20/11/2024.
+  
+*/
+
+//Onboarding
+"bluescreen" = "Track only what you want";
+"redscreen" = "Even if it's not liters of water and yoga";
+"onboardingtitle" = "That's technology!";
+
+//Main flow
+"tracker" = "Trackers";
+"stats" = "Statistics";
+"searchbarplaceholder" = "Search";
+
+//Context menu
+"pin" = "Pin";
+"unpin" = "Unpin";
+"edit" = "Edit";
+"delete" = "Delete";
+
+//Action Sheet
+"actionsheettitle" = "Are you sure you want to delete this tracker?";
+"delete" = "Delete";
+"cancel" = "Cancel";
+
+//Filters
+"filtertitle" = "Filters";
+"alltrackers" = "All trackers";
+"todaytrackers" = "Trackers for today";
+"completetrackers" = "Completed";
+"incompletetrackers" = "Incompleted";
+
+//Placeholder
+"trackerplaceholder" = "What are we going to track?";
+"emptysearchresults" = "Nothing was found";
+"statisticsplaceholder" = "There is nothing to analyze yet";
+"categoryplaceholder" = "Habits and events can be grouped by category";
+
