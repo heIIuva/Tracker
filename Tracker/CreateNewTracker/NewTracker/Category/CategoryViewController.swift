@@ -169,7 +169,7 @@ final class CategoryViewController: UIViewController {
         title = NSLocalizedString("category", comment: "")
         placeholder.showPlaceholder(
             image: .dizzy,
-            text: "Привычки и события можно объединить по смыслу",
+            text: NSLocalizedString("categoryplaceholder", comment: ""),
             view: self.view
         )
         doneButton.isHidden = true
