@@ -41,3 +41,43 @@
 "statisticsplaceholder" = "Анализировать пока нечего";
 "categoryplaceholder" = "Привычки и события можно объединить по смыслу";
 
+//Create new tracker VC
+"creation" = "Создание трекера";
+"habit" = "Привычка";
+"event" = "Нерегулярное событие";
+
+//Habit or event VC
+"newhabit" = "Новая привычка";
+"newevent" = "Новое нерегулярное событие";
+"textfieldplaceholder" = "Введите название трекера";
+"category" = "Категория";
+"timetable" = "Расписание";
+"emoji" = "Emoji";
+"color" = "Цвет";
+"cancel" = "Отменить";
+"create" = "Создать";
+"categorytextfieldplaceholder" = "Введите название категории";
+"done" = "Готово";
+"addcategory" = "Добавить категорию";
+"newcategory" = "Новая категория";
+"selectcategory" = "Категория";
+"limit" = "Ограничение 38 символов";
+
+//Weekdays
+"everyday" = "Каждый день";
+
+"monday" = "Понедельник";
+"tuesday" = "Вторник";
+"wednesday" = "Среда";
+"thursday" = "Четверг";
+"friday" = "Пятница";
+"saturday" = "Суббота";
+"sunday" = "Воскресенье";
+
+"mon" = "Пн";
+"tue" = "Вт";
+"wed" = "Ср";
+"thu" = "Чт";
+"fri" = "Пт";
+"sat" = "Сб";
+"sun" = "Вс";

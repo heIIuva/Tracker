@@ -40,3 +40,43 @@
 "statisticsplaceholder" = "There is nothing to analyze yet";
 "categoryplaceholder" = "Habits and events can be grouped by category";
 
+//Create new tracker VC
+"creation" = "New tracker";
+"habit" = "Habit";
+"event" = "Event";
+
+//Habit or event VC
+"newhabit" = "New habit";
+"newevent" = "New event";
+"textfieldplaceholder" = "Enter the tracker name";
+"category" = "Category";
+"timetable" = "Timetable";
+"emoji" = "Emoji";
+"color" = "Color";
+"cancel" = "Cancel";
+"create" = "Create";
+"categorytextfieldplaceholder" = "Enter category name";
+"done" = "Done";
+"addcategory" = "Add new category";
+"newcategory" = "New category";
+"selectcategory" = "Select category";
+"limit" = "38 characters limit";
+
+//Weekdays
+"everyday" = "Every day";
+
+"monday" = "Monday";
+"tuesday" = "Tuesday";
+"wednesday" = "Wednesday";
+"thursday" = "Thursday";
+"friday" = "Friday";
+"saturday" = "Saturday";
+"sunday" = "Sunday";
+
+"mon" = "Mon";
+"tue" = "Tue";
+"wed" = "Wed";
+"thu" = "Thu";
+"fri" = "Fri";
+"sat" = "Sat";
+"sun" = "Sun";

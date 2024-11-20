@@ -29,7 +29,12 @@ final class NewHabitOrEventViewController: UIViewController {
     ) {
         self.dataProvider = dataProvider
         self.isHabit = isHabit
-        self.tableCellTitle = isHabit ? ["Категория", "Расписание"] : ["Категория"]
+        self.tableCellTitle = isHabit ? [
+            NSLocalizedString("category", comment: ""),
+            NSLocalizedString("timetable", comment: "")
+        ] : [
+            NSLocalizedString("category", comment: "")
+        ]
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
@@ -57,7 +62,7 @@ final class NewHabitOrEventViewController: UIViewController {
         textField.layer.cornerRadius = 16
         textField.font = .systemFont(ofSize: 17, weight: .regular)
         textField.textColor = .black
-        textField.placeholder = "Введите название трекера"
+        textField.placeholder = NSLocalizedString("textfieldplaceholder", comment: "")
         textField.delegate = self
         return textField
     }()
@@ -68,7 +73,7 @@ final class NewHabitOrEventViewController: UIViewController {
         label.textAlignment = .center
         label.font = .systemFont(ofSize: 17, weight: .regular)
         label.textColor = .ypRed
-        label.text = "Ограничение 38 символов"
+        label.text = NSLocalizedString("limit", comment: "")
         label.isHidden = true
         return label
     }()
@@ -82,10 +87,15 @@ final class NewHabitOrEventViewController: UIViewController {
         button.layer.borderColor = UIColor.ypRed.cgColor
         button.setTitleColor(.ypRed, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
-        button.setTitle("Отменить", for: .normal)
-        button.addTarget(self,
-                         action: #selector(didTapCancelButton),
-                         for: .touchUpInside)
+        button.setTitle(
+            NSLocalizedString("cancel", comment: ""),
+            for: .normal
+        )
+        button.addTarget(
+            self,
+            action: #selector(didTapCancelButton),
+            for: .touchUpInside
+        )
         return button
     }()
     
@@ -97,10 +107,15 @@ final class NewHabitOrEventViewController: UIViewController {
         button.layer.cornerRadius = 16
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
         button.titleLabel?.textColor = .white
-        button.setTitle("Создать", for: .normal)
-        button.addTarget(self,
-                         action: #selector(didTapCreateButton),
-                         for: .touchUpInside)
+        button.setTitle(
+            NSLocalizedString("create", comment: ""),
+            for: .normal
+        )
+        button.addTarget(
+            self,
+            action: #selector(didTapCreateButton),
+            for: .touchUpInside
+        )
         return button
     }()
     
@@ -253,7 +268,13 @@ final class NewHabitOrEventViewController: UIViewController {
     }
     
     func setupUI() {
-        self.title = isHabit ? "Новая привычка" : "Новое нерегулярное событие"
+        self.title = isHabit ? NSLocalizedString(
+            "newhabit",
+            comment: ""
+        ) : NSLocalizedString(
+            "newevent",
+            comment: ""
+        )
         view.backgroundColor = .systemBackground
         view.addSubview(scrollView)
         scrollView.addSubviews(textFieldStackView,
@@ -378,7 +399,10 @@ extension NewHabitOrEventViewController: UITableViewDataSource {
             cell.detailTextLabel?.text = categoryName
         case 1:
             cell.textLabel?.text = tableCellTitle[1]
-            cell.detailTextLabel?.text = timeTable.count == 7 ? "Каждый день" : timeTable.map { $0.shortened }.joined(separator: ", ")
+            cell.detailTextLabel?.text = timeTable.count == 7 ? NSLocalizedString(
+                "everyday",
+                comment: ""
+            ) : timeTable.map { $0.shortened }.joined(separator: ", ")
         default:
             break
         }
@@ -515,10 +539,10 @@ extension NewHabitOrEventViewController: UICollectionViewDataSource {
         else { return UICollectionReusableView() }
         
         if collectionView == colorCollectionView {
-            header.configureHeader(text: "Цвет")
+            header.configureHeader(text: NSLocalizedString("color", comment: ""))
             return header
         } else {
-            header.configureHeader(text: "Emoji")
+            header.configureHeader(text: NSLocalizedString("emoji", comment: ""))
             return header
         }
     }

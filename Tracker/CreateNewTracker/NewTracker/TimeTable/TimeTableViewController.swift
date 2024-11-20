@@ -31,10 +31,15 @@ final class TimeTableViewController: UIViewController {
         button.backgroundColor = .black
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .regular)
         button.setTitleColor(.white, for: .normal)
-        button.setTitle("Готово", for: .normal)
-        button.addTarget(self,
-                         action: #selector(doneButtonTapped),
-                         for: .touchUpInside)
+        button.setTitle(
+            NSLocalizedString("done", comment: ""),
+            for: .normal
+        )
+        button.addTarget(
+            self,
+            action: #selector(doneButtonTapped),
+            for: .touchUpInside
+        )
         return button
     }()
     
@@ -83,7 +88,7 @@ final class TimeTableViewController: UIViewController {
     //MARK: - UI methods
     
     private func setupUI() {
-        title = "Расписание"
+        title = NSLocalizedString("timetable", comment: "")
         view.backgroundColor = .white
         view.addSubviews(tableView, doneButton)
         
@@ -138,7 +143,7 @@ extension TimeTableViewController: UITableViewDataSource {
         daySwitch.tag = indexPath.row
         daySwitch.isOn = timeTable.contains(days[indexPath.row]) ? true : false
         
-        cell.setupCell(text: days[indexPath.row].rawValue, accessoryView: daySwitch)
+        cell.setupCell(text: days[indexPath.row].weekday, accessoryView: daySwitch)
         
         cell.selectionStyle = .none
         if indexPath.row == days.count - 1 {

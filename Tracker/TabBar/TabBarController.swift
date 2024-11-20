@@ -16,7 +16,8 @@ final class TabBarController: UITabBarController {
         super.viewDidLoad()
                 
         let trackersViewController = TrackersViewController()
-        trackersViewController.tabBarItem = UITabBarItem(title: "Трекеры",
+        trackersViewController.tabBarItem = UITabBarItem(title: NSLocalizedString("tracker",
+                                                                                  comment: ""),
                                                         image: UIImage(named: "trackersBarInactive"),
                                                         selectedImage: UIImage(named: "trackersBarActive"))
         
@@ -26,7 +27,8 @@ final class TabBarController: UITabBarController {
         trackersNavigationController.navigationBar.backgroundColor = .systemBackground
         
         let statisticsViewController = StatisticsViewController()
-        statisticsViewController.tabBarItem = UITabBarItem(title: "Статистика",
+        statisticsViewController.tabBarItem = UITabBarItem(title: NSLocalizedString("stats",
+                                                                                    comment: ""),
                                                            image: UIImage(named: "statisticsBarInactive"),
                                                            selectedImage: UIImage(named: "statisticsBarActive"))
         

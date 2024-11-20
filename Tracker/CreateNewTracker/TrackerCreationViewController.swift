@@ -24,7 +24,10 @@ final class TrackerCreationViewController: UIViewController {
         button.backgroundColor = .black
         button.titleLabel?.textColor = .white
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
-        button.setTitle("Привычка", for: .normal)
+        button.setTitle(
+            NSLocalizedString("habit", comment: ""),
+            for: .normal
+        )
         button.addTarget(self, action: #selector(didTapHabitButton), for: .touchUpInside)
         return button
     }()
@@ -36,7 +39,10 @@ final class TrackerCreationViewController: UIViewController {
         button.backgroundColor = .black
         button.titleLabel?.textColor = .white
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
-        button.setTitle("Нерегулярноe событие", for: .normal)
+        button.setTitle(
+            NSLocalizedString("event", comment: ""),
+            for: .normal
+        )
         button.addTarget(self, action: #selector(didTapEventButton), for: .touchUpInside)
         return button
     }()
@@ -56,7 +62,7 @@ final class TrackerCreationViewController: UIViewController {
     //MARK: - UI methods
     
     private func setupUI() {
-        self.title = "Создание трекера"
+        self.title = NSLocalizedString("creation", comment: "")
         
         view.backgroundColor = .white
         

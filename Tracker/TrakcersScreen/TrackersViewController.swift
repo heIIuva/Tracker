@@ -24,7 +24,7 @@ final class TrackersViewController: UIViewController {
     
     private lazy var trackersLabel: UILabel = {
         let label = UILabel()
-        label.text = "Трекеры"
+        label.text = NSLocalizedString("tracker", comment: "")
         label.font = .systemFont(ofSize: 34, weight: .bold)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -34,7 +34,8 @@ final class TrackersViewController: UIViewController {
         let searchController = UISearchController(searchResultsController: nil)
         searchController.searchResultsUpdater = self
         searchController.delegate = self
-        searchController.searchBar.placeholder = "Поиск"
+        searchController.searchBar.placeholder = NSLocalizedString("searchbarplaceholder",
+                                                                   comment: "")
         searchController.hidesNavigationBarDuringPresentation = false
         return searchController
     }()
@@ -271,11 +272,13 @@ extension TrackersViewController: UICollectionViewDataSource {
             switch isSearch {
             case true:
                 placeholder.showPlaceholder(image: .error,
-                                             text: "Ничего не найдено",
+                                             text: NSLocalizedString("emptysearchresults",
+                                                                     comment: ""),
                                              view: self.view)
             case false:
                 placeholder.showPlaceholder(image: .dizzy,
-                                             text: "Что будем отслеживать?",
+                                            text: NSLocalizedString("trackerplaceholder",
+                                                                    comment: ""),
                                              view: self.view)
             }
             return 0

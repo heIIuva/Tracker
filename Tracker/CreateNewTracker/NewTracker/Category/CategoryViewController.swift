@@ -34,7 +34,7 @@ final class CategoryViewController: UIViewController {
         textField.layer.cornerRadius = 16
         textField.font = .systemFont(ofSize: 17, weight: .regular)
         textField.textColor = .black
-        textField.placeholder = "Введите название категории"
+        textField.placeholder = NSLocalizedString("categorytextfieldplaceholder", comment: "")
         textField.delegate = self
         return textField
     }()
@@ -63,7 +63,10 @@ final class CategoryViewController: UIViewController {
         button.backgroundColor = .black
         button.titleLabel?.textColor = .white
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
-        button.setTitle("Готово", for: .normal)
+        button.setTitle(
+            NSLocalizedString("done", comment: ""),
+            for: .normal
+        )
         button.addTarget(
             self,
             action: #selector(didTapDoneButton),
@@ -79,7 +82,10 @@ final class CategoryViewController: UIViewController {
         button.backgroundColor = .black
         button.titleLabel?.textColor = .white
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
-        button.setTitle("Добавить категорию", for: .normal)
+        button.setTitle(
+            NSLocalizedString("addcategory", comment: ""),
+            for: .normal
+        )
         button.addTarget(
             self,
             action: #selector(didTapAddCategoryButton),
@@ -160,7 +166,7 @@ final class CategoryViewController: UIViewController {
     }
     
     private func OnboardingState() {
-        title = "Категория"
+        title = NSLocalizedString("category", comment: "")
         placeholder.showPlaceholder(
             image: .dizzy,
             text: "Привычки и события можно объединить по смыслу",
@@ -173,7 +179,7 @@ final class CategoryViewController: UIViewController {
     }
     
     private func selectCategoryState() {
-        title = "Категория"
+        title = NSLocalizedString("category", comment: "")
         addCategoryButton.isHidden = false
         doneButton.isHidden = true
         tableView.isHidden = false
@@ -182,7 +188,7 @@ final class CategoryViewController: UIViewController {
     }
     
     private func addCategoryState() {
-        title = "Новая категория"
+        title = NSLocalizedString("newcategory", comment: "")
         addCategoryButton.isHidden = true
         doneButton.isHidden = false
         tableView.isHidden = true
