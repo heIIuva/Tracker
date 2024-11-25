@@ -62,8 +62,9 @@
 "newcategory" = "Новая категория";
 "selectcategory" = "Категория";
 "limit" = "Ограничение 38 символов";
-"editcategory" = "Редактирование категорию";
+"editcategory" = "Редактирование категории";
 "editaction" = "Редактировать";
+"categoryalertmessage" = "Эта категория точно не нужна?";
 
 //Weekdays
 "everyday" = "Каждый день";

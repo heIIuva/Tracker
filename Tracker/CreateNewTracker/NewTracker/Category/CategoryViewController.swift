@@ -97,6 +97,7 @@ final class CategoryViewController: UIViewController {
     //MARK: - Properties
     
     private var viewModel: CategoryViewModelProtocol
+    private var alertPresenter: AlertPresenterProtocol?
     
     private let placeholder = Placeholder.shared
     
@@ -106,6 +107,11 @@ final class CategoryViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let alertPresenter = AlertPresenter()
+        alertPresenter.delegate = self
+        self.alertPresenter = alertPresenter
+        
         self.categories = viewModel.categories()
         setupUI()
         bind()
@@ -316,7 +322,8 @@ extension CategoryViewController: UITableViewDelegate {
         ) { [weak self] _ in
             
             let edit = UIAction(
-                title: NSLocalizedString("editaction", comment: "")
+                title: NSLocalizedString("editaction", comment: ""),
+                image: UIImage(systemName: "pencil")
             ) { _ in
                 self?.editingState()
                 self?.viewModel.setMode(.edit(text))
@@ -325,9 +332,21 @@ extension CategoryViewController: UITableViewDelegate {
             
             let delete = UIAction(
                 title: NSLocalizedString("delete", comment: ""),
+                image: UIImage(systemName: "trash"),
                 attributes: .destructive
             ) { _ in
-                
+                let alertModel = AlertModel(
+                    message: NSLocalizedString("categoryalertmessage", comment: ""),
+                    button: NSLocalizedString("delete", comment: ""),
+                    completion: {
+                        self?.viewModel.deleteCategory(category: text)
+                    },
+                    secondButton: NSLocalizedString("cancel", comment: ""),
+                    secondCompletion: {
+                        self?.dismiss(animated: true)
+                    }
+                )
+                self?.alertPresenter?.showAlert(result: alertModel)
             }
             
             return UIMenu(title: "", options: .displayInline, children: [edit, delete])

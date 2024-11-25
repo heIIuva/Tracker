@@ -63,6 +63,7 @@
 "limit" = "38 characters limit";
 "editcategory" = "Edit category";
 "editaction" = "Edit";
+"categoryalertmessage" = "Surely this category is not needed?";
 
 //Weekdays
 "everyday" = "Every day";

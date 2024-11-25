@@ -14,7 +14,7 @@ protocol CategoryViewModelProtocol: AnyObject {
     func categories() -> [TrackerCategory]
     func setCategory(category: TrackerCategory)
     func deleteCategory(category: String)
-    func showAlert(viewModel: AlertModel)
+//    func showAlert(viewModel: AlertModel)
     func seletectedCategory(indexPath: IndexPath)
     func isSelected(indexPath: IndexPath) -> Bool
     func doneButtonTapped()
@@ -53,23 +53,13 @@ final class CategoryViewModel: CategoryViewModelProtocol {
     private var dataProvider: DataProviderProtocol?
     private var selectedCategory: String?
     private var newCategory: TrackerCategory?
-    private var alertViewModel: AlertModel?
+//    private var alertViewModel: AlertModel?
     private var mode: Mode?
     
     //MARK: - Methods
     
     func categories() -> [TrackerCategory] {
-        guard
-            let categories = dataProvider?.getCategories(),
-            !categories.isEmpty
-        else {
-            print("unable to provide categories")
-            return []
-        }
-        
-        print("categories provided correctly")
-        return categories
-        /*?? []*/
+        dataProvider?.getCategories() ?? []
     }
     
     func setCategory(category: TrackerCategory) {
@@ -84,13 +74,14 @@ final class CategoryViewModel: CategoryViewModelProtocol {
     
     func deleteCategory(category: String) {
         dataProvider?.deleteCategory(category: category)
+        onCategoriesUpdate?()
     }
     
-    //MARK: - for UIContextMenuConfiguration
-    func showAlert(viewModel: AlertModel) {
-        guard let alertViewModel else { return }
-        alertPresenter?.showAlert(result: alertViewModel)
-    }
+//    //MARK: - for UIContextMenuConfiguration
+//    func showAlert(viewModel: AlertModel) {
+//        guard let alertViewModel else { return }
+//        alertPresenter?.showAlert(result: alertViewModel)
+//    }
     
     func seletectedCategory(indexPath: IndexPath) {
         let category = categories()[indexPath.row]
