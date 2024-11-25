@@ -176,12 +176,13 @@ final class CategoryViewController: UIViewController {
         placeholder.showPlaceholder(
             image: .dizzy,
             text: NSLocalizedString("categoryplaceholder", comment: ""),
-            view: self.view
+            view: view
         )
         doneButton.isHidden = true
         tableView.isHidden = true
         textField.isHidden = true
         addCategoryButton.isHidden = false
+        print("switched to onboarding state")
     }
     
     private func selectCategoryState() {
@@ -191,6 +192,7 @@ final class CategoryViewController: UIViewController {
         tableView.isHidden = false
         textField.isHidden = true
         placeholder.removePlaceholder()
+        print("switched to select category state")
     }
     
     private func addCategoryState() {
@@ -200,6 +202,7 @@ final class CategoryViewController: UIViewController {
         tableView.isHidden = true
         textField.isHidden = false
         placeholder.removePlaceholder()
+        print("switched to add category state")
     }
     
     private func editingState() {
@@ -209,7 +212,10 @@ final class CategoryViewController: UIViewController {
         tableView.isHidden = true
         textField.isHidden = false
         placeholder.removePlaceholder()
+        print("switched to editing state")
     }
+    
+    //MARK: - Binding methods
     
     private func switchDoneButtonState(_ isChanged: Bool) {
         doneButton.isEnabled = isChanged
@@ -246,7 +252,9 @@ extension CategoryViewController: UITableViewDataSource {
             let categories,
             !categories.isEmpty
         else {
-            OnboardingState()
+            DispatchQueue.main.async {
+                self.OnboardingState()
+            }
             return 0
         }
         selectCategoryState()
@@ -342,9 +350,7 @@ extension CategoryViewController: UITableViewDelegate {
                         self?.viewModel.deleteCategory(category: text)
                     },
                     secondButton: NSLocalizedString("cancel", comment: ""),
-                    secondCompletion: {
-                        self?.dismiss(animated: true)
-                    }
+                    secondCompletion: {}
                 )
                 self?.alertPresenter?.showAlert(result: alertModel)
             }
@@ -368,7 +374,8 @@ extension CategoryViewController: UITextFieldDelegate {
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         guard
-            let text = textField.text
+            let text = textField.text,
+            !text.isEmpty
         else { return }
         
         viewModel.setCategory(

@@ -53,7 +53,6 @@ final class CategoryViewModel: CategoryViewModelProtocol {
     private var dataProvider: DataProviderProtocol?
     private var selectedCategory: String?
     private var newCategory: TrackerCategory?
-//    private var alertViewModel: AlertModel?
     private var mode: Mode?
     
     //MARK: - Methods
@@ -75,14 +74,11 @@ final class CategoryViewModel: CategoryViewModelProtocol {
     func deleteCategory(category: String) {
         dataProvider?.deleteCategory(category: category)
         onCategoriesUpdate?()
+        if category == selectedCategory {
+            delegate?.category("")
+        }
     }
-    
-//    //MARK: - for UIContextMenuConfiguration
-//    func showAlert(viewModel: AlertModel) {
-//        guard let alertViewModel else { return }
-//        alertPresenter?.showAlert(result: alertViewModel)
-//    }
-    
+        
     func seletectedCategory(indexPath: IndexPath) {
         let category = categories()[indexPath.row]
         self.selectedCategory = category.title
