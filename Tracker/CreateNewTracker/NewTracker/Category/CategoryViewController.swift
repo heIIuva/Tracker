@@ -196,6 +196,15 @@ final class CategoryViewController: UIViewController {
         placeholder.removePlaceholder()
     }
     
+    private func editingState() {
+        title = NSLocalizedString("editcategory", comment: "")
+        addCategoryButton.isHidden = true
+        doneButton.isHidden = false
+        tableView.isHidden = true
+        textField.isHidden = false
+        placeholder.removePlaceholder()
+    }
+    
     private func switchDoneButtonState(_ isChanged: Bool) {
         doneButton.isEnabled = isChanged
         doneButton.backgroundColor = isChanged ? .black : .ypGray
@@ -210,6 +219,7 @@ final class CategoryViewController: UIViewController {
     
     @objc private func didTapAddCategoryButton() {
         addCategoryState()
+        viewModel.setMode(.create)
     }
     
     @objc private func didTapDoneButton() {
@@ -289,7 +299,40 @@ extension CategoryViewController: UITableViewDelegate {
         self.dismiss(animated: true)
     }
     
-    //TODO: - UIContextMenuConfiguration
+    func tableView(
+        _ tableView: UITableView,
+        contextMenuConfigurationForRowAt indexPath: IndexPath,
+        point: CGPoint
+    ) -> UIContextMenuConfiguration? {
+        
+        guard
+            let cell = tableView.cellForRow(at: indexPath),
+            let text = cell.textLabel?.text
+        else { return nil }
+        
+        return UIContextMenuConfiguration(
+            identifier: nil,
+            previewProvider: nil
+        ) { [weak self] _ in
+            
+            let edit = UIAction(
+                title: NSLocalizedString("editaction", comment: "")
+            ) { _ in
+                self?.editingState()
+                self?.viewModel.setMode(.edit(text))
+                self?.textField.text = text
+            }
+            
+            let delete = UIAction(
+                title: NSLocalizedString("delete", comment: ""),
+                attributes: .destructive
+            ) { _ in
+                
+            }
+            
+            return UIMenu(title: "", options: .displayInline, children: [edit, delete])
+        }
+    }
 }
 
 //MARK: - UITextFieldDelegate

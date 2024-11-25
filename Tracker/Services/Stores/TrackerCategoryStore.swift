@@ -14,7 +14,8 @@ protocol TrackerCategoryStoreProtocol: AnyObject {
     var categories: [TrackerCategory] { get }
     func addCategoryToCoreData(_ category: TrackerCategory)
     func addTrackerToCategory(_ tracker: Tracker, _ category: String)
-    func deleteCategoryFromCoreData(_ category: TrackerCategory)
+    func deleteCategoryFromCoreData(_ category: String)
+    func editCategory(_ category: String, to newCategory: String)
 }
 
 
@@ -101,7 +102,7 @@ final class TrackerCategoryStore: NSObject {
     
     private func fetchCategoryCoreData(from category: String) -> TrackerCategoryCoreData? {
         let request = fetchedResultsController.fetchRequest
-        request.predicate = NSPredicate(format: "title == %@", category)
+        request.predicate = NSPredicate(format: "title == %@", category as CVarArg)
         do {
             return try context.fetch(request).first
         } catch {
@@ -134,14 +135,12 @@ extension TrackerCategoryStore: TrackerCategoryStoreProtocol {
         }
         category.trackersInCategory = trackers.union([trackerCoreData]) as NSSet
         appDelegate.saveContext()
-        
-        print("called addTrackerToCategory method in TrackerCategoryStore")
     }
     
-    func deleteCategoryFromCoreData(_ category: TrackerCategory) {
+    func deleteCategoryFromCoreData(_ category: String) {
         let request = TrackerCategoryCoreData.fetchRequest()
         request.predicate = NSPredicate(format: "title == %@",
-                                        category.title as CVarArg)
+                                        category as CVarArg)
 
         guard let coreData = try? context.fetch(request).first
         else {
@@ -149,6 +148,21 @@ extension TrackerCategoryStore: TrackerCategoryStoreProtocol {
         }
         
         context.delete(coreData)
+        appDelegate.saveContext()
+    }
+    
+    func editCategory(_ category: String, to newCategory: String) {
+        let request = TrackerCategoryCoreData.fetchRequest()
+        request.predicate = NSPredicate(format: "title == %@",
+                                        category as CVarArg)
+
+        guard let coreData = try? context.fetch(request).first
+        else {
+            return
+        }
+        
+        coreData.title = newCategory
+        
         appDelegate.saveContext()
     }
 }

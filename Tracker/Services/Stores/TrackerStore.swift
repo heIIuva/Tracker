@@ -14,6 +14,7 @@ protocol TrackerStoreProtocol: AnyObject {
     func fetchTracker(from coreData: TrackerCoreData) -> Tracker?
     func fetchTrackerCoreData(from tracker: Tracker) -> TrackerCoreData
     func fetchTrackerFromCoreDataById(_ id: UUID) -> TrackerCoreData?
+    func deleteTrackerFromCoreData(_ tracker: Tracker)
 }
 
 
@@ -21,26 +22,33 @@ final class TrackerStore: NSObject {
     
     //MARK: - Init/Singletone
     
-    private init(context: NSManagedObjectContext) {
+    init(
+        context: NSManagedObjectContext,
+        appDelegate: AppDelegate
+    ) {
         self.context = context
+        self.appDelegate = appDelegate
     }
     
-    private convenience override init() {
-        guard let context = (UIApplication.shared.delegate as?
-                             AppDelegate)?.persistentContainer.viewContext
+    convenience override init() {
+        guard let appDelegate = (UIApplication.shared.delegate as? AppDelegate)
         else {
             assertionFailure("AppDelegate not found")
             self.init()
             return
         }
         
-        self.init(context: context)
+        self.init(
+            context: appDelegate.persistentContainer.viewContext,
+            appDelegate: appDelegate
+        )
     }
     
     static let shared = TrackerStore()
     
     //MARK: - Properties
     
+    private let appDelegate: AppDelegate
     private let uiColorMarshalling = UIColorMarshalling.shared
     private let context: NSManagedObjectContext
 }
@@ -86,5 +94,11 @@ extension TrackerStore: TrackerStoreProtocol {
             print("Error fetching tracker by id: \(error)")
             return nil
         }
+    }
+    
+    func deleteTrackerFromCoreData(_ tracker: Tracker) {
+        guard let trackerToDelete = fetchTrackerFromCoreDataById(tracker.id) else { return }
+        context.delete(trackerToDelete)
+        appDelegate.saveContext()
     }
 }

@@ -61,6 +61,8 @@
 "newcategory" = "New category";
 "selectcategory" = "Select category";
 "limit" = "38 characters limit";
+"editcategory" = "Edit category";
+"editaction" = "Edit";
 
 //Weekdays
 "everyday" = "Every day";
@@ -80,3 +82,7 @@
 "fri" = "Fri";
 "sat" = "Sat";
 "sun" = "Sun";
+
+//Pinned category
+"pinned" = "Pinned";
+

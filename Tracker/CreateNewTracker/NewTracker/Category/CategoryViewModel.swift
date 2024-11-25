@@ -13,11 +13,18 @@ protocol CategoryViewModelProtocol: AnyObject {
     var onCategoriesUpdate: (() -> Void)? { get set }
     func categories() -> [TrackerCategory]
     func setCategory(category: TrackerCategory)
-    func deleteCategory(category: TrackerCategory)
+    func deleteCategory(category: String)
     func showAlert(viewModel: AlertModel)
     func seletectedCategory(indexPath: IndexPath)
     func isSelected(indexPath: IndexPath) -> Bool
     func doneButtonTapped()
+    func setMode(_ mode: Mode)
+}
+
+
+enum Mode {
+    case create
+    case edit(String)
 }
 
 
@@ -47,11 +54,22 @@ final class CategoryViewModel: CategoryViewModelProtocol {
     private var selectedCategory: String?
     private var newCategory: TrackerCategory?
     private var alertViewModel: AlertModel?
+    private var mode: Mode?
     
     //MARK: - Methods
     
     func categories() -> [TrackerCategory] {
-        return dataProvider?.getCategories() ?? []
+        guard
+            let categories = dataProvider?.getCategories(),
+            !categories.isEmpty
+        else {
+            print("unable to provide categories")
+            return []
+        }
+        
+        print("categories provided correctly")
+        return categories
+        /*?? []*/
     }
     
     func setCategory(category: TrackerCategory) {
@@ -64,7 +82,7 @@ final class CategoryViewModel: CategoryViewModelProtocol {
         self.newCategory = category
     }
     
-    func deleteCategory(category: TrackerCategory) {
+    func deleteCategory(category: String) {
         dataProvider?.deleteCategory(category: category)
     }
     
@@ -85,11 +103,23 @@ final class CategoryViewModel: CategoryViewModelProtocol {
     }
     
     func doneButtonTapped() {
-        tryToAddCategory()
+        switch mode {
+        case .create:
+            tryToAddCategory()
+        case .edit(let oldCategory):
+            tryToEditCategory(oldCategory: oldCategory)
+        default :
+            break
+        }
+        
         onCategoriesUpdate?()
         onDoneButtonStateChange?(false)
     }
     
+    func setMode(_ mode: Mode) {
+        self.mode = mode
+    }
+        
     private func сategoryAlreadyExists(category: String) -> Bool {
         guard
             !categories().contains(where: { $0.title == category })
@@ -99,6 +129,15 @@ final class CategoryViewModel: CategoryViewModelProtocol {
         }
         onDoneButtonStateChange?(true)
         return false
+    }
+    
+    private func tryToEditCategory(oldCategory: String) {
+        guard
+            let newCategory,
+            сategoryAlreadyExists(category: newCategory.title) == false
+        else { return }
+        print("category edited successfully")
+        dataProvider?.editCategory(oldCategory, to: newCategory.title)
     }
     
     private func tryToAddCategory() {

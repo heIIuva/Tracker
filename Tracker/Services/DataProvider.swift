@@ -12,10 +12,12 @@ protocol DataProviderProtocol: AnyObject {
     func getCategories() -> [TrackerCategory]
     func addCategory(category: TrackerCategory)
     func addTrackerToCategory(tracker: Tracker, category: String)
-    func deleteCategory(category: TrackerCategory)
+    func deleteCategory(category: String)
     func getRecords() -> Set<TrackerRecord>
     func addRecord(record: TrackerRecord)
     func deleteRecord(record: TrackerRecord)
+    func editCategory(_ category: String, to newCategory: String)
+    func deleteTracker(_ tracker: Tracker)
 }
 
 
@@ -52,8 +54,7 @@ final class DataProvider {
 //MARK: - DataProviderProtocol
 extension DataProvider: DataProviderProtocol {
     func getCategories() -> [TrackerCategory] {
-        guard let categories = categoryStore?.categories else { return [] }
-        return categories
+        return categoryStore?.categories ?? []
     }
     
     func addCategory(category: TrackerCategory) {
@@ -77,8 +78,16 @@ extension DataProvider: DataProviderProtocol {
         recordStore?.deleteRecord(record)
     }
     
-    func deleteCategory(category: TrackerCategory) {
+    func deleteCategory(category: String) {
         categoryStore?.deleteCategoryFromCoreData(category)
+    }
+    
+    func editCategory(_ category: String, to newCategory: String) {
+        categoryStore?.editCategory(category, to: newCategory)
+    }
+    
+    func deleteTracker(_ tracker: Tracker) {
+        trackerStore.deleteTrackerFromCoreData(tracker)
     }
 }
 

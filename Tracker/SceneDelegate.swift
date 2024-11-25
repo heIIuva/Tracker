@@ -23,7 +23,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func selectRootVC() -> UIViewController {
         var vc: UIViewController
         
-        if UserDefaults.isFirstLaunch() {
+        if Flags.shared.isFirstLaunch() {
             vc = OnboardingPageViewController(transitionStyle: .pageCurl,
                                               navigationOrientation: .horizontal)
         } else {

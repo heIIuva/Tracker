@@ -358,6 +358,7 @@ extension TrackersViewController: DataProviderDelegate {
     func updateCategories(categories: [TrackerCategory]) {
         self.categories = categories
         collectionView.reloadData()
+        datePickerUpdated(datePicker)
     }
     
     func updateRecords(records: Set<TrackerRecord>) {

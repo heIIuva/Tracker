@@ -62,6 +62,8 @@
 "newcategory" = "Новая категория";
 "selectcategory" = "Категория";
 "limit" = "Ограничение 38 символов";
+"editcategory" = "Редактирование категорию";
+"editaction" = "Редактировать";
 
 //Weekdays
 "everyday" = "Каждый день";
@@ -81,3 +83,7 @@
 "fri" = "Пт";
 "sat" = "Сб";
 "sun" = "Вс";
+
+//Pinned category
+"pinned" = "Закрепленные";
+
