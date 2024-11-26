@@ -102,6 +102,8 @@ final class TrackersViewController: UIViewController {
     
     //MARK: - Properties
     
+    private let analyticsService = AnalyticsService()
+    
     private var alertPresenter: AlertPresenterProtocol?
     
     private var dataProvider: DataProviderProtocol?
@@ -235,12 +237,15 @@ final class TrackersViewController: UIViewController {
     }
     
     @objc private func addTrackerButtonTapped() {
+        analyticsService.trackEvent("tap", ["screen": "TrackerVC", "item": "create tracker"])
+        
         let addTrackerVC = TrackerCreationViewController()
         addTrackerVC.delegate = self
         present(UINavigationController(rootViewController: addTrackerVC), animated: true)
     }
     
     @objc private func didTapFilterButton() {
+        analyticsService.trackEvent("tap", ["screen": "TrackerVC", "item": "filter tracker"])
         
         let viewModel = FilterViewModel(selectedFilter: self.currentFilter)
         viewModel.delegate = self
@@ -272,6 +277,8 @@ extension TrackersViewController: UISearchResultsUpdating {
 extension TrackersViewController: UISearchControllerDelegate {
     
     func willPresentSearchController(_ searchController: UISearchController) {
+        analyticsService.trackEvent("tap", ["screen": "TrackerVC", "item": "searchbar"])
+        
         isSearch = true
         collectionView.reloadData()
     }
@@ -423,6 +430,10 @@ extension TrackersViewController: UICollectionViewDataSource {
             let edit = UIAction(
                 title: NSLocalizedString("edit", comment: "")
             ) { _ in
+                self?.analyticsService.trackEvent(
+                    "tap",
+                    ["screen": "TrackerVC", "item": "edit tracker"]
+                )
                 
                 let habitOrEventVC = NewHabitOrEventViewController(
                     nibName: nil,
@@ -444,15 +455,33 @@ extension TrackersViewController: UICollectionViewDataSource {
                 title: NSLocalizedString("delete", comment: ""),
                 attributes: .destructive
             ) { _ in
+                self?.analyticsService.trackEvent(
+                    "tap",
+                    ["screen": "TrackerVC",
+                     "item": "delete tracker"]
+                )
+                
                 let alertModel = AlertModel(
                     message: NSLocalizedString("trackeralertmessage", comment: ""),
                     button: NSLocalizedString("delete", comment: ""),
                     completion: {
+                        self?.analyticsService.trackEvent(
+                            "tap",
+                            ["screen": "TrackerVC",
+                             "item": "deleted tracker"]
+                        )
+                        
                         self?.dataProvider?.deleteTracker(tracker)
                         self?.update()
                     },
                     secondButton: NSLocalizedString("cancel", comment: ""),
-                    secondCompletion: {}
+                    secondCompletion: {
+                        self?.analyticsService.trackEvent(
+                            "tap",
+                            ["screen": "TrackerVC",
+                             "item": "reconsidered deleting tracker"]
+                        )
+                    }
                 )
                 self?.alertPresenter?.showAlert(result: alertModel)
             }
