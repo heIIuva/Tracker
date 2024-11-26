@@ -507,7 +507,7 @@ extension TrackersViewController: FilterDelegate {
     
     func allTrackersFilter() {
         self.visibleCategories = dataProvider?.getCategories() ?? []
-        collectionView.reloadData()
+        datePickerUpdated(datePicker)
     }
     
     func trackersForTodayFilter() {
