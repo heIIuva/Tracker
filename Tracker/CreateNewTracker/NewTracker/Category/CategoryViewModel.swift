@@ -14,7 +14,6 @@ protocol CategoryViewModelProtocol: AnyObject {
     func categories() -> [TrackerCategory]
     func setCategory(category: TrackerCategory)
     func deleteCategory(category: String)
-//    func showAlert(viewModel: AlertModel)
     func seletectedCategory(indexPath: IndexPath)
     func isSelected(indexPath: IndexPath) -> Bool
     func doneButtonTapped()

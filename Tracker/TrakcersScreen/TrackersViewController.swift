@@ -18,6 +18,14 @@ protocol TrackerCreationDelegate: AnyObject {
 }
 
 
+protocol FilterDelegate: AnyObject {
+    func updateFilter(filter: Filter)
+    func allTrackersFilter()
+    func trackersForTodayFilter()
+    func completedTrackersFilter()
+    func incompletedTrackersFilter()
+}
+
 final class TrackersViewController: UIViewController {
     
     //MARK: - UI Properties
@@ -42,6 +50,7 @@ final class TrackersViewController: UIViewController {
     
     private lazy var datePicker: UIDatePicker = {
         let datePicker = UIDatePicker()
+        datePicker.backgroundColor = .systemBackground
         datePicker.datePickerMode = .date
         datePicker.preferredDatePickerStyle = .compact
         datePicker.locale = .current
@@ -58,6 +67,17 @@ final class TrackersViewController: UIViewController {
                                            target: self,
                                            action: #selector(addTrackerButtonTapped))
         button.tintColor = .label
+        return button
+    }()
+    
+    private lazy var filterButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .ypBlue
+        button.setTitleColor(.systemBackground, for: .normal)
+        button.setTitle(NSLocalizedString("filtertitle", comment: ""), for: .normal)
+        button.layer.cornerRadius = 16
+        button.addTarget(self, action: #selector(didTapFilterButton), for: .touchUpInside)
         return button
     }()
     
@@ -100,6 +120,8 @@ final class TrackersViewController: UIViewController {
     private var currentDate = Date()
     private let calendar = Calendar.current
     
+    private var currentFilter: Filter?
+    
     //MARK: - Lifecycle methods
     
     override func viewDidLoad() {
@@ -107,6 +129,7 @@ final class TrackersViewController: UIViewController {
         
         setupNavigationBar()
         configureCollectionView()
+        configureFilterButton()
         
         let dataProvider = DataProvider(
             categoryStore: TrackerCategoryStore(),
@@ -143,6 +166,30 @@ final class TrackersViewController: UIViewController {
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
     }
+    
+    private func configureFilterButton() {
+        view.addSubview(filterButton)
+        
+        NSLayoutConstraint.activate([
+            filterButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+                                                 constant: -16),
+            filterButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor,
+                                                  constant: 131),
+            filterButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor,
+                                                  constant: -131),
+            filterButton.heightAnchor.constraint(equalToConstant: 50)
+        ])
+    }
+    
+    //MARK: - Methods
+    
+    private func isCompleted(_ tracker: Tracker) -> Bool {
+        completedTrackers.contains { record in
+            let daysMatch = Calendar.current.isDate(record.date, inSameDayAs: datePicker.date)
+            return record.id == tracker.id && daysMatch
+        }
+    }
+    
     
     //MARK: - Obj-C Methods
     
@@ -181,6 +228,21 @@ final class TrackersViewController: UIViewController {
         addTrackerVC.delegate = self
         present(UINavigationController(rootViewController: addTrackerVC), animated: true)
     }
+    
+    @objc private func didTapFilterButton() {
+        
+        let viewModel = FilterViewModel(selectedFilter: self.currentFilter)
+        viewModel.delegate = self
+        
+        let filterVC = FilterViewController(
+            viewModel: viewModel
+            )
+        
+        let filterNC = UINavigationController(rootViewController: filterVC)
+        
+        filterNC.modalPresentationStyle = .popover
+        present(filterNC, animated: true)
+    }
 }
 
 
@@ -191,7 +253,6 @@ extension TrackersViewController: UISearchResultsUpdating {
         
         guard let searchText = searchController.searchBar.text?.lowercased(),
               searchText.count > 2 else { return }
-        
         
     }
 }
@@ -365,3 +426,75 @@ extension TrackersViewController: DataProviderDelegate {
         self.completedTrackers = records
     }
 }
+
+//MARK: - FilterDelegate
+extension TrackersViewController: FilterDelegate {
+    func updateFilter(filter: Filter) {
+        self.currentFilter = filter
+    }
+    
+    func allTrackersFilter() {
+        self.visibleCategories = dataProvider?.getCategories() ?? []
+        collectionView.reloadData()
+    }
+    
+    func trackersForTodayFilter() {
+        datePicker.date = Date()
+        datePickerUpdated(datePicker)
+    }
+    
+    func completedTrackersFilter() {
+        
+        datePickerUpdated(datePicker)
+        
+        var completed: [TrackerCategory] = []
+        for categoryIndex in 0..<visibleCategories.count {
+            var trackers: [Tracker] = []
+            for trackerIndex in 0..<visibleCategories[categoryIndex].trackers.count {
+                if isCompleted(visibleCategories[categoryIndex].trackers[trackerIndex]) {
+                    if let index = completed.firstIndex(where: {$0.title == visibleCategories[categoryIndex].title}) {
+                        trackers.append(visibleCategories[categoryIndex].trackers[trackerIndex])
+                        for tracker in completed[index].trackers {
+                            trackers.append(tracker)
+                        }
+                        let newCategory = TrackerCategory(title: completed[index].title, trackers: trackers)
+                        completed[index] = newCategory
+                    } else {
+                        let newCategory = TrackerCategory(title: visibleCategories[categoryIndex].title, trackers: [visibleCategories[categoryIndex].trackers[trackerIndex]])
+                        completed.append(newCategory)
+                    }
+                }
+            }
+        }
+        visibleCategories = completed
+        collectionView.reloadData()
+    }
+    
+    func incompletedTrackersFilter() {
+        
+        datePickerUpdated(datePicker)
+        
+        var incompleted: [TrackerCategory] = []
+        for categoryIndex in 0..<visibleCategories.count {
+            var trackers: [Tracker] = []
+            for trackerIndex in 0..<visibleCategories[categoryIndex].trackers.count {
+                if !isCompleted(visibleCategories[categoryIndex].trackers[trackerIndex]) {
+                    if let index = incompleted.firstIndex(where: {$0.title == visibleCategories[categoryIndex].title}) {
+                        trackers.append(visibleCategories[categoryIndex].trackers[trackerIndex])
+                        for tracker in incompleted[index].trackers {
+                            trackers.append(tracker)
+                        }
+                        let newCategory = TrackerCategory(title: incompleted[index].title, trackers: trackers)
+                        incompleted[index] = newCategory
+                    } else {
+                        let newCategory = TrackerCategory(title: visibleCategories[categoryIndex].title, trackers: [visibleCategories[categoryIndex].trackers[trackerIndex]])
+                        incompleted.append(newCategory)
+                    }
+                }
+            }
+        }
+        visibleCategories = incompleted
+        collectionView.reloadData()
+    }
+}
+

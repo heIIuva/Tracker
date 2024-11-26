@@ -8,13 +8,13 @@
 import Foundation
 
 enum Weekday: String, CaseIterable, Codable {
-    case monday /*= "monday"*/
-    case tuesday /*= "tuesday"*/
-    case wednesday /*= "wednesday"*/
-    case thursday /*= "thursday"*/
-    case friday /*= "friday"*/
-    case saturday /*= "saturday"*/
-    case sunday /*= "sunday"*/
+    case monday
+    case tuesday
+    case wednesday
+    case thursday
+    case friday
+    case saturday
+    case sunday
     
     var weekday: String {
         switch self {

@@ -31,10 +31,13 @@
 		B56E653B2CE67C6800406DBE /* CategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56E653A2CE67C6300406DBE /* CategoryViewModel.swift */; };
 		B56E653F2CE682B100406DBE /* AlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56E653E2CE682AE00406DBE /* AlertPresenter.swift */; };
 		B56E65412CE6834D00406DBE /* AlertModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56E65402CE6834700406DBE /* AlertModel.swift */; };
+		B57EDF4B2CF5B7A500A5A0AD /* Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57EDF4A2CF5B7A100A5A0AD /* Filter.swift */; };
 		B58517CD2CF290D200C29AD6 /* testViewController.1.png in Resources */ = {isa = PBXBuildFile; fileRef = B58517C82CF290D200C29AD6 /* testViewController.1.png */; };
 		B58517CE2CF290D200C29AD6 /* TrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58517CB2CF290D200C29AD6 /* TrackerTests.swift */; };
 		B58517D02CF2921600C29AD6 /* AnalyticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58517CF2CF2920F00C29AD6 /* AnalyticsService.swift */; };
 		B58517D22CF3AA6700C29AD6 /* Flags.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58517D12CF3AA6400C29AD6 /* Flags.swift */; };
+		B58517D52CF5215100C29AD6 /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58517D42CF5214700C29AD6 /* FilterViewController.swift */; };
+		B58517D72CF59C2C00C29AD6 /* FilterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58517D62CF59C2700C29AD6 /* FilterViewModel.swift */; };
 		B587A06E2CB0160A00DD98FD /* DateFormatter+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B587A06D2CB015FB00DD98FD /* DateFormatter+Extensions.swift */; };
 		B597F44B2CF26CDB00BF4D97 /* InlineSnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = B597F44A2CF26CDB00BF4D97 /* InlineSnapshotTesting */; };
 		B597F44D2CF26CDB00BF4D97 /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = B597F44C2CF26CDB00BF4D97 /* SnapshotTesting */; };
@@ -101,10 +104,13 @@
 		B56E653A2CE67C6300406DBE /* CategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewModel.swift; sourceTree = "<group>"; };
 		B56E653E2CE682AE00406DBE /* AlertPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenter.swift; sourceTree = "<group>"; };
 		B56E65402CE6834700406DBE /* AlertModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertModel.swift; sourceTree = "<group>"; };
+		B57EDF4A2CF5B7A100A5A0AD /* Filter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Filter.swift; sourceTree = "<group>"; };
 		B58517C82CF290D200C29AD6 /* testViewController.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testViewController.1.png; sourceTree = "<group>"; };
 		B58517CB2CF290D200C29AD6 /* TrackerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerTests.swift; sourceTree = "<group>"; };
 		B58517CF2CF2920F00C29AD6 /* AnalyticsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsService.swift; sourceTree = "<group>"; };
 		B58517D12CF3AA6400C29AD6 /* Flags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Flags.swift; sourceTree = "<group>"; };
+		B58517D42CF5214700C29AD6 /* FilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
+		B58517D62CF59C2700C29AD6 /* FilterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewModel.swift; sourceTree = "<group>"; };
 		B587A06D2CB015FB00DD98FD /* DateFormatter+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+Extensions.swift"; sourceTree = "<group>"; };
 		B597F4402CF26C8C00BF4D97 /* TrackerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrackerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5A635452CC7A45A00BC64D9 /* ColorOrEmojiHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorOrEmojiHeader.swift; sourceTree = "<group>"; };
@@ -235,6 +241,7 @@
 				B5AE80BC2CBB165F00C19A5C /* TrackerCollectionViewHeader.swift */,
 				B514AE3F2CB5607B00490BEA /* TrackerCollectionViewCell.swift */,
 				B50ABA472CAD644A00C251F0 /* TrackersViewController.swift */,
+				B58517D32CF5213F00C29AD6 /* Filter */,
 			);
 			path = TrakcersScreen;
 			sourceTree = "<group>";
@@ -250,6 +257,7 @@
 		B514AE382CB419B400490BEA /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				B57EDF4A2CF5B7A100A5A0AD /* Filter.swift */,
 				B56E65402CE6834700406DBE /* AlertModel.swift */,
 				B5AF9F272CBDC45600A263D8 /* Weekday.swift */,
 				B514AE3D2CB41ABA00490BEA /* TrackerRecord.swift */,
@@ -305,6 +313,15 @@
 				B58517CB2CF290D200C29AD6 /* TrackerTests.swift */,
 			);
 			path = TrackerTests;
+			sourceTree = "<group>";
+		};
+		B58517D32CF5213F00C29AD6 /* Filter */ = {
+			isa = PBXGroup;
+			children = (
+				B58517D62CF59C2700C29AD6 /* FilterViewModel.swift */,
+				B58517D42CF5214700C29AD6 /* FilterViewController.swift */,
+			);
+			path = Filter;
 			sourceTree = "<group>";
 		};
 		B587A06C2CB015EE00DD98FD /* Helpers */ = {
@@ -560,10 +577,12 @@
 			files = (
 				B50ABA482CAD645300C251F0 /* TrackersViewController.swift in Sources */,
 				B56E65412CE6834D00406DBE /* AlertModel.swift in Sources */,
+				B58517D72CF59C2C00C29AD6 /* FilterViewModel.swift in Sources */,
 				B5D111BB2CD81E7D00AEF71C /* DaysValueTransformer.swift in Sources */,
 				B5AF9F262CBDC13500A263D8 /* TimeTableCell.swift in Sources */,
 				B50ABA3F2CAD487000C251F0 /* AppDelegate.swift in Sources */,
 				B5AF9F1F2CBD581100A263D8 /* CategoryViewController.swift in Sources */,
+				B57EDF4B2CF5B7A500A5A0AD /* Filter.swift in Sources */,
 				B5A635482CC7A49800BC64D9 /* ColorCollectionViewCell.swift in Sources */,
 				B514AE3C2CB41A9700490BEA /* TrackerCategory.swift in Sources */,
 				B501CC5F2CE55B0300D41692 /* OnboardingVC.swift in Sources */,
@@ -591,6 +610,7 @@
 				B5D111BF2CD81F0900AEF71C /* TrackerCategoryStore.swift in Sources */,
 				B514AE3A2CB419C100490BEA /* Tracker.swift in Sources */,
 				B5AF9F212CBD587400A263D8 /* Placeholder.swift in Sources */,
+				B58517D52CF5215100C29AD6 /* FilterViewController.swift in Sources */,
 				B5A9ECC12CB667B3002AE00D /* TrackerCreationViewController.swift in Sources */,
 				B5D111B32CD80F9E00AEF71C /* DataProvider.swift in Sources */,
 				B58517D22CF3AA6700C29AD6 /* Flags.swift in Sources */,
