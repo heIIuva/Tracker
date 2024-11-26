@@ -532,7 +532,6 @@ extension NewHabitOrEventViewController: UITableViewDelegate {
                    didSelectRowAt indexPath: IndexPath) {
         switch indexPath.row {
         case 0:
-            //TODO: - Category View Controller sprint 15
             guard let viewModel else { return }
             
             let categoryNC = UINavigationController(rootViewController: CategoryViewController(viewModel: viewModel))

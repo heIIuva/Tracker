@@ -15,6 +15,8 @@
 "tracker" = "Trackers";
 "stats" = "Statistics";
 "searchbarplaceholder" = "Search";
+"trackeralertmessage" = "Surely this tracker is not needed?";
+
 
 //Context menu
 "pin" = "Pin";

@@ -16,6 +16,7 @@
 "tracker" = "Трекеры";
 "stats" = "Статистика";
 "searchbarplaceholder" = "Поиск";
+"trackeralertmessage" = "Уверены что хотите удалить трекер?";
 
 //Context menu
 "pin" = "Закрепить";

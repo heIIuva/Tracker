@@ -122,7 +122,6 @@ final class CategoryViewModel: CategoryViewModelProtocol {
             let newCategory,
             сategoryAlreadyExists(category: newCategory.title) == false
         else { return }
-        print("category edited successfully")
         dataProvider?.editCategory(oldCategory, to: newCategory.title)
     }
     

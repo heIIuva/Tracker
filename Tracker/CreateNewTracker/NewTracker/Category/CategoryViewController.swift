@@ -326,7 +326,7 @@ extension CategoryViewController: UITableViewDelegate {
         ) { [weak self] _ in
             
             let edit = UIAction(
-                title: NSLocalizedString("editaction", comment: ""),
+                title: NSLocalizedString("edit", comment: ""),
                 image: UIImage(systemName: "pencil")
             ) { _ in
                 self?.editingState()

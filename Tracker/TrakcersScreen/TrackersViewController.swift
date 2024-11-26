@@ -102,6 +102,8 @@ final class TrackersViewController: UIViewController {
     
     //MARK: - Properties
     
+    private var alertPresenter: AlertPresenterProtocol?
+    
     private var dataProvider: DataProviderProtocol?
         
     private let trackerCellReuseIdentifier = TrackerCollectionViewCell.reuseIdentifier
@@ -137,6 +139,10 @@ final class TrackersViewController: UIViewController {
         )
         dataProvider.delegate = self
         self.dataProvider = dataProvider
+        
+        let alertPresenter = AlertPresenter()
+        alertPresenter.delegate = self
+        self.alertPresenter = alertPresenter
         
         self.categories = dataProvider.getCategories()
         self.completedTrackers = dataProvider.getRecords()
@@ -181,6 +187,12 @@ final class TrackersViewController: UIViewController {
         ])
     }
     
+    private func update() {
+        categories = dataProvider?.getCategories() ?? []
+        visibleCategories = categories
+        datePickerUpdated(datePicker)
+    }
+    
     //MARK: - Methods
     
     private func isCompleted(_ tracker: Tracker) -> Bool {
@@ -189,7 +201,6 @@ final class TrackersViewController: UIViewController {
             return record.id == tracker.id && daysMatch
         }
     }
-    
     
     //MARK: - Obj-C Methods
     
@@ -391,6 +402,9 @@ extension TrackersViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemsAt indexPaths: [IndexPath], point: CGPoint) -> UIContextMenuConfiguration? {
         guard let indexPath = indexPaths.first else { return nil }
         guard let cell = collectionView.cellForItem(at: indexPath) as? TrackerCollectionViewCell else { return nil }
+        
+        let category = visibleCategories[indexPath.section]
+        let tracker = visibleCategories[indexPath.section].trackers[indexPath.row]
 //        let pinActionTitle = cell.isPinned() ?
 //            Constants.AlertModelConstants.unpinActionTitle :
 //            Constants.AlertModelConstants.pinActionTitle
@@ -406,9 +420,10 @@ extension TrackersViewController: UICollectionViewDataSource {
 //                    self?.viewModel.updatePinnedTracker(indexPath)
 //                    cell?.toggleCellPin()
 //                }
-            let editAction = UIAction(
-                title: "редактировать"
+            let edit = UIAction(
+                title: NSLocalizedString("edit", comment: "")
             ) { _ in
+                
                 let habitOrEventVC = NewHabitOrEventViewController(
                     nibName: nil,
                     bundle: nil,
@@ -419,24 +434,29 @@ extension TrackersViewController: UICollectionViewDataSource {
                         recordStore: TrackerRecordStore()
                     ),
                     mode: .edit,
-                    tracker: self?.visibleCategories[indexPath.section].trackers[indexPath.row],
-                    category: self?.visibleCategories[indexPath.section]
+                    tracker: tracker,
+                    category: category
                 )
                 let habitOrEventNC = UINavigationController(rootViewController: habitOrEventVC)
                 self?.present(habitOrEventNC, animated: true)
             }
-//            let deleteAction = UIAction(
-//                title: Constants.AlertModelConstants.deleteActionTitle,
-//                attributes: .destructive
-//            ) { _ in
-//                self?.showAlertWithCancel(
-//                    with: alertModel,
-//                    alertStyle: .actionSheet,
-//                    actionStyle: .destructive
-//                ) { _ in
-//                    self?.viewModel.deleteTracker(indexPath)
-//                }
-            return UIMenu(title: "", children: [/*pinAction, */editAction/*, deleteAction*/])
+            let delete = UIAction(
+                title: NSLocalizedString("delete", comment: ""),
+                attributes: .destructive
+            ) { _ in
+                let alertModel = AlertModel(
+                    message: NSLocalizedString("trackeralertmessage", comment: ""),
+                    button: NSLocalizedString("delete", comment: ""),
+                    completion: {
+                        self?.dataProvider?.deleteTracker(tracker)
+                        self?.update()
+                    },
+                    secondButton: NSLocalizedString("cancel", comment: ""),
+                    secondCompletion: {}
+                )
+                self?.alertPresenter?.showAlert(result: alertModel)
+            }
+            return UIMenu(title: "", children: [/*pinAction, */edit, delete])
         }
     }
 }

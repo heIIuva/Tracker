@@ -117,9 +117,7 @@ extension TrackerStore: TrackerStoreProtocol {
         coreData.emoji = newTracker.emoji
         coreData.color = uiColorMarshalling.hexString(from: newTracker.color)
         coreData.timeTable = newTracker.timeTable as NSObject
-        
-        print("tracker edited")
-        
+                
         appDelegate.saveContext()
     }
 }
