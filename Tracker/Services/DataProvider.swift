@@ -18,6 +18,7 @@ protocol DataProviderProtocol: AnyObject {
     func deleteRecord(record: TrackerRecord)
     func editCategory(_ category: String, to newCategory: String)
     func deleteTracker(_ tracker: Tracker)
+    func editTracker(tracker: UUID, to newTracker: Tracker, with category: String)
 }
 
 
@@ -88,6 +89,11 @@ extension DataProvider: DataProviderProtocol {
     
     func deleteTracker(_ tracker: Tracker) {
         trackerStore.deleteTrackerFromCoreData(tracker)
+    }
+    
+    func editTracker(tracker: UUID, to newTracker: Tracker, with category: String) {
+        trackerStore.editTracker(tracker: tracker, to: newTracker)
+        categoryStore?.updateTrackerCategory(tracker, category)
     }
 }
 

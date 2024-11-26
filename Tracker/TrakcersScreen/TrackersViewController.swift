@@ -387,6 +387,58 @@ extension TrackersViewController: UICollectionViewDataSource {
         
         return header
     }
+    
+    func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemsAt indexPaths: [IndexPath], point: CGPoint) -> UIContextMenuConfiguration? {
+        guard let indexPath = indexPaths.first else { return nil }
+        guard let cell = collectionView.cellForItem(at: indexPath) as? TrackerCollectionViewCell else { return nil }
+//        let pinActionTitle = cell.isPinned() ?
+//            Constants.AlertModelConstants.unpinActionTitle :
+//            Constants.AlertModelConstants.pinActionTitle
+//        let alertModel = AlertModel(message: Constants.AlertModelConstants.trackersAlertMessage,
+//                                    actionTitle: Constants.AlertModelConstants.deleteActionTitle)
+        return UIContextMenuConfiguration(
+            identifier: nil,
+            previewProvider: nil
+        ) { [weak self/*, weak cell*/] _ in
+//            let pinAction = UIAction(
+//                title: pinActionTitle
+//            ) { _ in
+//                    self?.viewModel.updatePinnedTracker(indexPath)
+//                    cell?.toggleCellPin()
+//                }
+            let editAction = UIAction(
+                title: "редактировать"
+            ) { _ in
+                let habitOrEventVC = NewHabitOrEventViewController(
+                    nibName: nil,
+                    bundle: nil,
+                    delegate: self ?? TrackersViewController(),
+                    isHabit: self?.visibleCategories[indexPath.section].trackers[indexPath.row].timeTable != [],
+                    dataProvider: DataProvider(
+                        categoryStore: TrackerCategoryStore(),
+                        recordStore: TrackerRecordStore()
+                    ),
+                    mode: .edit,
+                    tracker: self?.visibleCategories[indexPath.section].trackers[indexPath.row],
+                    category: self?.visibleCategories[indexPath.section]
+                )
+                let habitOrEventNC = UINavigationController(rootViewController: habitOrEventVC)
+                self?.present(habitOrEventNC, animated: true)
+            }
+//            let deleteAction = UIAction(
+//                title: Constants.AlertModelConstants.deleteActionTitle,
+//                attributes: .destructive
+//            ) { _ in
+//                self?.showAlertWithCancel(
+//                    with: alertModel,
+//                    alertStyle: .actionSheet,
+//                    actionStyle: .destructive
+//                ) { _ in
+//                    self?.viewModel.deleteTracker(indexPath)
+//                }
+            return UIMenu(title: "", children: [/*pinAction, */editAction/*, deleteAction*/])
+        }
+    }
 }
 
 //MARK: - TrackerCollectionViewCellDelegate
@@ -405,10 +457,10 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
 }
 
 //MARK: - TrackerCreationDelegate
-extension TrackersViewController: TrackerCreationDelegate {
+extension TrackersViewController: TrackerCreationDelegate, NewTrackerVCDelegate {
     
     func reloadCollectionView() {
-        visibleCategories = categories
+        categories = dataProvider?.getCategories() ?? []
         collectionView.reloadData()
         datePickerUpdated(datePicker)
     }

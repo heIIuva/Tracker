@@ -26,6 +26,7 @@
 		B52ADB1C2CED375200C6AC77 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B52ADB1A2CED375200C6AC77 /* Localizable.strings */; };
 		B52ADB202CED379500C6AC77 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = B52ADB1E2CED379500C6AC77 /* Localizable.stringsdict */; };
 		B53F2CF82CC483E60039F466 /* Calendar+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53F2CF72CC483DD0039F466 /* Calendar+Extensions.swift */; };
+		B558B5302CF64F3000EE28C2 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B558B52F2CF64F2600EE28C2 /* UIColor+Extensions.swift */; };
 		B5642A9B2CB6C67800B1942B /* NewHabitOrEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5642A9A2CB6C66800B1942B /* NewHabitOrEventViewController.swift */; };
 		B5642A9F2CB6EACF00B1942B /* UITextField+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5642A9E2CB6EAC200B1942B /* UITextField+Extensions.swift */; };
 		B56E653B2CE67C6800406DBE /* CategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56E653A2CE67C6300406DBE /* CategoryViewModel.swift */; };
@@ -52,6 +53,9 @@
 		B5AF9F262CBDC13500A263D8 /* TimeTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AF9F252CBDC12F00A263D8 /* TimeTableCell.swift */; };
 		B5AF9F282CBDC45D00A263D8 /* Weekday.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AF9F272CBDC45600A263D8 /* Weekday.swift */; };
 		B5C7C8F12CEE5F950023D51D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B5C7C8EF2CEE5F950023D51D /* InfoPlist.strings */; };
+		B5CA0F3D2CF60CC700F5BC90 /* StatisticsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CA0F3C2CF60CBF00F5BC90 /* StatisticsCell.swift */; };
+		B5CA0F3F2CF6105300F5BC90 /* StatiscticsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CA0F3E2CF6104D00F5BC90 /* StatiscticsStore.swift */; };
+		B5CA0F412CF6148400F5BC90 /* StatisticService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CA0F402CF6147B00F5BC90 /* StatisticService.swift */; };
 		B5D111B32CD80F9E00AEF71C /* DataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D111B22CD80F9600AEF71C /* DataProvider.swift */; };
 		B5D111B82CD81DDB00AEF71C /* UIColorMarshalling.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D111B72CD81DD300AEF71C /* UIColorMarshalling.swift */; };
 		B5D111BB2CD81E7D00AEF71C /* DaysValueTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D111BA2CD81E6E00AEF71C /* DaysValueTransformer.swift */; };
@@ -99,6 +103,7 @@
 		B52ADB1F2CED379500C6AC77 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		B52ADB212CED37A600C6AC77 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = ru; path = ru.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		B53F2CF72CC483DD0039F466 /* Calendar+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar+Extensions.swift"; sourceTree = "<group>"; };
+		B558B52F2CF64F2600EE28C2 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		B5642A9A2CB6C66800B1942B /* NewHabitOrEventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewHabitOrEventViewController.swift; sourceTree = "<group>"; };
 		B5642A9E2CB6EAC200B1942B /* UITextField+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extensions.swift"; sourceTree = "<group>"; };
 		B56E653A2CE67C6300406DBE /* CategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewModel.swift; sourceTree = "<group>"; };
@@ -125,6 +130,9 @@
 		B5AF9F272CBDC45600A263D8 /* Weekday.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weekday.swift; sourceTree = "<group>"; };
 		B5C7C8F02CEE5F950023D51D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		B5C7C8F22CEE5FB00023D51D /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		B5CA0F3C2CF60CBF00F5BC90 /* StatisticsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsCell.swift; sourceTree = "<group>"; };
+		B5CA0F3E2CF6104D00F5BC90 /* StatiscticsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatiscticsStore.swift; sourceTree = "<group>"; };
+		B5CA0F402CF6147B00F5BC90 /* StatisticService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticService.swift; sourceTree = "<group>"; };
 		B5D111B22CD80F9600AEF71C /* DataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataProvider.swift; sourceTree = "<group>"; };
 		B5D111B72CD81DD300AEF71C /* UIColorMarshalling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorMarshalling.swift; sourceTree = "<group>"; };
 		B5D111BA2CD81E6E00AEF71C /* DaysValueTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaysValueTransformer.swift; sourceTree = "<group>"; };
@@ -159,6 +167,7 @@
 		B500C9E82CC0274500163087 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				B5CA0F402CF6147B00F5BC90 /* StatisticService.swift */,
 				B58517D12CF3AA6400C29AD6 /* Flags.swift */,
 				B58517CF2CF2920F00C29AD6 /* AnalyticsService.swift */,
 				B56E653E2CE682AE00406DBE /* AlertPresenter.swift */,
@@ -249,6 +258,7 @@
 		B50ABA462CAD642400C251F0 /* StatisticsScreen */ = {
 			isa = PBXGroup;
 			children = (
+				B5CA0F3C2CF60CBF00F5BC90 /* StatisticsCell.swift */,
 				B50ABA492CAD646B00C251F0 /* StatisticsViewController.swift */,
 			);
 			path = StatisticsScreen;
@@ -327,6 +337,7 @@
 		B587A06C2CB015EE00DD98FD /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				B558B52F2CF64F2600EE28C2 /* UIColor+Extensions.swift */,
 				B5D111BA2CD81E6E00AEF71C /* DaysValueTransformer.swift */,
 				B5D111B72CD81DD300AEF71C /* UIColorMarshalling.swift */,
 				B5AF9F202CBD586800A263D8 /* Placeholder.swift */,
@@ -359,6 +370,7 @@
 		B5D111B42CD81D9300AEF71C /* Stores */ = {
 			isa = PBXGroup;
 			children = (
+				B5CA0F3E2CF6104D00F5BC90 /* StatiscticsStore.swift */,
 				B5D111BC2CD81EF500AEF71C /* TrackerStore.swift */,
 				B5D111BE2CD81F0200AEF71C /* TrackerCategoryStore.swift */,
 				B5D111C02CD81F0E00AEF71C /* TrackerRecordStore.swift */,
@@ -579,6 +591,8 @@
 				B56E65412CE6834D00406DBE /* AlertModel.swift in Sources */,
 				B58517D72CF59C2C00C29AD6 /* FilterViewModel.swift in Sources */,
 				B5D111BB2CD81E7D00AEF71C /* DaysValueTransformer.swift in Sources */,
+				B5CA0F3D2CF60CC700F5BC90 /* StatisticsCell.swift in Sources */,
+				B5CA0F3F2CF6105300F5BC90 /* StatiscticsStore.swift in Sources */,
 				B5AF9F262CBDC13500A263D8 /* TimeTableCell.swift in Sources */,
 				B50ABA3F2CAD487000C251F0 /* AppDelegate.swift in Sources */,
 				B5AF9F1F2CBD581100A263D8 /* CategoryViewController.swift in Sources */,
@@ -589,6 +603,7 @@
 				B5D111B82CD81DDB00AEF71C /* UIColorMarshalling.swift in Sources */,
 				B50A74DE2CCFD6FD001A23F3 /* Model.xcdatamodeld in Sources */,
 				B587A06E2CB0160A00DD98FD /* DateFormatter+Extensions.swift in Sources */,
+				B558B5302CF64F3000EE28C2 /* UIColor+Extensions.swift in Sources */,
 				B5D111C12CD81F1300AEF71C /* TrackerRecordStore.swift in Sources */,
 				B50ABA442CAD63B800C251F0 /* TabBarController.swift in Sources */,
 				B5AF9F282CBDC45D00A263D8 /* Weekday.swift in Sources */,
@@ -615,6 +630,7 @@
 				B5D111B32CD80F9E00AEF71C /* DataProvider.swift in Sources */,
 				B58517D22CF3AA6700C29AD6 /* Flags.swift in Sources */,
 				B5AF9F232CBD5A6500A263D8 /* TimeTableViewController.swift in Sources */,
+				B5CA0F412CF6148400F5BC90 /* StatisticService.swift in Sources */,
 				B514AE422CB566CF00490BEA /* UIView+Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

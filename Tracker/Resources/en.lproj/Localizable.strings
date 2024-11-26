@@ -64,6 +64,7 @@
 "editcategory" = "Edit category";
 "editaction" = "Edit";
 "categoryalertmessage" = "Surely this category is not needed?";
+"trackeredit" = "Edit Tracker";
 
 //Weekdays
 "everyday" = "Every day";

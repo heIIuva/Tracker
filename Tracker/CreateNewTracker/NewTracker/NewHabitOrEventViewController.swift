@@ -17,6 +17,12 @@ protocol CategoryViewModelDelegate: AnyObject {
 }
 
 
+enum TrackerMode {
+    case create
+    case edit
+}
+
+
 final class NewHabitOrEventViewController: UIViewController {
     
     //MARK: - Init
@@ -24,11 +30,17 @@ final class NewHabitOrEventViewController: UIViewController {
     init(
          nibName nibNameOrNil: String?,
          bundle nibBundleOrNil: Bundle?,
+         delegate: NewTrackerVCDelegate,
          isHabit: Bool,
-         dataProvider: DataProviderProtocol
+         dataProvider: DataProviderProtocol,
+         mode: TrackerMode,
+         tracker: Tracker?,
+         category: TrackerCategory?
     ) {
+        self.delegate = delegate
         self.dataProvider = dataProvider
         self.isHabit = isHabit
+        self.mode = mode
         self.tableCellTitle = isHabit ? [
             NSLocalizedString("category", comment: ""),
             NSLocalizedString("timetable", comment: "")
@@ -36,6 +48,7 @@ final class NewHabitOrEventViewController: UIViewController {
             NSLocalizedString("category", comment: "")
         ]
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        setupAppearanceForEditMode(mode, tracker, category)
     }
     
     required init?(coder: NSCoder) {
@@ -107,10 +120,6 @@ final class NewHabitOrEventViewController: UIViewController {
         button.layer.cornerRadius = 16
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
         button.titleLabel?.textColor = .white
-        button.setTitle(
-            NSLocalizedString("create", comment: ""),
-            for: .normal
-        )
         button.addTarget(
             self,
             action: #selector(didTapCreateButton),
@@ -228,15 +237,18 @@ final class NewHabitOrEventViewController: UIViewController {
                                     
     private var tableCellTitle: [String]
     
+    private var trackerId: UUID?
     private var trackerName: String = ""
     private var timeTable: Set<Weekday> = []
     private var selectedColor: UIColor = .clear
     private var selectedEmoji: String = ""
     
-    //TODO: - add category selection
+    private var currentCategory: String = ""
     private var categoryName: String = ""
     
     private var isHabit: Bool
+    
+    private var mode: TrackerMode
     
     //MARK: - Lifecycle methods
     
@@ -267,14 +279,40 @@ final class NewHabitOrEventViewController: UIViewController {
         ])
     }
     
+    private func setButtonTitle() {
+        switch mode {
+        case .create:
+            createButton.setTitle(
+                NSLocalizedString("create", comment: ""),
+                for: .normal
+            )
+        case .edit:
+            createButton.setTitle(
+                NSLocalizedString("editaction", comment: ""),
+                for: .normal
+            )
+        }
+    }
+    
+    private func setTitle() {
+        switch mode {
+        case .create:
+            self.title = isHabit ? NSLocalizedString(
+                "newhabit",
+                comment: ""
+            ) : NSLocalizedString(
+                "newevent",
+                comment: ""
+            )
+        case .edit:
+            self.title = NSLocalizedString("trackeredit", comment: "")
+        }
+    }
+    
     func setupUI() {
-        self.title = isHabit ? NSLocalizedString(
-            "newhabit",
-            comment: ""
-        ) : NSLocalizedString(
-            "newevent",
-            comment: ""
-        )
+        setTitle()
+        setButtonTitle()
+
         view.backgroundColor = .systemBackground
         view.addSubview(scrollView)
         scrollView.addSubviews(textFieldStackView,
@@ -331,7 +369,6 @@ final class NewHabitOrEventViewController: UIViewController {
     }
     
     private func checkIfAllFieldsAreFilled() {
-        //TODO: - category check
         if isHabit {
             guard
                 !trackerName.isEmpty,
@@ -350,7 +387,6 @@ final class NewHabitOrEventViewController: UIViewController {
         enableCreateButton()
     }
     
-    //TODO: - category sprint 16
     private func createNewTracker() {
         let tracker = Tracker(id: UUID(),
                               name: self.trackerName,
@@ -361,6 +397,62 @@ final class NewHabitOrEventViewController: UIViewController {
         dataProvider?.addTrackerToCategory(tracker: tracker, category: categoryName)
     }
     
+    private func editTracker() {
+        guard let trackerId else { return }
+        
+        checkIfAllFieldsAreFilled()
+        
+        let tracker = Tracker(
+            id: trackerId,
+            name: self.trackerName,
+            color: self.selectedColor,
+            emoji: self.selectedEmoji,
+            timeTable: isHabit ? Array(self.timeTable) : []
+        )
+        
+        dataProvider?.editTracker(
+            tracker: trackerId,
+            to: tracker,
+            with: categoryName
+        )
+    }
+    
+    private func setupAppearanceForEditMode(
+        _ mode: TrackerMode,
+        _ tracker: Tracker?,
+        _ category: TrackerCategory?
+    ) {
+        guard
+            let tracker,
+            let category,
+            mode == .edit
+        else { return }
+        
+        self.trackerId = tracker.id
+        
+        self.trackerName = tracker.name
+        self.textField.text = tracker.name
+        
+        self.currentCategory = category.title
+        self.categoryName = category.title
+        
+        self.timeTable = Set(tracker.timeTable)
+        
+        self.selectedEmojiIndex = IndexPath(
+            item: emojis.firstIndex(of: tracker.emoji) ?? 0,
+            section: 0
+        )
+        self.selectedEmoji = tracker.emoji
+        
+        self.selectedColorIndex = IndexPath(
+            item: colors.firstIndex(where: {
+                UIColor.hex(from: $0) == UIColor.hex(from: tracker.color)
+            }) ?? 0,
+            section: 0
+        )
+        self.selectedColor = tracker.color
+    }
+    
     //MARK: - Obj-C methods
     
     @objc private func didTapCancelButton() {
@@ -368,7 +460,13 @@ final class NewHabitOrEventViewController: UIViewController {
     }
     
     @objc private func didTapCreateButton() {
-        createNewTracker()
+        switch mode {
+        case .create:
+            createNewTracker()
+        case .edit:
+            self.editTracker()
+        }
+        
         dismiss(animated: true)
         delegate?.reloadCollectionView()
     }
@@ -619,3 +717,4 @@ extension NewHabitOrEventViewController: UICollectionViewDelegate {
         }
     }
 }
+

@@ -182,7 +182,6 @@ final class CategoryViewController: UIViewController {
         tableView.isHidden = true
         textField.isHidden = true
         addCategoryButton.isHidden = false
-        print("switched to onboarding state")
     }
     
     private func selectCategoryState() {
@@ -192,7 +191,6 @@ final class CategoryViewController: UIViewController {
         tableView.isHidden = false
         textField.isHidden = true
         placeholder.removePlaceholder()
-        print("switched to select category state")
     }
     
     private func addCategoryState() {
@@ -202,7 +200,6 @@ final class CategoryViewController: UIViewController {
         tableView.isHidden = true
         textField.isHidden = false
         placeholder.removePlaceholder()
-        print("switched to add category state")
     }
     
     private func editingState() {
@@ -212,7 +209,6 @@ final class CategoryViewController: UIViewController {
         tableView.isHidden = true
         textField.isHidden = false
         placeholder.removePlaceholder()
-        print("switched to editing state")
     }
     
     //MARK: - Binding methods

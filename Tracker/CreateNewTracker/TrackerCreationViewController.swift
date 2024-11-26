@@ -90,12 +90,16 @@ final class TrackerCreationViewController: UIViewController {
         let newHabitOrEventVC = NewHabitOrEventViewController(
             nibName: nil,
             bundle: nil,
+            delegate: self,
             isHabit: true,
             dataProvider: DataProvider(
                 categoryStore: TrackerCategoryStore(),
                 recordStore: TrackerRecordStore()
-            ))
-        newHabitOrEventVC.delegate = self
+            ),
+            mode: .create,
+            tracker: nil,
+            category: nil
+        )
         self.present(UINavigationController(rootViewController: newHabitOrEventVC), animated: true, completion: nil)
     }
     
@@ -103,12 +107,16 @@ final class TrackerCreationViewController: UIViewController {
         let newHabitOrEventVC = NewHabitOrEventViewController(
             nibName: nil,
             bundle: nil,
+            delegate: self,
             isHabit: false,
             dataProvider: DataProvider(
                 categoryStore: TrackerCategoryStore(),
                 recordStore: TrackerRecordStore()
-            ))
-        newHabitOrEventVC.delegate = self
+            ),
+            mode: .create,
+            tracker: nil,
+            category: nil
+        )
         self.present(UINavigationController(rootViewController: newHabitOrEventVC), animated: true, completion: nil)
     }
 }

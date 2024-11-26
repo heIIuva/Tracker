@@ -12,7 +12,11 @@ final class StatisticsViewController: UIViewController {
     
     //MARK: - Properties
     
-    
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView()
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        return tableView
+    }()
     
     //MARK: - Lifecycle methods
     

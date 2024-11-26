@@ -15,6 +15,7 @@ protocol TrackerStoreProtocol: AnyObject {
     func fetchTrackerCoreData(from tracker: Tracker) -> TrackerCoreData
     func fetchTrackerFromCoreDataById(_ id: UUID) -> TrackerCoreData?
     func deleteTrackerFromCoreData(_ tracker: Tracker)
+    func editTracker(tracker: UUID, to newTracker: Tracker)
 }
 
 
@@ -47,7 +48,7 @@ final class TrackerStore: NSObject {
     static let shared = TrackerStore()
     
     //MARK: - Properties
-    
+        
     private let appDelegate: AppDelegate
     private let uiColorMarshalling = UIColorMarshalling.shared
     private let context: NSManagedObjectContext
@@ -99,6 +100,26 @@ extension TrackerStore: TrackerStoreProtocol {
     func deleteTrackerFromCoreData(_ tracker: Tracker) {
         guard let trackerToDelete = fetchTrackerFromCoreDataById(tracker.id) else { return }
         context.delete(trackerToDelete)
+        appDelegate.saveContext()
+    }
+    
+    func editTracker(tracker: UUID, to newTracker: Tracker) {
+        let request = TrackerCoreData.fetchRequest()
+        request.predicate = NSPredicate(format: "id == %@",
+                                        tracker as CVarArg)
+
+        guard let coreData = try? context.fetch(request).first
+        else {
+            return
+        }
+        
+        coreData.name = newTracker.name
+        coreData.emoji = newTracker.emoji
+        coreData.color = uiColorMarshalling.hexString(from: newTracker.color)
+        coreData.timeTable = newTracker.timeTable as NSObject
+        
+        print("tracker edited")
+        
         appDelegate.saveContext()
     }
 }
