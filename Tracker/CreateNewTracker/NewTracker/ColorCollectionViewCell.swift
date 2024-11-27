@@ -39,7 +39,6 @@ final class ColorCollectionViewCell: UICollectionViewCell {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = 8
         view.layer.borderWidth = 0
-//        view.layer.borderColor = UIColor.clear.cgColor
         view.layer.masksToBounds = true
         view.backgroundColor = .clear
         return view

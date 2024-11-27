@@ -54,8 +54,6 @@
 		B5AF9F282CBDC45D00A263D8 /* Weekday.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AF9F272CBDC45600A263D8 /* Weekday.swift */; };
 		B5C7C8F12CEE5F950023D51D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B5C7C8EF2CEE5F950023D51D /* InfoPlist.strings */; };
 		B5CA0F3D2CF60CC700F5BC90 /* StatisticsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CA0F3C2CF60CBF00F5BC90 /* StatisticsCell.swift */; };
-		B5CA0F3F2CF6105300F5BC90 /* StatiscticsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CA0F3E2CF6104D00F5BC90 /* StatiscticsStore.swift */; };
-		B5CA0F412CF6148400F5BC90 /* StatisticService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CA0F402CF6147B00F5BC90 /* StatisticService.swift */; };
 		B5D111B32CD80F9E00AEF71C /* DataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D111B22CD80F9600AEF71C /* DataProvider.swift */; };
 		B5D111B82CD81DDB00AEF71C /* UIColorMarshalling.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D111B72CD81DD300AEF71C /* UIColorMarshalling.swift */; };
 		B5D111BB2CD81E7D00AEF71C /* DaysValueTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D111BA2CD81E6E00AEF71C /* DaysValueTransformer.swift */; };
@@ -132,8 +130,6 @@
 		B5C7C8F02CEE5F950023D51D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		B5C7C8F22CEE5FB00023D51D /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		B5CA0F3C2CF60CBF00F5BC90 /* StatisticsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsCell.swift; sourceTree = "<group>"; };
-		B5CA0F3E2CF6104D00F5BC90 /* StatiscticsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatiscticsStore.swift; sourceTree = "<group>"; };
-		B5CA0F402CF6147B00F5BC90 /* StatisticService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticService.swift; sourceTree = "<group>"; };
 		B5D111B22CD80F9600AEF71C /* DataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataProvider.swift; sourceTree = "<group>"; };
 		B5D111B72CD81DD300AEF71C /* UIColorMarshalling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorMarshalling.swift; sourceTree = "<group>"; };
 		B5D111BA2CD81E6E00AEF71C /* DaysValueTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaysValueTransformer.swift; sourceTree = "<group>"; };
@@ -169,7 +165,6 @@
 		B500C9E82CC0274500163087 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				B5CA0F402CF6147B00F5BC90 /* StatisticService.swift */,
 				B58517D12CF3AA6400C29AD6 /* Flags.swift */,
 				B58517CF2CF2920F00C29AD6 /* AnalyticsService.swift */,
 				B56E653E2CE682AE00406DBE /* AlertPresenter.swift */,
@@ -373,7 +368,6 @@
 		B5D111B42CD81D9300AEF71C /* Stores */ = {
 			isa = PBXGroup;
 			children = (
-				B5CA0F3E2CF6104D00F5BC90 /* StatiscticsStore.swift */,
 				B5D111BC2CD81EF500AEF71C /* TrackerStore.swift */,
 				B5D111BE2CD81F0200AEF71C /* TrackerCategoryStore.swift */,
 				B5D111C02CD81F0E00AEF71C /* TrackerRecordStore.swift */,
@@ -596,7 +590,6 @@
 				B58517D72CF59C2C00C29AD6 /* FilterViewModel.swift in Sources */,
 				B5D111BB2CD81E7D00AEF71C /* DaysValueTransformer.swift in Sources */,
 				B5CA0F3D2CF60CC700F5BC90 /* StatisticsCell.swift in Sources */,
-				B5CA0F3F2CF6105300F5BC90 /* StatiscticsStore.swift in Sources */,
 				B5AF9F262CBDC13500A263D8 /* TimeTableCell.swift in Sources */,
 				B50ABA3F2CAD487000C251F0 /* AppDelegate.swift in Sources */,
 				B5AF9F1F2CBD581100A263D8 /* CategoryViewController.swift in Sources */,
@@ -634,7 +627,6 @@
 				B5D111B32CD80F9E00AEF71C /* DataProvider.swift in Sources */,
 				B58517D22CF3AA6700C29AD6 /* Flags.swift in Sources */,
 				B5AF9F232CBD5A6500A263D8 /* TimeTableViewController.swift in Sources */,
-				B5CA0F412CF6148400F5BC90 /* StatisticService.swift in Sources */,
 				B514AE422CB566CF00490BEA /* UIView+Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

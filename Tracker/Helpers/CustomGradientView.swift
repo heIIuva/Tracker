@@ -8,10 +8,9 @@
 import UIKit
 
 final class CustomGradientView: UIView {
-    private let gradientLayer = CAGradientLayer()
-    private let maskLayer = CAShapeLayer()
-    private let borderLayer = CAShapeLayer()
 
+    //MARK: - init
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupGradient()
@@ -21,6 +20,14 @@ final class CustomGradientView: UIView {
         super.init(coder: coder)
         setupGradient()
     }
+    
+    //MARK: - Properties
+    
+    private let gradientLayer = CAGradientLayer()
+    private let maskLayer = CAShapeLayer()
+    private let borderLayer = CAShapeLayer()
+    
+    //MARK: - Methods
 
     private func setupGradient() {
         gradientLayer.colors = [

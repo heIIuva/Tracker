@@ -81,6 +81,5 @@ final class StatisticsCell: UITableViewCell {
     func configureCell(counter: Int, title: String) {
         self.counter.text = "\(counter)"
         self.title.text = title
-        print("called")
     }
 }
