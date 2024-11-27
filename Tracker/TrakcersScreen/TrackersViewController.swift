@@ -516,48 +516,30 @@ extension TrackersViewController: UICollectionViewDataSource {
         contextMenuConfiguration configuration: UIContextMenuConfiguration,
         highlightPreviewForItemAt indexPath: IndexPath
     ) -> UITargetedPreview? {
-        <#code#>
+        guard let cell = collectionView.cellForItem(at: indexPath) as? TrackerCollectionViewCell else { return nil }
+        let parameters = UIPreviewParameters()
+        parameters.backgroundColor = .clear
+        let preview = UITargetedPreview(
+            view: cell.preview(),
+            parameters: parameters
+        )
+        return preview
     }
-    
+
     func collectionView(
         _ collectionView: UICollectionView,
         contextMenuConfiguration configuration: UIContextMenuConfiguration,
         dismissalPreviewForItemAt indexPath: IndexPath
     ) -> UITargetedPreview? {
-        <#code#>
+        guard let cell = collectionView.cellForItem(at: indexPath) as? TrackerCollectionViewCell else { return nil }
+        let parameters = UIPreviewParameters()
+        parameters.backgroundColor = .clear
+        let preview = UITargetedPreview(
+            view: cell.preview(),
+            parameters: parameters
+        )
+        return preview
     }
-    
-//    func collectionView(
-//        _ collectionView: UICollectionView
-//        , previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration
-//    ) -> UITargetedPreview? {
-//
-//        guard let indexPath = configuration.identifier as? IndexPath else { return nil }
-//        guard let cell = collectionView.cellForItem(at: indexPath) as? TrackerCollectionViewCell else { return nil }
-//        let parameters = UIPreviewParameters()
-//        parameters.backgroundColor = .clear
-//        let preview = UITargetedPreview(
-//            view: cell.preview(),
-//            parameters: parameters
-//        )
-//        return preview
-//    }
-//    
-//    func collectionView(
-//        _ collectionView: UICollectionView,
-//        previewForDismissingContextMenuWithConfiguration configuration: UIContextMenuConfiguration
-//    ) -> UITargetedPreview? {
-//        
-//        guard let indexPath = configuration.identifier as? IndexPath else { return nil }
-//        guard let cell = collectionView.cellForItem(at: indexPath) as? TrackerCollectionViewCell else { return nil }
-//        let parameters = UIPreviewParameters()
-//        parameters.backgroundColor = .clear
-//        let preview = UITargetedPreview(
-//            view: cell.preview(),
-//            parameters: parameters
-//        )
-//        return preview
-//    }
 }
 
 //MARK: - TrackerCollectionViewCellDelegate
