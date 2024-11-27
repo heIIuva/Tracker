@@ -19,6 +19,7 @@ protocol DataProviderProtocol: AnyObject {
     func editCategory(_ category: String, to newCategory: String)
     func deleteTracker(_ tracker: Tracker)
     func editTracker(tracker: UUID, to newTracker: Tracker, with category: String)
+    func togglePinTracker(_ tracker: UUID)
 }
 
 
@@ -94,6 +95,15 @@ extension DataProvider: DataProviderProtocol {
     func editTracker(tracker: UUID, to newTracker: Tracker, with category: String) {
         trackerStore.editTracker(tracker: tracker, to: newTracker)
         categoryStore?.updateTrackerCategory(tracker, category)
+    }
+    
+    func togglePinTracker(_ tracker: UUID) {
+        let trackerCoreData = trackerStore.fetchTrackerFromCoreDataById(tracker)
+        if trackerCoreData?.category?.title == NSLocalizedString("pinned", comment: "") {
+            categoryStore?.unpinTracker(tracker)
+        } else {
+            categoryStore?.pinTracker(tracker, NSLocalizedString("pinned", comment: ""))
+        }
     }
 }
 

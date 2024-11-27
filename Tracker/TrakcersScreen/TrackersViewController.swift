@@ -204,6 +204,18 @@ final class TrackersViewController: UIViewController {
         }
     }
     
+    func isPinned(_ tracker: UUID) -> Bool {
+        let pinnedCategory = visibleCategories.first(where: { $0.title == NSLocalizedString("pinned", comment: "") })
+        
+        let pinnedTrackers = pinnedCategory?.trackers ?? []
+        
+        if pinnedTrackers.contains(where: { $0.id == tracker }) {
+            return true
+        } else {
+            return false
+        }
+    }
+    
     //MARK: - Obj-C Methods
     
     @objc private func datePickerUpdated(_ sender: UIDatePicker) {
@@ -379,6 +391,8 @@ extension TrackersViewController: UICollectionViewDataSource {
         
         cell.delegate = self
         
+        let trackerId = visibleCategories[indexPath.section].trackers[indexPath.row].id
+        
         let isCompleted = completedTrackers.contains(where: {
             $0.id == visibleCategories[indexPath.section].trackers[indexPath.row].id &&
             calendar.numberOfDaysBetween($0.date, and: currentDate) == 0})
@@ -387,7 +401,8 @@ extension TrackersViewController: UICollectionViewDataSource {
         cell.setupCell(trackers: visibleCategories[indexPath.section].trackers,
                        indexPath: indexPath,
                        isCompleted: isCompleted,
-                       counter: counter)
+                       counter: counter,
+                       isPinned: isPinned(trackerId))
         
         return cell
     }
@@ -406,29 +421,35 @@ extension TrackersViewController: UICollectionViewDataSource {
         return header
     }
     
-    func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemsAt indexPaths: [IndexPath], point: CGPoint) -> UIContextMenuConfiguration? {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        contextMenuConfigurationForItemsAt indexPaths: [IndexPath],
+        point: CGPoint
+    ) -> UIContextMenuConfiguration? {
+        
         guard let indexPath = indexPaths.first else { return nil }
         guard let cell = collectionView.cellForItem(at: indexPath) as? TrackerCollectionViewCell else { return nil }
         
         let category = visibleCategories[indexPath.section]
         let tracker = visibleCategories[indexPath.section].trackers[indexPath.row]
-//        let pinActionTitle = cell.isPinned() ?
-//            Constants.AlertModelConstants.unpinActionTitle :
-//            Constants.AlertModelConstants.pinActionTitle
-//        let alertModel = AlertModel(message: Constants.AlertModelConstants.trackersAlertMessage,
-//                                    actionTitle: Constants.AlertModelConstants.deleteActionTitle)
+        
+        let pinTitle = cell.isCellPinned() ? NSLocalizedString("unpin", comment: "") : NSLocalizedString("pin", comment: "")
+        let pinImage = cell.isCellPinned() ? UIImage(systemName: "pin.slash.fill") : UIImage(systemName: "pin.fill")
+        
         return UIContextMenuConfiguration(
             identifier: nil,
             previewProvider: nil
-        ) { [weak self/*, weak cell*/] _ in
-//            let pinAction = UIAction(
-//                title: pinActionTitle
-//            ) { _ in
-//                    self?.viewModel.updatePinnedTracker(indexPath)
-//                    cell?.toggleCellPin()
-//                }
+        ) { [weak self] _ in
+            let pin = UIAction(
+                title: pinTitle,
+                image:  pinImage
+            ) { _ in
+                self?.dataProvider?.togglePinTracker(tracker.id)
+                self?.update()
+                }
             let edit = UIAction(
-                title: NSLocalizedString("edit", comment: "")
+                title: NSLocalizedString("edit", comment: ""),
+                image: UIImage(systemName: "pencil")
             ) { _ in
                 self?.analyticsService.trackEvent(
                     "tap",
@@ -453,6 +474,7 @@ extension TrackersViewController: UICollectionViewDataSource {
             }
             let delete = UIAction(
                 title: NSLocalizedString("delete", comment: ""),
+                image: UIImage(systemName: "trash"),
                 attributes: .destructive
             ) { _ in
                 self?.analyticsService.trackEvent(
@@ -485,9 +507,57 @@ extension TrackersViewController: UICollectionViewDataSource {
                 )
                 self?.alertPresenter?.showAlert(result: alertModel)
             }
-            return UIMenu(title: "", children: [/*pinAction, */edit, delete])
+            return UIMenu(title: "", children: [pin, edit, delete])
         }
     }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        contextMenuConfiguration configuration: UIContextMenuConfiguration,
+        highlightPreviewForItemAt indexPath: IndexPath
+    ) -> UITargetedPreview? {
+        <#code#>
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        contextMenuConfiguration configuration: UIContextMenuConfiguration,
+        dismissalPreviewForItemAt indexPath: IndexPath
+    ) -> UITargetedPreview? {
+        <#code#>
+    }
+    
+//    func collectionView(
+//        _ collectionView: UICollectionView
+//        , previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration
+//    ) -> UITargetedPreview? {
+//
+//        guard let indexPath = configuration.identifier as? IndexPath else { return nil }
+//        guard let cell = collectionView.cellForItem(at: indexPath) as? TrackerCollectionViewCell else { return nil }
+//        let parameters = UIPreviewParameters()
+//        parameters.backgroundColor = .clear
+//        let preview = UITargetedPreview(
+//            view: cell.preview(),
+//            parameters: parameters
+//        )
+//        return preview
+//    }
+//    
+//    func collectionView(
+//        _ collectionView: UICollectionView,
+//        previewForDismissingContextMenuWithConfiguration configuration: UIContextMenuConfiguration
+//    ) -> UITargetedPreview? {
+//        
+//        guard let indexPath = configuration.identifier as? IndexPath else { return nil }
+//        guard let cell = collectionView.cellForItem(at: indexPath) as? TrackerCollectionViewCell else { return nil }
+//        let parameters = UIPreviewParameters()
+//        parameters.backgroundColor = .clear
+//        let preview = UITargetedPreview(
+//            view: cell.preview(),
+//            parameters: parameters
+//        )
+//        return preview
+//    }
 }
 
 //MARK: - TrackerCollectionViewCellDelegate

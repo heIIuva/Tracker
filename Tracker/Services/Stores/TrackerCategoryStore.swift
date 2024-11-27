@@ -17,6 +17,8 @@ protocol TrackerCategoryStoreProtocol: AnyObject {
     func deleteCategoryFromCoreData(_ category: String)
     func editCategory(_ category: String, to newCategory: String)
     func updateTrackerCategory(_ tracker: UUID, _ category: String)
+    func pinTracker(_ tracker: UUID, _ category: String)
+    func unpinTracker(_ tracker: UUID)
 }
 
 
@@ -124,6 +126,7 @@ extension TrackerCategoryStore: TrackerCategoryStoreProtocol {
     
     func addTrackerToCategory(_ tracker: Tracker, _ category: String) {
         let trackerCoreData = trackerStore.fetchTrackerCoreData(from: tracker)
+        trackerCoreData.lastCategory = category
         guard
             let category = fetchCategoryCoreData(from: category),
             let trackers = category.trackersInCategory as? Set<TrackerCoreData>
@@ -180,6 +183,42 @@ extension TrackerCategoryStore: TrackerCategoryStoreProtocol {
         }
         
         coreData.title = newCategory
+        
+        appDelegate.saveContext()
+    }
+    
+    func pinTracker(_ tracker: UUID, _ category: String) {
+        let request = TrackerCategoryCoreData.fetchRequest()
+        request.predicate = NSPredicate(format: "title == %@",
+                                        category as CVarArg)
+        if let trackerCoreData = trackerStore.fetchTrackerFromCoreDataById(tracker) {
+            guard
+                let category = try? context.fetch(request).first
+            else {
+                let newCategory = TrackerCategoryCoreData(context: context)
+                newCategory.title = category
+                newCategory.trackersInCategory = NSSet(array: [trackerCoreData])
+                appDelegate.saveContext()
+                return
+            }
+            
+            trackerCoreData.lastCategory = trackerCoreData.category?.title
+            trackerCoreData.category = category
+                        
+            appDelegate.saveContext()
+        }
+    }
+    
+    func unpinTracker(_ tracker: UUID) {
+        guard
+            let trackerCoreData = trackerStore.fetchTrackerFromCoreDataById(tracker)
+        else {
+            return
+        }
+        
+        guard let category = trackerCoreData.lastCategory else { return }
+                
+        updateTrackerCategory(tracker, category)
         
         appDelegate.saveContext()
     }

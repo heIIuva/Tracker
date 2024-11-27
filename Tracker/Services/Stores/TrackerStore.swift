@@ -82,7 +82,6 @@ extension TrackerStore: TrackerStoreProtocol {
         trackerCoreData.emoji = tracker.emoji
         trackerCoreData.color = uiColorMarshalling.hexString(from: tracker.color)
         trackerCoreData.timeTable = tracker.timeTable as NSObject
-        print(trackerCoreData)
         return trackerCoreData
     }
     

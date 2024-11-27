@@ -79,6 +79,14 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         return button
     }()
     
+    private lazy var pinImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = UIImage(systemName: "pin.fill")
+        imageView.tintColor = .systemBackground
+        return imageView
+    }()
+    
     //MARK: - Properties
     
     private let analyticsService = AnalyticsService()
@@ -88,11 +96,12 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     private var id: UUID? = nil
     private var isCompleted: Bool = false
     private var counter: Int = 0
+    private var isPinned: Bool = false
     
     //MARK: - Methods
     
     private func layoutCell() {
-        bodyView.addSubviews(emojiView, emojiLabel, trackerLabel)
+        bodyView.addSubviews(emojiView, emojiLabel, trackerLabel, pinImageView)
         addSubviews(bodyView, completeTrackerButton, trackerCounterLabel)
         
         NSLayoutConstraint.activate([
@@ -121,8 +130,18 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
             completeTrackerButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
             completeTrackerButton.topAnchor.constraint(equalTo: bodyView.bottomAnchor, constant: 8),
             
-            trackerCounterLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
-            trackerCounterLabel.topAnchor.constraint(equalTo: bodyView.bottomAnchor, constant: 16)
+            trackerCounterLabel.leadingAnchor.constraint(equalTo: leadingAnchor,
+                                                         constant: 12),
+            trackerCounterLabel.topAnchor.constraint(equalTo: bodyView.bottomAnchor,
+                                                     constant: 16),
+            
+            pinImageView.trailingAnchor.constraint(equalTo: bodyView.trailingAnchor,
+                                                   constant: -12),
+            pinImageView.topAnchor.constraint(equalTo: bodyView.topAnchor,
+                                              constant: 18),
+            pinImageView.heightAnchor.constraint(equalToConstant: 12),
+            pinImageView.widthAnchor.constraint(equalToConstant: 12)
+            
         ])
     }
     
@@ -146,7 +165,24 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    func setupCell(trackers: [Tracker], indexPath: IndexPath, isCompleted: Bool, counter: Int) {
+    private func togglePinCell(isPinned: Bool) {
+        self.isPinned = isPinned
+        switch isPinned {
+        case true:
+            pinImageView.isHidden = false
+        case false:
+            pinImageView.isHidden = true
+        }
+    }
+
+    
+    func setupCell(
+        trackers: [Tracker],
+        indexPath: IndexPath,
+        isCompleted: Bool,
+        counter: Int,
+        isPinned: Bool
+    ) {
         self.bodyView.backgroundColor = trackers[indexPath.row].color
         self.emojiLabel.text = trackers[indexPath.row].emoji
         self.trackerLabel.text = trackers[indexPath.row].name
@@ -159,8 +195,18 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         
         self.isCompleted = isCompleted
         self.counter = counter
+        self.isPinned = isPinned
         
         updateCompleteTrackerButton(isCompleted: isCompleted)
+        togglePinCell(isPinned: isPinned)
+    }
+    
+    func isCellPinned() -> Bool {
+        return isPinned
+    }
+    
+    func preview() -> UIView {
+        return bodyView
     }
     
     //MARK: - Obj-C methods
