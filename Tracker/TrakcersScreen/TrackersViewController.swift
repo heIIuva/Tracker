@@ -193,7 +193,6 @@ final class TrackersViewController: UIViewController {
         categories = dataProvider?.getCategories(.trackerVC) ?? []
         visibleCategories = categories
         datePickerUpdated(datePicker)
-//        sortCategories()
     }
     
     //MARK: - Methods
@@ -395,9 +394,7 @@ extension TrackersViewController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: trackerCellReuseIdentifier, for: indexPath) as? TrackerCollectionViewCell else { return UICollectionViewCell() }
         
         cell.delegate = self
-        
-//        sortCategories()
-        
+                
         let trackerId = visibleCategories[indexPath.section].trackers[indexPath.row].id
         
         let isCompleted = completedTrackers.contains(where: {

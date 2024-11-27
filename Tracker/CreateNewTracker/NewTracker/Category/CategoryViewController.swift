@@ -221,10 +221,6 @@ final class CategoryViewController: UIViewController {
     
     private func updateTableView() {
         categories = viewModel.categories()
-//        categories?.removeAll(where: { $0.title == NSLocalizedString(
-//            "pinned",
-//            comment: ""
-//        )})
         tableView.reloadData()
     }
     
@@ -266,11 +262,6 @@ extension CategoryViewController: UITableViewDataSource {
         _ tableView: UITableView,
         cellForRowAt indexPath: IndexPath
     ) -> UITableViewCell {
-        
-//        categories?.removeAll(where: { $0.title == NSLocalizedString(
-//            "pinned",
-//            comment: ":"
-//        )})
         
         guard let categories else { return UITableViewCell() }
         
