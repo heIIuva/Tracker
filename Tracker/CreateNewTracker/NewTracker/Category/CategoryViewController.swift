@@ -113,6 +113,11 @@ final class CategoryViewController: UIViewController {
         self.alertPresenter = alertPresenter
         
         self.categories = viewModel.categories()
+        self.categories?.removeAll(where: { $0.title == NSLocalizedString(
+            "pinned",
+            comment: ":"
+        )})
+        
         setupUI()
         bind()
         switchDoneButtonState(false)
@@ -220,6 +225,10 @@ final class CategoryViewController: UIViewController {
     
     private func updateTableView() {
         categories = viewModel.categories()
+        categories?.removeAll(where: { $0.title == NSLocalizedString(
+            "pinned",
+            comment: ":"
+        )})
         tableView.reloadData()
     }
     
