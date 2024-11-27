@@ -279,9 +279,27 @@ extension TrackersViewController: UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {
         
-        guard let searchText = searchController.searchBar.text?.lowercased(),
-              searchText.count > 2 else { return }
+        isSearch = true
         
+        if let searchText = searchController.searchBar.text, !searchText.isEmpty {
+            visibleCategories = categories.compactMap { category in
+                let filteredTrackers = category.trackers.filter { tracker in
+                    tracker.name.lowercased().contains(searchText.lowercased())
+                }
+                if filteredTrackers.isEmpty {
+                    return nil 
+                } else {
+                    return TrackerCategory(
+                        title: category.title,
+                        trackers: filteredTrackers
+                    )
+                }
+            }
+            collectionView.reloadData()
+        } else {
+            visibleCategories = categories
+            datePickerUpdated(datePicker)
+        }
     }
 }
 
@@ -290,12 +308,14 @@ extension TrackersViewController: UISearchControllerDelegate {
     
     func willPresentSearchController(_ searchController: UISearchController) {
         analyticsService.trackEvent("tap", ["screen": "TrackerVC", "item": "searchbar"])
-        
+
         isSearch = true
         collectionView.reloadData()
     }
     
     func willDismissSearchController(_ searchController: UISearchController) {
+        analyticsService.trackEvent("dismiss", ["screen": "TrackerVC", "item": "searchbar"])
+        
         datePickerUpdated(datePicker)
         isSearch = false
         collectionView.reloadData()

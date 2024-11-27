@@ -34,6 +34,8 @@ final class TabBarController: UITabBarController {
         
         let statisticsNavigationController = UINavigationController(rootViewController: statisticsViewController)
         statisticsNavigationController.navigationBar.prefersLargeTitles = true
+        statisticsViewController.view.backgroundColor = .systemBackground
+        statisticsNavigationController.navigationBar.backgroundColor = .systemBackground
         
         setViewControllers([trackersNavigationController, statisticsNavigationController], animated: true)
     }

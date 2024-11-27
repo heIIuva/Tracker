@@ -90,3 +90,6 @@
 //Pinned category
 "pinned" = "Pinned";
 
+
+//Statistics
+"completedtrackers" = "Completed trackers";

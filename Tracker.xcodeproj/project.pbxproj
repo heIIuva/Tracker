@@ -62,6 +62,7 @@
 		B5D111BD2CD81EFD00AEF71C /* TrackerStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D111BC2CD81EF500AEF71C /* TrackerStore.swift */; };
 		B5D111BF2CD81F0900AEF71C /* TrackerCategoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D111BE2CD81F0200AEF71C /* TrackerCategoryStore.swift */; };
 		B5D111C12CD81F1300AEF71C /* TrackerRecordStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D111C02CD81F0E00AEF71C /* TrackerRecordStore.swift */; };
+		B5DECE582CF79E8A0033EFFB /* CustomGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DECE572CF79E840033EFFB /* CustomGradientView.swift */; };
 		F3B2FEFFCCE8E620554AA377 /* Pods_TrackerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDB0227D04454619212065D1 /* Pods_TrackerTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -139,6 +140,7 @@
 		B5D111BC2CD81EF500AEF71C /* TrackerStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerStore.swift; sourceTree = "<group>"; };
 		B5D111BE2CD81F0200AEF71C /* TrackerCategoryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCategoryStore.swift; sourceTree = "<group>"; };
 		B5D111C02CD81F0E00AEF71C /* TrackerRecordStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerRecordStore.swift; sourceTree = "<group>"; };
+		B5DECE572CF79E840033EFFB /* CustomGradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomGradientView.swift; sourceTree = "<group>"; };
 		BDB0227D04454619212065D1 /* Pods_TrackerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TrackerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -337,6 +339,7 @@
 		B587A06C2CB015EE00DD98FD /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				B5DECE572CF79E840033EFFB /* CustomGradientView.swift */,
 				B558B52F2CF64F2600EE28C2 /* UIColor+Extensions.swift */,
 				B5D111BA2CD81E6E00AEF71C /* DaysValueTransformer.swift */,
 				B5D111B72CD81DD300AEF71C /* UIColorMarshalling.swift */,
@@ -588,6 +591,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B50ABA482CAD645300C251F0 /* TrackersViewController.swift in Sources */,
+				B5DECE582CF79E8A0033EFFB /* CustomGradientView.swift in Sources */,
 				B56E65412CE6834D00406DBE /* AlertModel.swift in Sources */,
 				B58517D72CF59C2C00C29AD6 /* FilterViewModel.swift in Sources */,
 				B5D111BB2CD81E7D00AEF71C /* DaysValueTransformer.swift in Sources */,

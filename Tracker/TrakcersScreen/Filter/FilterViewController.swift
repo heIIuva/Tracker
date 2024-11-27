@@ -148,4 +148,11 @@ extension FilterViewController: UITableViewDelegate {
         viewModel.setSelected(filter: filters[indexPath.row])
         self.dismiss(animated: true)
     }
+    
+    func tableView(
+        _ tableView: UITableView,
+        didDeselectRowAt indexPath: IndexPath
+    ) {
+        <#code#>
+    }
 }

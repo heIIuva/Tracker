@@ -90,3 +90,6 @@
 //Pinned category
 "pinned" = "Закрепленные";
 
+//Statistics
+"completedtrackers" = "Трекеров завершено";
+

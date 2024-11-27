@@ -79,7 +79,6 @@ extension DataProvider: DataProviderProtocol {
             categories.removeAll(where: { $0.title == NSLocalizedString("pinned", comment: "")})
             return categories
         }
-
     }
     
     func addCategory(category: TrackerCategory) {

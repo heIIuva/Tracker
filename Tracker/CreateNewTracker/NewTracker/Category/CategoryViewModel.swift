@@ -108,7 +108,8 @@ final class CategoryViewModel: CategoryViewModelProtocol {
         
     private func сategoryAlreadyExists(category: String) -> Bool {
         guard
-            !categories().contains(where: { $0.title == category })
+            !categories().contains(where: { $0.title == category }),
+            !(category == NSLocalizedString("pinned", comment: ""))
         else {
             onDoneButtonStateChange?(false)
             return true
