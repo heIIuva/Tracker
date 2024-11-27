@@ -9,7 +9,7 @@ import Foundation
 
 
 protocol DataProviderProtocol: AnyObject {
-    func getCategories() -> [TrackerCategory]
+    func getCategories(_ sender: Sender) -> [TrackerCategory]
     func addCategory(category: TrackerCategory)
     func addTrackerToCategory(tracker: Tracker, category: String)
     func deleteCategory(category: String)
@@ -26,6 +26,12 @@ protocol DataProviderProtocol: AnyObject {
 protocol DataProviderDelegate: AnyObject {
     func updateCategories(categories: [TrackerCategory])
     func updateRecords(records: Set<TrackerRecord>)
+}
+
+
+enum Sender {
+    case trackerVC
+    case categoryVC
 }
 
 
@@ -55,8 +61,25 @@ final class DataProvider {
 
 //MARK: - DataProviderProtocol
 extension DataProvider: DataProviderProtocol {
-    func getCategories() -> [TrackerCategory] {
-        return categoryStore?.categories ?? []
+    
+    func getCategories(_ sender: Sender) -> [TrackerCategory] {
+        switch sender {
+        case .trackerVC:
+            var sortedCategories = categoryStore?.categories ?? []
+            guard
+                let pinnedCategory = sortedCategories.first(where: { $0.title == NSLocalizedString("pinned", comment: "")})
+            else {
+                return categoryStore?.categories ?? []
+            }
+            sortedCategories.removeAll(where: { $0.title == NSLocalizedString("pinned", comment: "")})
+            sortedCategories.insert(pinnedCategory, at: 0)
+            return sortedCategories
+        case .categoryVC:
+            var categories = categoryStore?.categories ?? []
+            categories.removeAll(where: { $0.title == NSLocalizedString("pinned", comment: "")})
+            return categories
+        }
+
     }
     
     func addCategory(category: TrackerCategory) {
@@ -110,7 +133,7 @@ extension DataProvider: DataProviderProtocol {
 //MARK: - TrackerCategoryStoreDelegate
 extension DataProvider: TrackerCategoryStoreDelegate {
     func didUpdateCategory() {
-        delegate?.updateCategories(categories: getCategories())
+        delegate?.updateCategories(categories: getCategories(.trackerVC))
     }
 }
 

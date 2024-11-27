@@ -25,15 +25,5 @@ final class Flags {
             UserDefaults.standard.synchronize()
         }
         return isFirstLaunch
-    }
-    
-    func isPinnedCategoryExists() -> Bool {
-        let pinnedCategoryFlag = "pinnedCategoryFlag"
-        let isPinnedCategoryExists = UserDefaults.standard.bool(forKey: pinnedCategoryFlag)
-        if isPinnedCategoryExists {
-            UserDefaults.standard.set(true, forKey: pinnedCategoryFlag)
-            UserDefaults.standard.synchronize()
-        }
-        return isPinnedCategoryExists
-    }
+    }    
 }

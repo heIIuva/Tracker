@@ -113,10 +113,6 @@ final class CategoryViewController: UIViewController {
         self.alertPresenter = alertPresenter
         
         self.categories = viewModel.categories()
-        self.categories?.removeAll(where: { $0.title == NSLocalizedString(
-            "pinned",
-            comment: ":"
-        )})
         
         setupUI()
         bind()
@@ -225,10 +221,10 @@ final class CategoryViewController: UIViewController {
     
     private func updateTableView() {
         categories = viewModel.categories()
-        categories?.removeAll(where: { $0.title == NSLocalizedString(
-            "pinned",
-            comment: ":"
-        )})
+//        categories?.removeAll(where: { $0.title == NSLocalizedString(
+//            "pinned",
+//            comment: ""
+//        )})
         tableView.reloadData()
     }
     
@@ -270,6 +266,11 @@ extension CategoryViewController: UITableViewDataSource {
         _ tableView: UITableView,
         cellForRowAt indexPath: IndexPath
     ) -> UITableViewCell {
+        
+//        categories?.removeAll(where: { $0.title == NSLocalizedString(
+//            "pinned",
+//            comment: ":"
+//        )})
         
         guard let categories else { return UITableViewCell() }
         

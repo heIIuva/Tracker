@@ -135,23 +135,23 @@ final class TrackersViewController: UIViewController {
         configureCollectionView()
         configureFilterButton()
         
+        let alertPresenter = AlertPresenter()
+        alertPresenter.delegate = self
+        self.alertPresenter = alertPresenter
+        
         let dataProvider = DataProvider(
             categoryStore: TrackerCategoryStore(),
             recordStore: TrackerRecordStore()
         )
         dataProvider.delegate = self
         self.dataProvider = dataProvider
-        
-        let alertPresenter = AlertPresenter()
-        alertPresenter.delegate = self
-        self.alertPresenter = alertPresenter
-        
-        self.categories = dataProvider.getCategories()
+            
+        self.categories = dataProvider.getCategories(.trackerVC)
         self.completedTrackers = dataProvider.getRecords()
         
         datePickerUpdated(datePicker)
     }
-    
+
     //MARK: UI methods
     
     private func setupNavigationBar() {
@@ -190,9 +190,10 @@ final class TrackersViewController: UIViewController {
     }
     
     private func update() {
-        categories = dataProvider?.getCategories() ?? []
+        categories = dataProvider?.getCategories(.trackerVC) ?? []
         visibleCategories = categories
         datePickerUpdated(datePicker)
+//        sortCategories()
     }
     
     //MARK: - Methods
@@ -204,7 +205,7 @@ final class TrackersViewController: UIViewController {
         }
     }
     
-    func isPinned(_ tracker: UUID) -> Bool {
+    private func isPinned(_ tracker: UUID) -> Bool {
         let pinnedCategory = visibleCategories.first(where: { $0.title == NSLocalizedString("pinned", comment: "") })
         
         let pinnedTrackers = pinnedCategory?.trackers ?? []
@@ -395,9 +396,7 @@ extension TrackersViewController: UICollectionViewDataSource {
         
         cell.delegate = self
         
-        if indexPath.row == 0 {
-            
-        }
+//        sortCategories()
         
         let trackerId = visibleCategories[indexPath.section].trackers[indexPath.row].id
         
@@ -570,7 +569,7 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
 extension TrackersViewController: TrackerCreationDelegate, NewTrackerVCDelegate {
     
     func reloadCollectionView() {
-        categories = dataProvider?.getCategories() ?? []
+        categories = dataProvider?.getCategories(.trackerVC) ?? []
         collectionView.reloadData()
         datePickerUpdated(datePicker)
     }
@@ -596,7 +595,7 @@ extension TrackersViewController: FilterDelegate {
     }
     
     func allTrackersFilter() {
-        self.visibleCategories = dataProvider?.getCategories() ?? []
+        self.visibleCategories = dataProvider?.getCategories(.trackerVC) ?? []
         datePickerUpdated(datePicker)
     }
     

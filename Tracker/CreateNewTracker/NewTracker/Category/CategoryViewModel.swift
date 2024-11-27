@@ -57,7 +57,7 @@ final class CategoryViewModel: CategoryViewModelProtocol {
     //MARK: - Methods
     
     func categories() -> [TrackerCategory] {
-        dataProvider?.getCategories() ?? []
+        dataProvider?.getCategories(.categoryVC) ?? []
     }
     
     func setCategory(category: TrackerCategory) {
