@@ -245,6 +245,11 @@ final class TrackersViewController: UIViewController {
             }
         }
         self.visibleCategories = visibleCategories
+        if visibleCategories.isEmpty {
+            filterButton.isHidden = true
+        } else {
+            filterButton.isHidden = false
+        }
         collectionView.reloadData()
     }
     
@@ -287,7 +292,7 @@ extension TrackersViewController: UISearchResultsUpdating {
                     tracker.name.lowercased().contains(searchText.lowercased())
                 }
                 if filteredTrackers.isEmpty {
-                    return nil 
+                    return nil
                 } else {
                     return TrackerCategory(
                         title: category.title,
