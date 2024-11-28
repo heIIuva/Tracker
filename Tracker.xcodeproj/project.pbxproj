@@ -300,7 +300,7 @@
 		B58517C92CF290D200C29AD6 /* TrackerTests */ = {
 			isa = PBXGroup;
 			children = (
-				B58517C82CF290D200C29AD6 /* testViewController.1.png */,
+				B58517C82CF290D200C29AD6,
 			);
 			path = TrackerTests;
 			sourceTree = "<group>";
