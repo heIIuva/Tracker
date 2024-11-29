@@ -493,79 +493,16 @@ extension TrackersViewController: UICollectionViewDataSource {
         let tracker = visibleCategories[indexPath.section].trackers[indexPath.row]
         
         let pinTitle = cell.isCellPinned() ? NSLocalizedString("unpin", comment: "") : NSLocalizedString("pin", comment: "")
-        let pinImage = cell.isCellPinned() ? UIImage(systemName: "pin.slash.fill") : UIImage(systemName: "pin.fill")
+        let pinImage = (cell.isCellPinned() ? UIImage(systemName: "pin.slash.fill") : UIImage(systemName: "pin.fill")) ?? UIImage()
         
         return UIContextMenuConfiguration(
             identifier: nil,
             previewProvider: nil
         ) { [weak self] _ in
-            let pin = UIAction(
-                title: pinTitle,
-                image:  pinImage
-            ) { _ in
-                self?.dataProvider?.togglePinTracker(tracker.id)
-                self?.update()
-                }
-            let edit = UIAction(
-                title: NSLocalizedString("edit", comment: ""),
-                image: UIImage(systemName: "pencil")
-            ) { _ in
-                self?.analyticsService.trackEvent(
-                    "tap",
-                    ["screen": "TrackerVC", "item": "edit tracker"]
-                )
-                
-                let habitOrEventVC = NewHabitOrEventViewController(
-                    nibName: nil,
-                    bundle: nil,
-                    delegate: self ?? TrackersViewController(),
-                    isHabit: self?.visibleCategories[indexPath.section].trackers[indexPath.row].timeTable != [],
-                    dataProvider: DataProvider(
-                        categoryStore: TrackerCategoryStore(),
-                        recordStore: TrackerRecordStore()
-                    ),
-                    mode: .edit,
-                    tracker: tracker,
-                    category: category
-                )
-                let habitOrEventNC = UINavigationController(rootViewController: habitOrEventVC)
-                self?.present(habitOrEventNC, animated: true)
-            }
-            let delete = UIAction(
-                title: NSLocalizedString("delete", comment: ""),
-                image: UIImage(systemName: "trash"),
-                attributes: .destructive
-            ) { _ in
-                self?.analyticsService.trackEvent(
-                    "tap",
-                    ["screen": "TrackerVC",
-                     "item": "delete tracker"]
-                )
-                
-                let alertModel = AlertModel(
-                    message: NSLocalizedString("trackeralertmessage", comment: ""),
-                    button: NSLocalizedString("delete", comment: ""),
-                    completion: {
-                        self?.analyticsService.trackEvent(
-                            "tap",
-                            ["screen": "TrackerVC",
-                             "item": "deleted tracker"]
-                        )
-                        
-                        self?.dataProvider?.deleteTracker(tracker)
-                        self?.update()
-                    },
-                    secondButton: NSLocalizedString("cancel", comment: ""),
-                    secondCompletion: {
-                        self?.analyticsService.trackEvent(
-                            "tap",
-                            ["screen": "TrackerVC",
-                             "item": "reconsidered deleting tracker"]
-                        )
-                    }
-                )
-                self?.alertPresenter?.showAlert(result: alertModel)
-            }
+            guard let self else { return UIMenu() }
+            let pin = self.pinTracker(pinTitle, pinImage, tracker)
+            let edit = self.editTracker(indexPath, tracker, category)
+            let delete = self.deleteTracker(tracker)
             return UIMenu(title: "", children: [pin, edit, delete])
         }
     }
@@ -598,6 +535,93 @@ extension TrackersViewController: UICollectionViewDataSource {
             parameters: parameters
         )
         return preview
+    }
+}
+
+//MARK: - Methods for UIContextMenu
+extension TrackersViewController {
+    private func pinTracker(
+        _ title: String,
+        _ image: UIImage,
+        _ tracker: Tracker
+    ) -> UIAction {
+        UIAction(
+            title: title,
+            image: image
+        ) { _ in
+            self.dataProvider?.togglePinTracker(tracker.id)
+            self.update()
+        }
+    }
+    
+    private func editTracker(
+        _ indexPath: IndexPath,
+        _ tracker: Tracker,
+        _ category: TrackerCategory
+    ) -> UIAction {
+        UIAction(
+            title: NSLocalizedString("edit", comment: ""),
+            image: UIImage(systemName: "pencil")
+        ) { _ in
+            self.analyticsService.trackEvent(
+                "tap",
+                ["screen": "TrackerVC", "item": "edit tracker"]
+            )
+            
+            let habitOrEventVC = NewHabitOrEventViewController(
+                nibName: nil,
+                bundle: nil,
+                delegate: self,
+                isHabit: self.visibleCategories[indexPath.section].trackers[indexPath.row].timeTable != [],
+                dataProvider: DataProvider(
+                    categoryStore: TrackerCategoryStore(),
+                    recordStore: TrackerRecordStore()
+                ),
+                mode: .edit,
+                tracker: tracker,
+                category: category
+            )
+            let habitOrEventNC = UINavigationController(rootViewController: habitOrEventVC)
+            self.present(habitOrEventNC, animated: true)
+        }
+    }
+    
+    private func deleteTracker(_ tracker: Tracker) -> UIAction {
+        UIAction(
+            title: NSLocalizedString("delete", comment: ""),
+            image: UIImage(systemName: "trash"),
+            attributes: .destructive
+        ) { _ in
+            self.analyticsService.trackEvent(
+                "tap",
+                ["screen": "TrackerVC",
+                 "item": "delete tracker"]
+            )
+            
+            let alertModel = AlertModel(
+                message: NSLocalizedString("trackeralertmessage", comment: ""),
+                button: NSLocalizedString("delete", comment: ""),
+                completion: {
+                    self.analyticsService.trackEvent(
+                        "tap",
+                        ["screen": "TrackerVC",
+                         "item": "deleted tracker"]
+                    )
+                    
+                    self.dataProvider?.deleteTracker(tracker)
+                    self.update()
+                },
+                secondButton: NSLocalizedString("cancel", comment: ""),
+                secondCompletion: {
+                    self.analyticsService.trackEvent(
+                        "tap",
+                        ["screen": "TrackerVC",
+                         "item": "reconsidered deleting tracker"]
+                    )
+                }
+            )
+            self.alertPresenter?.showAlert(result: alertModel)
+        }
     }
 }
 
@@ -652,8 +676,7 @@ extension TrackersViewController: FilterDelegate {
     
     func trackersForTodayFilter() {
         datePicker.date = Date()
-        sortCategories(datePicker)
-        collectionView.reloadData()
+        trackersForToday()
     }
     
     func completedTrackersFilter() {
