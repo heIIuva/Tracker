@@ -175,7 +175,6 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         }
     }
 
-    
     func setupCell(
         trackers: [Tracker],
         indexPath: IndexPath,

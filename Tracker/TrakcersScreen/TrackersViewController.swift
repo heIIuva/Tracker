@@ -216,9 +216,15 @@ final class TrackersViewController: UIViewController {
         }
     }
     
-    //MARK: - Obj-C Methods
+    private func toggleFilterButtonVisibility() {
+        if visibleCategories.isEmpty {
+            filterButton.isHidden = true
+        } else {
+            filterButton.isHidden = false
+        }
+    }
     
-    @objc private func datePickerUpdated(_ sender: UIDatePicker) {
+    private func sortCategories(_ sender: UIDatePicker) {
         currentDate = calendar.date(from: sender.date)
         let weekDay = calendar.component(.weekday, from: currentDate)
         var visibleCategories: [TrackerCategory] = []
@@ -245,11 +251,34 @@ final class TrackersViewController: UIViewController {
             }
         }
         self.visibleCategories = visibleCategories
-        if visibleCategories.isEmpty {
-            filterButton.isHidden = true
-        } else {
-            filterButton.isHidden = false
+    }
+    
+    private func trackersForToday() {
+        sortCategories(datePicker)
+        collectionView.reloadData()
+    }
+    
+    private func setFilter() {
+        switch currentFilter {
+        case .all:
+            allTrackersFilter()
+        case .today:
+            trackersForToday()
+        case .complete:
+            completedTrackersFilter()
+        case .incomplete:
+            incompletedTrackersFilter()
+        case nil:
+            allTrackersFilter()
         }
+    }
+    
+    //MARK: - Obj-C Methods
+    
+    @objc private func datePickerUpdated(_ sender: UIDatePicker) {
+        sortCategories(sender)
+        toggleFilterButtonVisibility()
+        setFilter()
         collectionView.reloadData()
     }
     
@@ -617,18 +646,19 @@ extension TrackersViewController: FilterDelegate {
     }
     
     func allTrackersFilter() {
-        self.visibleCategories = dataProvider?.getCategories(.trackerVC) ?? []
-        datePickerUpdated(datePicker)
+        sortCategories(datePicker)
+        collectionView.reloadData()
     }
     
     func trackersForTodayFilter() {
         datePicker.date = Date()
-        datePickerUpdated(datePicker)
+        sortCategories(datePicker)
+        collectionView.reloadData()
     }
     
     func completedTrackersFilter() {
         
-        datePickerUpdated(datePicker)
+        sortCategories(datePicker)
         
         var completed: [TrackerCategory] = []
         for categoryIndex in 0..<visibleCategories.count {
@@ -655,7 +685,7 @@ extension TrackersViewController: FilterDelegate {
     
     func incompletedTrackersFilter() {
         
-        datePickerUpdated(datePicker)
+        sortCategories(datePicker)
         
         var incompleted: [TrackerCategory] = []
         for categoryIndex in 0..<visibleCategories.count {
