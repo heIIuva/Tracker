@@ -50,7 +50,10 @@ final class TrackersViewController: UIViewController {
     
     private lazy var datePicker: UIDatePicker = {
         let datePicker = UIDatePicker()
-        datePicker.backgroundColor = .systemBackground
+        datePicker.layer.cornerRadius = 8
+        datePicker.layer.masksToBounds = true
+        datePicker.overrideUserInterfaceStyle = .light
+        datePicker.backgroundColor = .datePickerBackground
         datePicker.datePickerMode = .date
         datePicker.preferredDatePickerStyle = .compact
         datePicker.locale = .current
@@ -74,7 +77,7 @@ final class TrackersViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .ypBlue
-        button.setTitleColor(.systemBackground, for: .normal)
+        button.setTitleColor(.white, for: .normal)
         button.setTitle(NSLocalizedString("filtertitle", comment: ""), for: .normal)
         button.layer.cornerRadius = 16
         button.addTarget(self, action: #selector(didTapFilterButton), for: .touchUpInside)
@@ -101,9 +104,7 @@ final class TrackersViewController: UIViewController {
     }()
     
     //MARK: - Properties
-    
-    private let analyticsService = AnalyticsService()
-    
+        
     private var alertPresenter: AlertPresenterProtocol?
     
     private var dataProvider: DataProviderProtocol?
@@ -283,7 +284,7 @@ final class TrackersViewController: UIViewController {
     }
     
     @objc private func addTrackerButtonTapped() {
-        analyticsService.trackEvent("tap", ["screen": "TrackerVC", "item": "create tracker"])
+ 
         
         let addTrackerVC = TrackerCreationViewController()
         addTrackerVC.delegate = self
@@ -291,7 +292,7 @@ final class TrackersViewController: UIViewController {
     }
     
     @objc private func didTapFilterButton() {
-        analyticsService.trackEvent("tap", ["screen": "TrackerVC", "item": "filter tracker"])
+
         
         let viewModel = FilterViewModel(selectedFilter: self.currentFilter)
         viewModel.delegate = self
@@ -341,14 +342,14 @@ extension TrackersViewController: UISearchResultsUpdating {
 extension TrackersViewController: UISearchControllerDelegate {
     
     func willPresentSearchController(_ searchController: UISearchController) {
-        analyticsService.trackEvent("tap", ["screen": "TrackerVC", "item": "searchbar"])
+
 
         isSearch = true
         collectionView.reloadData()
     }
     
     func willDismissSearchController(_ searchController: UISearchController) {
-        analyticsService.trackEvent("dismiss", ["screen": "TrackerVC", "item": "searchbar"])
+
         
         datePickerUpdated(datePicker)
         isSearch = false
@@ -563,10 +564,7 @@ extension TrackersViewController {
             title: NSLocalizedString("edit", comment: ""),
             image: UIImage(systemName: "pencil")
         ) { _ in
-            self.analyticsService.trackEvent(
-                "tap",
-                ["screen": "TrackerVC", "item": "edit tracker"]
-            )
+
             
             let habitOrEventVC = NewHabitOrEventViewController(
                 nibName: nil,
@@ -592,32 +590,20 @@ extension TrackersViewController {
             image: UIImage(systemName: "trash"),
             attributes: .destructive
         ) { _ in
-            self.analyticsService.trackEvent(
-                "tap",
-                ["screen": "TrackerVC",
-                 "item": "delete tracker"]
-            )
+
             
             let alertModel = AlertModel(
                 message: NSLocalizedString("trackeralertmessage", comment: ""),
                 button: NSLocalizedString("delete", comment: ""),
                 completion: {
-                    self.analyticsService.trackEvent(
-                        "tap",
-                        ["screen": "TrackerVC",
-                         "item": "deleted tracker"]
-                    )
+
                     
                     self.dataProvider?.deleteTracker(tracker)
                     self.update()
                 },
                 secondButton: NSLocalizedString("cancel", comment: ""),
                 secondCompletion: {
-                    self.analyticsService.trackEvent(
-                        "tap",
-                        ["screen": "TrackerVC",
-                         "item": "reconsidered deleting tracker"]
-                    )
+                    
                 }
             )
             self.alertPresenter?.showAlert(result: alertModel)

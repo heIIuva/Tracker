@@ -211,7 +211,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     //MARK: - Obj-C methods
     
     @objc private func completeTrackerButtonTapped() {
-        analyticsService.trackEvent("tap", ["screen": "TrackerVC", "item": "complete tracker button"])
+        
         guard let id else { return }
         
         delegate?.didTapCompleteTrackerButton(isCompleted: !isCompleted,

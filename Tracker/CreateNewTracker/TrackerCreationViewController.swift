@@ -21,13 +21,13 @@ final class TrackerCreationViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 16
-        button.backgroundColor = .black
-        button.titleLabel?.textColor = .white
+        button.backgroundColor = .label
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
         button.setTitle(
             NSLocalizedString("habit", comment: ""),
             for: .normal
         )
+        button.setTitleColor(.systemBackground, for: .normal)
         button.addTarget(self, action: #selector(didTapHabitButton), for: .touchUpInside)
         return button
     }()
@@ -36,13 +36,13 @@ final class TrackerCreationViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 16
-        button.backgroundColor = .black
-        button.titleLabel?.textColor = .white
+        button.backgroundColor = .label
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
         button.setTitle(
             NSLocalizedString("event", comment: ""),
             for: .normal
         )
+        button.setTitleColor(.systemBackground, for: .normal)
         button.addTarget(self, action: #selector(didTapEventButton), for: .touchUpInside)
         return button
     }()
@@ -64,7 +64,7 @@ final class TrackerCreationViewController: UIViewController {
     private func setupUI() {
         self.title = NSLocalizedString("creation", comment: "")
         
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         
         view.addSubview(habitButton)
         view.addSubview(eventButton)

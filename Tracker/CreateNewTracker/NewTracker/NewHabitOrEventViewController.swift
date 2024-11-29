@@ -74,7 +74,7 @@ final class NewHabitOrEventViewController: UIViewController {
         textField.backgroundColor = .ypGray.withAlphaComponent(0.3)
         textField.layer.cornerRadius = 16
         textField.font = .systemFont(ofSize: 17, weight: .regular)
-        textField.textColor = .black
+        textField.textColor = .label
         textField.placeholder = NSLocalizedString("textfieldplaceholder", comment: "")
         textField.delegate = self
         return textField
@@ -94,7 +94,7 @@ final class NewHabitOrEventViewController: UIViewController {
     private lazy var cancelButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .white
+        button.backgroundColor = .systemBackground
         button.layer.cornerRadius = 16
         button.layer.borderWidth = 1
         button.layer.borderColor = UIColor.ypRed.cgColor
@@ -119,7 +119,7 @@ final class NewHabitOrEventViewController: UIViewController {
         button.backgroundColor = .ypDarkGray
         button.layer.cornerRadius = 16
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
-        button.titleLabel?.textColor = .white
+        button.setTitleColor(.systemBackground, for: .normal)
         button.addTarget(
             self,
             action: #selector(didTapCreateButton),
@@ -134,6 +134,7 @@ final class NewHabitOrEventViewController: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.separatorStyle = .singleLine
         tableView.separatorInset = .init(top: 0, left: 16, bottom: 1, right: 16)
+        tableView.separatorColor = .ypDarkGray
         tableView.layer.cornerRadius = 16
         tableView.isScrollEnabled = false
         tableView.dataSource = self
@@ -365,7 +366,7 @@ final class NewHabitOrEventViewController: UIViewController {
     
     private func enableCreateButton() {
         createButton.isEnabled = true
-        createButton.backgroundColor = .black
+        createButton.backgroundColor = .label
     }
     
     private func checkIfAllFieldsAreFilled() {

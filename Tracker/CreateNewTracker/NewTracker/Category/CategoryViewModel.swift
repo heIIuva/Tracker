@@ -72,10 +72,10 @@ final class CategoryViewModel: CategoryViewModelProtocol {
     
     func deleteCategory(category: String) {
         dataProvider?.deleteCategory(category: category)
-        onCategoriesUpdate?()
         if category == selectedCategory {
             delegate?.category("")
         }
+        onCategoriesUpdate?()
     }
         
     func seletectedCategory(indexPath: IndexPath) {

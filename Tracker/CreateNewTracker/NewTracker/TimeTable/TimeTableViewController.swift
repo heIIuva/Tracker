@@ -28,9 +28,9 @@ final class TimeTableViewController: UIViewController {
        let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 16
-        button.backgroundColor = .black
+        button.backgroundColor = .label
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .regular)
-        button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(.systemBackground, for: .normal)
         button.setTitle(
             NSLocalizedString("done", comment: ""),
             for: .normal
@@ -49,6 +49,7 @@ final class TimeTableViewController: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 1))
         tableView.separatorStyle = .singleLine
+        tableView.separatorColor = .ypDarkGray
         tableView.separatorInset = .init(top: 0, left: 16, bottom: 1, right: 16)
         tableView.layer.cornerRadius = 16
         tableView.isScrollEnabled = false
@@ -89,7 +90,7 @@ final class TimeTableViewController: UIViewController {
     
     private func setupUI() {
         title = NSLocalizedString("timetable", comment: "")
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         view.addSubviews(tableView, doneButton)
         
         NSLayoutConstraint.activate([

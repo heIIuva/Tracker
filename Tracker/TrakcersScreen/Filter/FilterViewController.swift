@@ -30,6 +30,7 @@ final class FilterViewController: UIViewController {
                                     style: .plain)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.separatorStyle = .singleLine
+        tableView.separatorColor = .ypDarkGray
         tableView.separatorInset = .init(top: 0, left: 16, bottom: 1, right: 16)
         tableView.tableHeaderView = UIView()
         tableView.allowsMultipleSelection = false

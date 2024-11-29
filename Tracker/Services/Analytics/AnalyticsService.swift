@@ -21,9 +21,16 @@ struct AnalyticsService {
         return true
     }
     
-    func trackEvent(_ event: String, _ params: [AnyHashable: Any]) {
-        YMMYandexMetrica.reportEvent(event, parameters: params, onFailure: { error in
+    static func trackEvent(_ analyticsEvent: AnalyticsEvent) {
+        var params: [String: Any] = ["screen": analyticsEvent.screen.rawValue]
+        if let item = analyticsEvent.item {
+            params["item"] = item.rawValue
+        }
+        
+        YMMYandexMetrica.reportEvent(analyticsEvent.event.rawValue, parameters: params, onFailure: { error in
             print("REPORT ERROR: %@", error.localizedDescription)
         })
     }
 }
+
+
