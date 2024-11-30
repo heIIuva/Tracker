@@ -384,7 +384,7 @@ extension TrackersViewController: UISearchControllerDelegate {
         collectionView.reloadData()
     }
     
-    func willDismissSearchController(_ searchController: UISearchController) {
+    func didDismissSearchController(_ searchController: UISearchController) {
         AnalyticsService.trackEvent(AnalyticsEvent(
             event: .open,
             screen: .main,
@@ -394,6 +394,10 @@ extension TrackersViewController: UISearchControllerDelegate {
         datePickerUpdated(datePicker)
         isSearch = false
         collectionView.reloadData()
+    }
+    
+    func willDismissSearchController(_ searchController: UISearchController) {
+        
     }
 }
 
@@ -455,20 +459,23 @@ extension TrackersViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         
         guard !visibleCategories.isEmpty else {
-            switch isSearch {
-            case true:
-                placeholder.showPlaceholder(image: .error,
-                                             text: NSLocalizedString("emptysearchresults",
-                                                                     comment: ""),
-                                             view: self.view)
-            case false:
-                placeholder.showPlaceholder(image: .dizzy,
-                                            text: NSLocalizedString("trackerplaceholder",
-                                                                    comment: ""),
-                                             view: self.view)
+            DispatchQueue.main.async {
+                switch self.isSearch {
+                case true:
+                    self.placeholder.showPlaceholder(image: .error,
+                                                 text: NSLocalizedString("emptysearchresults",
+                                                                         comment: ""),
+                                                 view: self.view)
+                case false:
+                    self.placeholder.showPlaceholder(image: .dizzy,
+                                                text: NSLocalizedString("trackerplaceholder",
+                                                                        comment: ""),
+                                                 view: self.view)
+                }
             }
             return 0
         }
+
         
         placeholder.removePlaceholder()
         return visibleCategories.count
