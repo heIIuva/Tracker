@@ -395,10 +395,6 @@ extension TrackersViewController: UISearchControllerDelegate {
         isSearch = false
         collectionView.reloadData()
     }
-    
-    func willDismissSearchController(_ searchController: UISearchController) {
-        
-    }
 }
 
 //MARK: - UICollectionViewDelegateFlowLayout
