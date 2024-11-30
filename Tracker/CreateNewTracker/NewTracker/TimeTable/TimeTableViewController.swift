@@ -118,6 +118,12 @@ final class TimeTableViewController: UIViewController {
     }
     
     @objc private func doneButtonTapped() {
+        AnalyticsService.trackEvent(AnalyticsEvent(
+            event: .click,
+            screen: .timetableVC,
+            item: .setupTimetable)
+        )
+        
         delegate?.timeTable(timeTable)
         dismiss(animated: true)
     }

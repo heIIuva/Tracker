@@ -457,10 +457,22 @@ final class NewHabitOrEventViewController: UIViewController {
     //MARK: - Obj-C methods
     
     @objc private func didTapCancelButton() {
+        AnalyticsService.trackEvent(AnalyticsEvent(
+            event: .click,
+            screen: .newHabitOrEvent,
+            item: .cancel)
+        )
+        
         dismiss(animated: true)
     }
     
     @objc private func didTapCreateButton() {
+        AnalyticsService.trackEvent(AnalyticsEvent(
+            event: .click,
+            screen: .newHabitOrEvent,
+            item: .create)
+        )
+        
         switch mode {
         case .create:
             createNewTracker()

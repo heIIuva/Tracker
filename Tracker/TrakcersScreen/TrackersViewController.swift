@@ -277,6 +277,12 @@ final class TrackersViewController: UIViewController {
     //MARK: - Obj-C Methods
     
     @objc private func datePickerUpdated(_ sender: UIDatePicker) {
+        AnalyticsService.trackEvent(AnalyticsEvent(
+            event: .click,
+            screen: .main,
+            item: .datePicker)
+        )
+        
         sortCategories(sender)
         toggleFilterButtonVisibility()
         setFilter()
@@ -284,7 +290,11 @@ final class TrackersViewController: UIViewController {
     }
     
     @objc private func addTrackerButtonTapped() {
- 
+        AnalyticsService.trackEvent(AnalyticsEvent(
+            event: .click,
+            screen: .main,
+            item: .addTrack)
+        )
         
         let addTrackerVC = TrackerCreationViewController()
         addTrackerVC.delegate = self
@@ -292,7 +302,11 @@ final class TrackersViewController: UIViewController {
     }
     
     @objc private func didTapFilterButton() {
-
+        AnalyticsService.trackEvent(AnalyticsEvent(
+            event: .click,
+            screen: .main,
+            item: .filter)
+        )
         
         let viewModel = FilterViewModel(selectedFilter: self.currentFilter)
         viewModel.delegate = self
@@ -342,14 +356,22 @@ extension TrackersViewController: UISearchResultsUpdating {
 extension TrackersViewController: UISearchControllerDelegate {
     
     func willPresentSearchController(_ searchController: UISearchController) {
-
+        AnalyticsService.trackEvent(AnalyticsEvent(
+            event: .open,
+            screen: .main,
+            item: .searchBar)
+        )
 
         isSearch = true
         collectionView.reloadData()
     }
     
     func willDismissSearchController(_ searchController: UISearchController) {
-
+        AnalyticsService.trackEvent(AnalyticsEvent(
+            event: .open,
+            screen: .main,
+            item: .searchBar)
+        )
         
         datePickerUpdated(datePicker)
         isSearch = false
@@ -550,6 +572,12 @@ extension TrackersViewController {
             title: title,
             image: image
         ) { _ in
+            AnalyticsService.trackEvent(AnalyticsEvent(
+                event: .click,
+                screen: .main,
+                item: .pin)
+            )
+            
             self.dataProvider?.togglePinTracker(tracker.id)
             self.update()
         }
@@ -564,7 +592,11 @@ extension TrackersViewController {
             title: NSLocalizedString("edit", comment: ""),
             image: UIImage(systemName: "pencil")
         ) { _ in
-
+            AnalyticsService.trackEvent(AnalyticsEvent(
+                event: .click,
+                screen: .main,
+                item: .editTrack)
+            )
             
             let habitOrEventVC = NewHabitOrEventViewController(
                 nibName: nil,
@@ -590,7 +622,11 @@ extension TrackersViewController {
             image: UIImage(systemName: "trash"),
             attributes: .destructive
         ) { _ in
-
+            AnalyticsService.trackEvent(AnalyticsEvent(
+                event: .click,
+                screen: .main,
+                item: .deleteTrack)
+            )
             
             let alertModel = AlertModel(
                 message: NSLocalizedString("trackeralertmessage", comment: ""),

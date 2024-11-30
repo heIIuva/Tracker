@@ -228,11 +228,23 @@ final class CategoryViewController: UIViewController {
     //MARK: - Obj-C Methods
     
     @objc private func didTapAddCategoryButton() {
+        AnalyticsService.trackEvent(AnalyticsEvent(
+            event: .click,
+            screen: .categoryVC,
+            item: .addedCategory)
+        )
+        
         addCategoryState()
         viewModel.setMode(.create)
     }
     
     @objc private func didTapDoneButton() {
+        AnalyticsService.trackEvent(AnalyticsEvent(
+            event: .click,
+            screen: .categoryVC,
+            item: .selectedCategory)
+        )
+        
         selectCategoryState()
         viewModel.doneButtonTapped()
         textField.text = nil
@@ -300,6 +312,12 @@ extension CategoryViewController {
             title: NSLocalizedString("edit", comment: ""),
             image: UIImage(systemName: "pencil")
         ) { _ in
+            AnalyticsService.trackEvent(AnalyticsEvent(
+                event: .click,
+                screen: .categoryVC,
+                item: .edit)
+            )
+            
             self.editingState()
             self.viewModel.setMode(.edit(text))
             self.textField.text = text
@@ -312,6 +330,12 @@ extension CategoryViewController {
             image: UIImage(systemName: "trash"),
             attributes: .destructive
         ) { _ in
+            AnalyticsService.trackEvent(AnalyticsEvent(
+                event: .click,
+                screen: .categoryVC,
+                item: .delete)
+            )
+            
             let alertModel = AlertModel(
                 message: NSLocalizedString("categoryalertmessage", comment: ""),
                 button: NSLocalizedString("delete", comment: ""),

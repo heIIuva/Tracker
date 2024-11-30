@@ -88,9 +88,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     }()
     
     //MARK: - Properties
-    
-    private let analyticsService = AnalyticsService()
-    
+        
     weak var delegate: TrackerCollectionViewCellDelegate?
     
     private var id: UUID? = nil
@@ -211,6 +209,11 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     //MARK: - Obj-C methods
     
     @objc private func completeTrackerButtonTapped() {
+        AnalyticsService.trackEvent(AnalyticsEvent(
+            event: .click,
+            screen: .main,
+            item: .complete)
+        )
         
         guard let id else { return }
         

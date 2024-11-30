@@ -87,6 +87,12 @@ final class TrackerCreationViewController: UIViewController {
     //MARK: - Obj-C methods
     
     @objc private func didTapHabitButton() {
+        AnalyticsService.trackEvent(AnalyticsEvent(
+            event: .click,
+            screen: .createNewTrack,
+            item: .newHabit)
+        )
+        
         let newHabitOrEventVC = NewHabitOrEventViewController(
             nibName: nil,
             bundle: nil,
@@ -104,6 +110,12 @@ final class TrackerCreationViewController: UIViewController {
     }
     
     @objc private func didTapEventButton() {
+        AnalyticsService.trackEvent(AnalyticsEvent(
+            event: .click,
+            screen: .createNewTrack,
+            item: .newHabit)
+        )
+        
         let newHabitOrEventVC = NewHabitOrEventViewController(
             nibName: nil,
             bundle: nil,

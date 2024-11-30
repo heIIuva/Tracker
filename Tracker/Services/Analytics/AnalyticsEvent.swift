@@ -17,6 +17,11 @@ struct AnalyticsEvent {
     
     enum ScreenType: String {
         case main = "Main"
+        case statistics = "Statistics"
+        case createNewTrack = "CreateNewTrack"
+        case newHabitOrEvent = "NewHabitOrEvent"
+        case categoryVC = "CategoryVC"
+        case timetableVC = "TimetableVC"
     }
     
     enum ItemType: String {
@@ -25,6 +30,21 @@ struct AnalyticsEvent {
         case filter = "filter"
         case edit = "edit"
         case delete = "delete"
+        case searchBar = "search_bar"
+        case datePicker = "date_picker"
+        case complete = "complete"
+        case selectedFilter = "selected_filter"
+        case openedStatistics = "opened_statistics"
+        case newHabit = "new_habit"
+        case newEvent = "new_event"
+        case cancel = "cancel"
+        case create = "create"
+        case addedCategory = "added_category"
+        case selectedCategory = "selected_category"
+        case setupTimetable = "setup_timetable"
+        case pin = "pin"
+        case deleteTrack = "delete_track"
+        case editTrack = "edit_track"
     }
     
     let event: EventType
