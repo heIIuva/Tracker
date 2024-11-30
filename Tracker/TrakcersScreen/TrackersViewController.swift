@@ -152,6 +152,24 @@ final class TrackersViewController: UIViewController {
         
         datePickerUpdated(datePicker)
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        AnalyticsService.trackEvent(AnalyticsEvent(
+            event: .open,
+            screen: .main)
+        )
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        AnalyticsService.trackEvent(AnalyticsEvent(
+            event: .close,
+            screen: .main)
+        )
+    }
 
     //MARK: UI methods
     
