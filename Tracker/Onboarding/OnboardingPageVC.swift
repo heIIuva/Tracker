@@ -14,12 +14,14 @@ final class OnboardingPageViewController: UIPageViewController {
     private lazy var pages: [UIViewController] = {
         let blueOnboarding = OnboardingViewController(nibName: nil,
                                                       bundle: nil,
-                                                      title: "Отслеживайте только то, что хотите",
+                                                      title: NSLocalizedString("bluescreen",
+                                                                               comment: ""),
                                                       backgroundImage: UIImage(named: "OnboardingBlue"))
         
         let redOnboarding = OnboardingViewController(nibName: nil,
                                                      bundle: nil,
-                                                     title: "Даже если это не литры воды и йога",
+                                                     title: NSLocalizedString("redscreen",
+                                                                              comment: ""),
                                                      backgroundImage: UIImage(named: "OnboardingRed"))
         
         return [blueOnboarding, redOnboarding]

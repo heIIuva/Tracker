@@ -33,8 +33,8 @@ final class CategoryViewController: UIViewController {
         textField.backgroundColor = .ypGray.withAlphaComponent(0.3)
         textField.layer.cornerRadius = 16
         textField.font = .systemFont(ofSize: 17, weight: .regular)
-        textField.textColor = .black
-        textField.placeholder = "Введите название категории"
+        textField.textColor = .label
+        textField.placeholder = NSLocalizedString("categorytextfieldplaceholder", comment: "")
         textField.delegate = self
         return textField
     }()
@@ -44,6 +44,7 @@ final class CategoryViewController: UIViewController {
                                     style: .plain)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.separatorStyle = .singleLine
+        tableView.separatorColor = .ypDarkGray
         tableView.allowsMultipleSelection = false
         tableView.separatorInset = .init(top: 0, left: 16, bottom: 1, right: 16)
         tableView.layer.cornerRadius = 16
@@ -60,10 +61,13 @@ final class CategoryViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 16
-        button.backgroundColor = .black
-        button.titleLabel?.textColor = .white
+        button.backgroundColor = .ypDarkGray
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
-        button.setTitle("Готово", for: .normal)
+        button.setTitle(
+            NSLocalizedString("done", comment: ""),
+            for: .normal
+        )
+        button.setTitleColor(.systemBackground, for: .normal)
         button.addTarget(
             self,
             action: #selector(didTapDoneButton),
@@ -76,10 +80,13 @@ final class CategoryViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 16
-        button.backgroundColor = .black
-        button.titleLabel?.textColor = .white
+        button.backgroundColor = .label
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
-        button.setTitle("Добавить категорию", for: .normal)
+        button.setTitle(
+            NSLocalizedString("addcategory", comment: ""),
+            for: .normal
+        )
+        button.setTitleColor(.systemBackground, for: .normal)
         button.addTarget(
             self,
             action: #selector(didTapAddCategoryButton),
@@ -91,6 +98,7 @@ final class CategoryViewController: UIViewController {
     //MARK: - Properties
     
     private var viewModel: CategoryViewModelProtocol
+    private var alertPresenter: AlertPresenterProtocol?
     
     private let placeholder = Placeholder.shared
     
@@ -100,7 +108,13 @@ final class CategoryViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let alertPresenter = AlertPresenter()
+        alertPresenter.delegate = self
+        self.alertPresenter = alertPresenter
+        
         self.categories = viewModel.categories()
+        
         setupUI()
         bind()
         switchDoneButtonState(false)
@@ -109,7 +123,7 @@ final class CategoryViewController: UIViewController {
     //MARK: - Methods
     
     private func setupUI() {
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         
         view.addSubviews(textField, tableView, addCategoryButton, doneButton)
         
@@ -160,11 +174,11 @@ final class CategoryViewController: UIViewController {
     }
     
     private func OnboardingState() {
-        title = "Категория"
+        title = NSLocalizedString("category", comment: "")
         placeholder.showPlaceholder(
             image: .dizzy,
-            text: "Привычки и события можно объединить по смыслу",
-            view: self.view
+            text: NSLocalizedString("categoryplaceholder", comment: ""),
+            view: view
         )
         doneButton.isHidden = true
         tableView.isHidden = true
@@ -173,7 +187,7 @@ final class CategoryViewController: UIViewController {
     }
     
     private func selectCategoryState() {
-        title = "Категория"
+        title = NSLocalizedString("category", comment: "")
         addCategoryButton.isHidden = false
         doneButton.isHidden = true
         tableView.isHidden = false
@@ -182,7 +196,7 @@ final class CategoryViewController: UIViewController {
     }
     
     private func addCategoryState() {
-        title = "Новая категория"
+        title = NSLocalizedString("newcategory", comment: "")
         addCategoryButton.isHidden = true
         doneButton.isHidden = false
         tableView.isHidden = true
@@ -190,9 +204,20 @@ final class CategoryViewController: UIViewController {
         placeholder.removePlaceholder()
     }
     
+    private func editingState() {
+        title = NSLocalizedString("editcategory", comment: "")
+        addCategoryButton.isHidden = true
+        doneButton.isHidden = false
+        tableView.isHidden = true
+        textField.isHidden = false
+        placeholder.removePlaceholder()
+    }
+    
+    //MARK: - Binding methods
+    
     private func switchDoneButtonState(_ isChanged: Bool) {
         doneButton.isEnabled = isChanged
-        doneButton.backgroundColor = isChanged ? .black : .ypGray
+        doneButton.backgroundColor = isChanged ? .label : .ypDarkGray
     }
     
     private func updateTableView() {
@@ -203,10 +228,23 @@ final class CategoryViewController: UIViewController {
     //MARK: - Obj-C Methods
     
     @objc private func didTapAddCategoryButton() {
+        AnalyticsService.trackEvent(AnalyticsEvent(
+            event: .click,
+            screen: .categoryVC,
+            item: .addedCategory)
+        )
+        
         addCategoryState()
+        viewModel.setMode(.create)
     }
     
     @objc private func didTapDoneButton() {
+        AnalyticsService.trackEvent(AnalyticsEvent(
+            event: .click,
+            screen: .categoryVC,
+            item: .selectedCategory)
+        )
+        
         selectCategoryState()
         viewModel.doneButtonTapped()
         textField.text = nil
@@ -224,7 +262,9 @@ extension CategoryViewController: UITableViewDataSource {
             let categories,
             !categories.isEmpty
         else {
-            OnboardingState()
+            DispatchQueue.main.async {
+                self.OnboardingState()
+            }
             return 0
         }
         selectCategoryState()
@@ -265,6 +305,55 @@ extension CategoryViewController: UITableViewDataSource {
     }
 }
 
+//MARK: - UIContextMenu Methods
+extension CategoryViewController {
+    private func editAction(_ text: String) -> UIAction {
+        UIAction(
+            title: NSLocalizedString("edit", comment: ""),
+            image: UIImage(systemName: "pencil")
+        ) { [weak self] _ in
+            guard let self else { return }
+            
+            AnalyticsService.trackEvent(AnalyticsEvent(
+                event: .click,
+                screen: .categoryVC,
+                item: .edit)
+            )
+            
+            self.editingState()
+            self.viewModel.setMode(.edit(text))
+            self.textField.text = text
+        }
+    }
+    
+    private func deleteAction(_ text: String) -> UIAction {
+        UIAction(
+            title: NSLocalizedString("delete", comment: ""),
+            image: UIImage(systemName: "trash"),
+            attributes: .destructive
+        ) { [weak self] _ in
+            guard let self else { return }
+            
+            AnalyticsService.trackEvent(AnalyticsEvent(
+                event: .click,
+                screen: .categoryVC,
+                item: .delete)
+            )
+            
+            let alertModel = AlertModel(
+                message: NSLocalizedString("categoryalertmessage", comment: ""),
+                button: NSLocalizedString("delete", comment: ""),
+                completion: {
+                    self.viewModel.deleteCategory(category: text)
+                },
+                secondButton: NSLocalizedString("cancel", comment: ""),
+                secondCompletion: {}
+            )
+            self.alertPresenter?.showAlert(result: alertModel)
+        }
+    }
+}
+
 //MARK: - UITableViewDelegate
 extension CategoryViewController: UITableViewDelegate {
     func tableView(
@@ -283,7 +372,29 @@ extension CategoryViewController: UITableViewDelegate {
         self.dismiss(animated: true)
     }
     
-    //TODO: - UIContextMenuConfiguration
+    func tableView(
+        _ tableView: UITableView,
+        contextMenuConfigurationForRowAt indexPath: IndexPath,
+        point: CGPoint
+    ) -> UIContextMenuConfiguration? {
+        
+        guard
+            let cell = tableView.cellForRow(at: indexPath),
+            let text = cell.textLabel?.text
+        else { return nil }
+        
+        return UIContextMenuConfiguration(
+            identifier: nil,
+            previewProvider: nil
+        ) { [weak self] _ in
+            guard let self else { return UIMenu() }
+            
+            let edit = self.editAction(text)
+            let delete = self.deleteAction(text)
+            
+            return UIMenu(title: "", options: .displayInline, children: [edit, delete])
+        }
+    }
 }
 
 //MARK: - UITextFieldDelegate
@@ -300,7 +411,8 @@ extension CategoryViewController: UITextFieldDelegate {
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         guard
-            let text = textField.text
+            let text = textField.text,
+            !text.isEmpty
         else { return }
         
         viewModel.setCategory(

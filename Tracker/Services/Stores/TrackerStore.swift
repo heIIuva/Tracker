@@ -14,6 +14,8 @@ protocol TrackerStoreProtocol: AnyObject {
     func fetchTracker(from coreData: TrackerCoreData) -> Tracker?
     func fetchTrackerCoreData(from tracker: Tracker) -> TrackerCoreData
     func fetchTrackerFromCoreDataById(_ id: UUID) -> TrackerCoreData?
+    func deleteTrackerFromCoreData(_ tracker: Tracker)
+    func editTracker(tracker: UUID, to newTracker: Tracker)
 }
 
 
@@ -21,26 +23,33 @@ final class TrackerStore: NSObject {
     
     //MARK: - Init/Singletone
     
-    private init(context: NSManagedObjectContext) {
+    init(
+        context: NSManagedObjectContext,
+        appDelegate: AppDelegate
+    ) {
         self.context = context
+        self.appDelegate = appDelegate
     }
     
-    private convenience override init() {
-        guard let context = (UIApplication.shared.delegate as?
-                             AppDelegate)?.persistentContainer.viewContext
+    convenience override init() {
+        guard let appDelegate = (UIApplication.shared.delegate as? AppDelegate)
         else {
             assertionFailure("AppDelegate not found")
             self.init()
             return
         }
         
-        self.init(context: context)
+        self.init(
+            context: appDelegate.persistentContainer.viewContext,
+            appDelegate: appDelegate
+        )
     }
     
     static let shared = TrackerStore()
     
     //MARK: - Properties
-    
+        
+    private let appDelegate: AppDelegate
     private let uiColorMarshalling = UIColorMarshalling.shared
     private let context: NSManagedObjectContext
 }
@@ -73,7 +82,6 @@ extension TrackerStore: TrackerStoreProtocol {
         trackerCoreData.emoji = tracker.emoji
         trackerCoreData.color = uiColorMarshalling.hexString(from: tracker.color)
         trackerCoreData.timeTable = tracker.timeTable as NSObject
-        print(trackerCoreData)
         return trackerCoreData
     }
     
@@ -86,5 +94,29 @@ extension TrackerStore: TrackerStoreProtocol {
             print("Error fetching tracker by id: \(error)")
             return nil
         }
+    }
+    
+    func deleteTrackerFromCoreData(_ tracker: Tracker) {
+        guard let trackerToDelete = fetchTrackerFromCoreDataById(tracker.id) else { return }
+        context.delete(trackerToDelete)
+        appDelegate.saveContext()
+    }
+    
+    func editTracker(tracker: UUID, to newTracker: Tracker) {
+        let request = TrackerCoreData.fetchRequest()
+        request.predicate = NSPredicate(format: "id == %@",
+                                        tracker as CVarArg)
+
+        guard let coreData = try? context.fetch(request).first
+        else {
+            return
+        }
+        
+        coreData.name = newTracker.name
+        coreData.emoji = newTracker.emoji
+        coreData.color = uiColorMarshalling.hexString(from: newTracker.color)
+        coreData.timeTable = newTracker.timeTable as NSObject
+                
+        appDelegate.saveContext()
     }
 }

@@ -9,6 +9,9 @@ import UIKit
 
 
 extension UIView {
+    
+    private static let kLayerNameGradientBorder = "GradientBorderLayer"
+    
     public func addSubviews(_ subviews: UIView...) {
         subviews.forEach(addSubview)
     }

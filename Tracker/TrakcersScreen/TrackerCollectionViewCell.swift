@@ -79,18 +79,27 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         return button
     }()
     
-    //MARK: - Properties
+    private lazy var pinImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = UIImage(systemName: "pin.fill")
+        imageView.tintColor = .systemBackground
+        return imageView
+    }()
     
+    //MARK: - Properties
+        
     weak var delegate: TrackerCollectionViewCellDelegate?
     
     private var id: UUID? = nil
     private var isCompleted: Bool = false
     private var counter: Int = 0
+    private var isPinned: Bool = false
     
     //MARK: - Methods
     
     private func layoutCell() {
-        bodyView.addSubviews(emojiView, emojiLabel, trackerLabel)
+        bodyView.addSubviews(emojiView, emojiLabel, trackerLabel, pinImageView)
         addSubviews(bodyView, completeTrackerButton, trackerCounterLabel)
         
         NSLayoutConstraint.activate([
@@ -119,14 +128,27 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
             completeTrackerButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
             completeTrackerButton.topAnchor.constraint(equalTo: bodyView.bottomAnchor, constant: 8),
             
-            trackerCounterLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
-            trackerCounterLabel.topAnchor.constraint(equalTo: bodyView.bottomAnchor, constant: 16)
+            trackerCounterLabel.leadingAnchor.constraint(equalTo: leadingAnchor,
+                                                         constant: 12),
+            trackerCounterLabel.topAnchor.constraint(equalTo: bodyView.bottomAnchor,
+                                                     constant: 16),
+            
+            pinImageView.trailingAnchor.constraint(equalTo: bodyView.trailingAnchor,
+                                                   constant: -12),
+            pinImageView.topAnchor.constraint(equalTo: bodyView.topAnchor,
+                                              constant: 18),
+            pinImageView.heightAnchor.constraint(equalToConstant: 12),
+            pinImageView.widthAnchor.constraint(equalToConstant: 12)
+            
         ])
     }
     
     private func updateTrackerCounterLabel(isCompleted: Bool) {
         counter = isCompleted ? counter + 1 : counter - 1
-        trackerCounterLabel.text = counter.string()
+        trackerCounterLabel.text = .localizedStringWithFormat(
+            NSLocalizedString("numberOfDays", comment: "counter"),
+            counter
+        )
     }
     
     private func updateCompleteTrackerButton(isCompleted: Bool) {
@@ -141,23 +163,58 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    func setupCell(trackers: [Tracker], indexPath: IndexPath, isCompleted: Bool, counter: Int) {
+    private func togglePinCell(isPinned: Bool) {
+        self.isPinned = isPinned
+        switch isPinned {
+        case true:
+            pinImageView.isHidden = false
+        case false:
+            pinImageView.isHidden = true
+        }
+    }
+
+    func setupCell(
+        trackers: [Tracker],
+        indexPath: IndexPath,
+        isCompleted: Bool,
+        counter: Int,
+        isPinned: Bool
+    ) {
         self.bodyView.backgroundColor = trackers[indexPath.row].color
         self.emojiLabel.text = trackers[indexPath.row].emoji
         self.trackerLabel.text = trackers[indexPath.row].name
-        self.trackerCounterLabel.text = counter.string()
+        self.trackerCounterLabel.text = .localizedStringWithFormat(
+            NSLocalizedString("numberOfDays", comment: "counter"),
+            counter
+        )
         self.completeTrackerButton.backgroundColor = trackers[indexPath.row].color
         self.id = trackers[indexPath.row].id
         
         self.isCompleted = isCompleted
         self.counter = counter
+        self.isPinned = isPinned
         
         updateCompleteTrackerButton(isCompleted: isCompleted)
+        togglePinCell(isPinned: isPinned)
+    }
+    
+    func isCellPinned() -> Bool {
+        return isPinned
+    }
+    
+    func preview() -> UIView {
+        return bodyView
     }
     
     //MARK: - Obj-C methods
     
     @objc private func completeTrackerButtonTapped() {
+        AnalyticsService.trackEvent(AnalyticsEvent(
+            event: .click,
+            screen: .main,
+            item: .complete)
+        )
+        
         guard let id else { return }
         
         delegate?.didTapCompleteTrackerButton(isCompleted: !isCompleted,

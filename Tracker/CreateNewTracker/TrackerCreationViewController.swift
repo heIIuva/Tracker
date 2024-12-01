@@ -21,10 +21,13 @@ final class TrackerCreationViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 16
-        button.backgroundColor = .black
-        button.titleLabel?.textColor = .white
+        button.backgroundColor = .label
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
-        button.setTitle("Привычка", for: .normal)
+        button.setTitle(
+            NSLocalizedString("habit", comment: ""),
+            for: .normal
+        )
+        button.setTitleColor(.systemBackground, for: .normal)
         button.addTarget(self, action: #selector(didTapHabitButton), for: .touchUpInside)
         return button
     }()
@@ -33,10 +36,13 @@ final class TrackerCreationViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 16
-        button.backgroundColor = .black
-        button.titleLabel?.textColor = .white
+        button.backgroundColor = .label
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
-        button.setTitle("Нерегулярноe событие", for: .normal)
+        button.setTitle(
+            NSLocalizedString("event", comment: ""),
+            for: .normal
+        )
+        button.setTitleColor(.systemBackground, for: .normal)
         button.addTarget(self, action: #selector(didTapEventButton), for: .touchUpInside)
         return button
     }()
@@ -56,9 +62,9 @@ final class TrackerCreationViewController: UIViewController {
     //MARK: - UI methods
     
     private func setupUI() {
-        self.title = "Создание трекера"
+        self.title = NSLocalizedString("creation", comment: "")
         
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         
         view.addSubview(habitButton)
         view.addSubview(eventButton)
@@ -81,28 +87,48 @@ final class TrackerCreationViewController: UIViewController {
     //MARK: - Obj-C methods
     
     @objc private func didTapHabitButton() {
+        AnalyticsService.trackEvent(AnalyticsEvent(
+            event: .click,
+            screen: .createNewTrack,
+            item: .newHabit)
+        )
+        
         let newHabitOrEventVC = NewHabitOrEventViewController(
             nibName: nil,
             bundle: nil,
+            delegate: self,
             isHabit: true,
             dataProvider: DataProvider(
                 categoryStore: TrackerCategoryStore(),
                 recordStore: TrackerRecordStore()
-            ))
-        newHabitOrEventVC.delegate = self
+            ),
+            mode: .create,
+            tracker: nil,
+            category: nil
+        )
         self.present(UINavigationController(rootViewController: newHabitOrEventVC), animated: true, completion: nil)
     }
     
     @objc private func didTapEventButton() {
+        AnalyticsService.trackEvent(AnalyticsEvent(
+            event: .click,
+            screen: .createNewTrack,
+            item: .newHabit)
+        )
+        
         let newHabitOrEventVC = NewHabitOrEventViewController(
             nibName: nil,
             bundle: nil,
+            delegate: self,
             isHabit: false,
             dataProvider: DataProvider(
                 categoryStore: TrackerCategoryStore(),
                 recordStore: TrackerRecordStore()
-            ))
-        newHabitOrEventVC.delegate = self
+            ),
+            mode: .create,
+            tracker: nil,
+            category: nil
+        )
         self.present(UINavigationController(rootViewController: newHabitOrEventVC), animated: true, completion: nil)
     }
 }

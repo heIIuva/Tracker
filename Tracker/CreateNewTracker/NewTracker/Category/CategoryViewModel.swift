@@ -13,11 +13,17 @@ protocol CategoryViewModelProtocol: AnyObject {
     var onCategoriesUpdate: (() -> Void)? { get set }
     func categories() -> [TrackerCategory]
     func setCategory(category: TrackerCategory)
-    func deleteCategory(category: TrackerCategory)
-    func showAlert(viewModel: AlertModel)
+    func deleteCategory(category: String)
     func seletectedCategory(indexPath: IndexPath)
     func isSelected(indexPath: IndexPath) -> Bool
     func doneButtonTapped()
+    func setMode(_ mode: Mode)
+}
+
+
+enum Mode {
+    case create
+    case edit(String)
 }
 
 
@@ -46,12 +52,12 @@ final class CategoryViewModel: CategoryViewModelProtocol {
     private var dataProvider: DataProviderProtocol?
     private var selectedCategory: String?
     private var newCategory: TrackerCategory?
-    private var alertViewModel: AlertModel?
+    private var mode: Mode?
     
     //MARK: - Methods
     
     func categories() -> [TrackerCategory] {
-        return dataProvider?.getCategories() ?? []
+        dataProvider?.getCategories(.categoryVC) ?? []
     }
     
     func setCategory(category: TrackerCategory) {
@@ -64,16 +70,14 @@ final class CategoryViewModel: CategoryViewModelProtocol {
         self.newCategory = category
     }
     
-    func deleteCategory(category: TrackerCategory) {
+    func deleteCategory(category: String) {
         dataProvider?.deleteCategory(category: category)
+        if category == selectedCategory {
+            delegate?.category("")
+        }
+        onCategoriesUpdate?()
     }
-    
-    //MARK: - for UIContextMenuConfiguration
-    func showAlert(viewModel: AlertModel) {
-        guard let alertViewModel else { return }
-        alertPresenter?.showAlert(result: alertViewModel)
-    }
-    
+        
     func seletectedCategory(indexPath: IndexPath) {
         let category = categories()[indexPath.row]
         self.selectedCategory = category.title
@@ -85,20 +89,41 @@ final class CategoryViewModel: CategoryViewModelProtocol {
     }
     
     func doneButtonTapped() {
-        tryToAddCategory()
+        switch mode {
+        case .create:
+            tryToAddCategory()
+        case .edit(let oldCategory):
+            tryToEditCategory(oldCategory: oldCategory)
+        default :
+            break
+        }
+        
         onCategoriesUpdate?()
         onDoneButtonStateChange?(false)
     }
     
+    func setMode(_ mode: Mode) {
+        self.mode = mode
+    }
+        
     private func сategoryAlreadyExists(category: String) -> Bool {
         guard
-            !categories().contains(where: { $0.title == category })
+            !categories().contains(where: { $0.title == category }),
+            !(category == NSLocalizedString("pinned", comment: ""))
         else {
             onDoneButtonStateChange?(false)
             return true
         }
         onDoneButtonStateChange?(true)
         return false
+    }
+    
+    private func tryToEditCategory(oldCategory: String) {
+        guard
+            let newCategory,
+            сategoryAlreadyExists(category: newCategory.title) == false
+        else { return }
+        dataProvider?.editCategory(oldCategory, to: newCategory.title)
     }
     
     private func tryToAddCategory() {

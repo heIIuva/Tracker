@@ -25,7 +25,7 @@ final class AlertPresenter: UIAlertController, AlertPresenterProtocol {
                 
         alert.view.accessibilityIdentifier = "alert"
         
-        let action = UIAlertAction(title: result.button, style: .default) { _ in
+        let action = UIAlertAction(title: result.button, style: .destructive) { _ in
             result.completion()
         }
         
@@ -34,7 +34,7 @@ final class AlertPresenter: UIAlertController, AlertPresenterProtocol {
         if let secondButton = result.secondButton,
            let secondCompletion = result.secondCompletion {
             let secondAction = UIAlertAction(title: secondButton,
-                                             style: .default) { _ in
+                                             style: .cancel) { _ in
                 secondCompletion()
             }
             alert.addAction(secondAction)

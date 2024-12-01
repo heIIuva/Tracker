@@ -28,13 +28,18 @@ final class TimeTableViewController: UIViewController {
        let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 16
-        button.backgroundColor = .black
+        button.backgroundColor = .label
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .regular)
-        button.setTitleColor(.white, for: .normal)
-        button.setTitle("Готово", for: .normal)
-        button.addTarget(self,
-                         action: #selector(doneButtonTapped),
-                         for: .touchUpInside)
+        button.setTitleColor(.systemBackground, for: .normal)
+        button.setTitle(
+            NSLocalizedString("done", comment: ""),
+            for: .normal
+        )
+        button.addTarget(
+            self,
+            action: #selector(doneButtonTapped),
+            for: .touchUpInside
+        )
         return button
     }()
     
@@ -44,6 +49,7 @@ final class TimeTableViewController: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 1))
         tableView.separatorStyle = .singleLine
+        tableView.separatorColor = .ypDarkGray
         tableView.separatorInset = .init(top: 0, left: 16, bottom: 1, right: 16)
         tableView.layer.cornerRadius = 16
         tableView.isScrollEnabled = false
@@ -83,8 +89,8 @@ final class TimeTableViewController: UIViewController {
     //MARK: - UI methods
     
     private func setupUI() {
-        title = "Расписание"
-        view.backgroundColor = .white
+        title = NSLocalizedString("timetable", comment: "")
+        view.backgroundColor = .systemBackground
         view.addSubviews(tableView, doneButton)
         
         NSLayoutConstraint.activate([
@@ -112,6 +118,12 @@ final class TimeTableViewController: UIViewController {
     }
     
     @objc private func doneButtonTapped() {
+        AnalyticsService.trackEvent(AnalyticsEvent(
+            event: .click,
+            screen: .timetableVC,
+            item: .setupTimetable)
+        )
+        
         delegate?.timeTable(timeTable)
         dismiss(animated: true)
     }
@@ -138,7 +150,7 @@ extension TimeTableViewController: UITableViewDataSource {
         daySwitch.tag = indexPath.row
         daySwitch.isOn = timeTable.contains(days[indexPath.row]) ? true : false
         
-        cell.setupCell(text: days[indexPath.row].rawValue, accessoryView: daySwitch)
+        cell.setupCell(text: days[indexPath.row].weekday, accessoryView: daySwitch)
         
         cell.selectionStyle = .none
         if indexPath.row == days.count - 1 {

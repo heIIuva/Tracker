@@ -17,6 +17,12 @@ protocol CategoryViewModelDelegate: AnyObject {
 }
 
 
+enum TrackerMode {
+    case create
+    case edit
+}
+
+
 final class NewHabitOrEventViewController: UIViewController {
     
     //MARK: - Init
@@ -24,13 +30,25 @@ final class NewHabitOrEventViewController: UIViewController {
     init(
          nibName nibNameOrNil: String?,
          bundle nibBundleOrNil: Bundle?,
+         delegate: NewTrackerVCDelegate,
          isHabit: Bool,
-         dataProvider: DataProviderProtocol
+         dataProvider: DataProviderProtocol,
+         mode: TrackerMode,
+         tracker: Tracker?,
+         category: TrackerCategory?
     ) {
+        self.delegate = delegate
         self.dataProvider = dataProvider
         self.isHabit = isHabit
-        self.tableCellTitle = isHabit ? ["Категория", "Расписание"] : ["Категория"]
+        self.mode = mode
+        self.tableCellTitle = isHabit ? [
+            NSLocalizedString("category", comment: ""),
+            NSLocalizedString("timetable", comment: "")
+        ] : [
+            NSLocalizedString("category", comment: "")
+        ]
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        setupAppearanceForEditMode(mode, tracker, category)
     }
     
     required init?(coder: NSCoder) {
@@ -56,8 +74,8 @@ final class NewHabitOrEventViewController: UIViewController {
         textField.backgroundColor = .ypGray.withAlphaComponent(0.3)
         textField.layer.cornerRadius = 16
         textField.font = .systemFont(ofSize: 17, weight: .regular)
-        textField.textColor = .black
-        textField.placeholder = "Введите название трекера"
+        textField.textColor = .label
+        textField.placeholder = NSLocalizedString("textfieldplaceholder", comment: "")
         textField.delegate = self
         return textField
     }()
@@ -68,7 +86,7 @@ final class NewHabitOrEventViewController: UIViewController {
         label.textAlignment = .center
         label.font = .systemFont(ofSize: 17, weight: .regular)
         label.textColor = .ypRed
-        label.text = "Ограничение 38 символов"
+        label.text = NSLocalizedString("limit", comment: "")
         label.isHidden = true
         return label
     }()
@@ -76,16 +94,21 @@ final class NewHabitOrEventViewController: UIViewController {
     private lazy var cancelButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .white
+        button.backgroundColor = .systemBackground
         button.layer.cornerRadius = 16
         button.layer.borderWidth = 1
         button.layer.borderColor = UIColor.ypRed.cgColor
         button.setTitleColor(.ypRed, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
-        button.setTitle("Отменить", for: .normal)
-        button.addTarget(self,
-                         action: #selector(didTapCancelButton),
-                         for: .touchUpInside)
+        button.setTitle(
+            NSLocalizedString("cancel", comment: ""),
+            for: .normal
+        )
+        button.addTarget(
+            self,
+            action: #selector(didTapCancelButton),
+            for: .touchUpInside
+        )
         return button
     }()
     
@@ -96,11 +119,12 @@ final class NewHabitOrEventViewController: UIViewController {
         button.backgroundColor = .ypDarkGray
         button.layer.cornerRadius = 16
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
-        button.titleLabel?.textColor = .white
-        button.setTitle("Создать", for: .normal)
-        button.addTarget(self,
-                         action: #selector(didTapCreateButton),
-                         for: .touchUpInside)
+        button.setTitleColor(.systemBackground, for: .normal)
+        button.addTarget(
+            self,
+            action: #selector(didTapCreateButton),
+            for: .touchUpInside
+        )
         return button
     }()
     
@@ -110,6 +134,7 @@ final class NewHabitOrEventViewController: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.separatorStyle = .singleLine
         tableView.separatorInset = .init(top: 0, left: 16, bottom: 1, right: 16)
+        tableView.separatorColor = .ypDarkGray
         tableView.layer.cornerRadius = 16
         tableView.isScrollEnabled = false
         tableView.dataSource = self
@@ -213,15 +238,18 @@ final class NewHabitOrEventViewController: UIViewController {
                                     
     private var tableCellTitle: [String]
     
+    private var trackerId: UUID?
     private var trackerName: String = ""
     private var timeTable: Set<Weekday> = []
     private var selectedColor: UIColor = .clear
     private var selectedEmoji: String = ""
     
-    //TODO: - add category selection
+    private var currentCategory: String = ""
     private var categoryName: String = ""
     
     private var isHabit: Bool
+    
+    private var mode: TrackerMode
     
     //MARK: - Lifecycle methods
     
@@ -252,8 +280,40 @@ final class NewHabitOrEventViewController: UIViewController {
         ])
     }
     
+    private func setButtonTitle() {
+        switch mode {
+        case .create:
+            createButton.setTitle(
+                NSLocalizedString("create", comment: ""),
+                for: .normal
+            )
+        case .edit:
+            createButton.setTitle(
+                NSLocalizedString("editaction", comment: ""),
+                for: .normal
+            )
+        }
+    }
+    
+    private func setTitle() {
+        switch mode {
+        case .create:
+            self.title = isHabit ? NSLocalizedString(
+                "newhabit",
+                comment: ""
+            ) : NSLocalizedString(
+                "newevent",
+                comment: ""
+            )
+        case .edit:
+            self.title = NSLocalizedString("trackeredit", comment: "")
+        }
+    }
+    
     func setupUI() {
-        self.title = isHabit ? "Новая привычка" : "Новое нерегулярное событие"
+        setTitle()
+        setButtonTitle()
+
         view.backgroundColor = .systemBackground
         view.addSubview(scrollView)
         scrollView.addSubviews(textFieldStackView,
@@ -306,11 +366,10 @@ final class NewHabitOrEventViewController: UIViewController {
     
     private func enableCreateButton() {
         createButton.isEnabled = true
-        createButton.backgroundColor = .black
+        createButton.backgroundColor = .label
     }
     
     private func checkIfAllFieldsAreFilled() {
-        //TODO: - category check
         if isHabit {
             guard
                 !trackerName.isEmpty,
@@ -329,7 +388,6 @@ final class NewHabitOrEventViewController: UIViewController {
         enableCreateButton()
     }
     
-    //TODO: - category sprint 16
     private func createNewTracker() {
         let tracker = Tracker(id: UUID(),
                               name: self.trackerName,
@@ -340,14 +398,88 @@ final class NewHabitOrEventViewController: UIViewController {
         dataProvider?.addTrackerToCategory(tracker: tracker, category: categoryName)
     }
     
+    private func editTracker() {
+        guard let trackerId else { return }
+        
+        checkIfAllFieldsAreFilled()
+        
+        let tracker = Tracker(
+            id: trackerId,
+            name: self.trackerName,
+            color: self.selectedColor,
+            emoji: self.selectedEmoji,
+            timeTable: isHabit ? Array(self.timeTable) : []
+        )
+        
+        dataProvider?.editTracker(
+            tracker: trackerId,
+            to: tracker,
+            with: categoryName
+        )
+    }
+    
+    private func setupAppearanceForEditMode(
+        _ mode: TrackerMode,
+        _ tracker: Tracker?,
+        _ category: TrackerCategory?
+    ) {
+        guard
+            let tracker,
+            let category,
+            mode == .edit
+        else { return }
+        
+        self.trackerId = tracker.id
+        
+        self.trackerName = tracker.name
+        self.textField.text = tracker.name
+        
+        self.currentCategory = category.title
+        self.categoryName = category.title
+        
+        self.timeTable = Set(tracker.timeTable)
+        
+        self.selectedEmojiIndex = IndexPath(
+            item: emojis.firstIndex(of: tracker.emoji) ?? 0,
+            section: 0
+        )
+        self.selectedEmoji = tracker.emoji
+        
+        self.selectedColorIndex = IndexPath(
+            item: colors.firstIndex(where: {
+                UIColor.hex(from: $0) == UIColor.hex(from: tracker.color)
+            }) ?? 0,
+            section: 0
+        )
+        self.selectedColor = tracker.color
+    }
+    
     //MARK: - Obj-C methods
     
     @objc private func didTapCancelButton() {
+        AnalyticsService.trackEvent(AnalyticsEvent(
+            event: .click,
+            screen: .newHabitOrEvent,
+            item: .cancel)
+        )
+        
         dismiss(animated: true)
     }
     
     @objc private func didTapCreateButton() {
-        createNewTracker()
+        AnalyticsService.trackEvent(AnalyticsEvent(
+            event: .click,
+            screen: .newHabitOrEvent,
+            item: .create)
+        )
+        
+        switch mode {
+        case .create:
+            createNewTracker()
+        case .edit:
+            self.editTracker()
+        }
+        
         dismiss(animated: true)
         delegate?.reloadCollectionView()
     }
@@ -378,7 +510,10 @@ extension NewHabitOrEventViewController: UITableViewDataSource {
             cell.detailTextLabel?.text = categoryName
         case 1:
             cell.textLabel?.text = tableCellTitle[1]
-            cell.detailTextLabel?.text = timeTable.count == 7 ? "Каждый день" : timeTable.map { $0.shortened }.joined(separator: ", ")
+            cell.detailTextLabel?.text = timeTable.count == 7 ? NSLocalizedString(
+                "everyday",
+                comment: ""
+            ) : timeTable.map { $0.shortened }.joined(separator: ", ")
         default:
             break
         }
@@ -410,7 +545,6 @@ extension NewHabitOrEventViewController: UITableViewDelegate {
                    didSelectRowAt indexPath: IndexPath) {
         switch indexPath.row {
         case 0:
-            //TODO: - Category View Controller sprint 15
             guard let viewModel else { return }
             
             let categoryNC = UINavigationController(rootViewController: CategoryViewController(viewModel: viewModel))
@@ -515,10 +649,10 @@ extension NewHabitOrEventViewController: UICollectionViewDataSource {
         else { return UICollectionReusableView() }
         
         if collectionView == colorCollectionView {
-            header.configureHeader(text: "Цвет")
+            header.configureHeader(text: NSLocalizedString("color", comment: ""))
             return header
         } else {
-            header.configureHeader(text: "Emoji")
+            header.configureHeader(text: NSLocalizedString("emoji", comment: ""))
             return header
         }
     }
@@ -595,3 +729,4 @@ extension NewHabitOrEventViewController: UICollectionViewDelegate {
         }
     }
 }
+

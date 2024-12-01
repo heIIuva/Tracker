@@ -5,24 +5,38 @@
 //  Created by big stepper on 15/10/2024.
 //
 
+import Foundation
+
 enum Weekday: String, CaseIterable, Codable {
-    case monday = "Понедельник"
-    case tuesday = "Вторник"
-    case wednesday = "Среда"
-    case thursday = "Четверг"
-    case friday = "Пятница"
-    case saturday = "Суббота"
-    case sunday = "Воскресенье"
+    case monday
+    case tuesday
+    case wednesday
+    case thursday
+    case friday
+    case saturday
+    case sunday
+    
+    var weekday: String {
+        switch self {
+        case .monday: return NSLocalizedString("monday", comment: "")
+        case .tuesday: return NSLocalizedString("tuesday", comment: "")
+        case .wednesday: return NSLocalizedString("wednesday", comment: "")
+        case .thursday: return NSLocalizedString("thursday", comment: "")
+        case .friday: return NSLocalizedString("friday", comment: "")
+        case .saturday: return NSLocalizedString("saturday", comment: "")
+        case .sunday: return NSLocalizedString("sunday", comment: "")
+        }
+    }
     
     var shortened: String {
         switch self {
-        case .monday: return "Пн"
-        case .tuesday: return "Вт"
-        case .wednesday: return "Ср"
-        case .thursday: return "Чт"
-        case .friday: return "Пт"
-        case .saturday: return "Сб"
-        case .sunday: return "Вс"
+        case .monday: return NSLocalizedString("mon", comment: "")
+        case .tuesday: return NSLocalizedString("tue", comment: "")
+        case .wednesday: return NSLocalizedString("wed", comment: "")
+        case .thursday: return NSLocalizedString("thu", comment: "")
+        case .friday: return NSLocalizedString("fri", comment: "")
+        case .saturday: return NSLocalizedString("sat", comment: "")
+        case .sunday: return NSLocalizedString("sun", comment: "")
         }
     }
     
