@@ -544,9 +544,11 @@ extension TrackersViewController: UICollectionViewDataSource {
             previewProvider: nil
         ) { [weak self] _ in
             guard let self else { return UIMenu() }
+            
             let pin = self.pinTracker(pinTitle, pinImage, tracker)
             let edit = self.editTracker(indexPath, tracker, category)
             let delete = self.deleteTracker(tracker)
+            
             return UIMenu(title: "", children: [pin, edit, delete])
         }
     }
@@ -592,7 +594,9 @@ extension TrackersViewController {
         UIAction(
             title: title,
             image: image
-        ) { _ in
+        ) { [weak self] _ in
+            guard let self else { return }
+            
             AnalyticsService.trackEvent(AnalyticsEvent(
                 event: .click,
                 screen: .main,
@@ -612,7 +616,9 @@ extension TrackersViewController {
         UIAction(
             title: NSLocalizedString("edit", comment: ""),
             image: UIImage(systemName: "pencil")
-        ) { _ in
+        ) { [weak self] _ in
+            guard let self else { return }
+            
             AnalyticsService.trackEvent(AnalyticsEvent(
                 event: .click,
                 screen: .main,
@@ -642,7 +648,9 @@ extension TrackersViewController {
             title: NSLocalizedString("delete", comment: ""),
             image: UIImage(systemName: "trash"),
             attributes: .destructive
-        ) { _ in
+        ) { [weak self] _ in
+            guard let self else { return }
+            
             AnalyticsService.trackEvent(AnalyticsEvent(
                 event: .click,
                 screen: .main,

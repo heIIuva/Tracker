@@ -311,7 +311,9 @@ extension CategoryViewController {
         UIAction(
             title: NSLocalizedString("edit", comment: ""),
             image: UIImage(systemName: "pencil")
-        ) { _ in
+        ) { [weak self] _ in
+            guard let self else { return }
+            
             AnalyticsService.trackEvent(AnalyticsEvent(
                 event: .click,
                 screen: .categoryVC,
@@ -329,7 +331,9 @@ extension CategoryViewController {
             title: NSLocalizedString("delete", comment: ""),
             image: UIImage(systemName: "trash"),
             attributes: .destructive
-        ) { _ in
+        ) { [weak self] _ in
+            guard let self else { return }
+            
             AnalyticsService.trackEvent(AnalyticsEvent(
                 event: .click,
                 screen: .categoryVC,
@@ -385,8 +389,8 @@ extension CategoryViewController: UITableViewDelegate {
         ) { [weak self] _ in
             guard let self else { return UIMenu() }
             
-            let edit = editAction(text)
-            let delete = deleteAction(text)
+            let edit = self.editAction(text)
+            let delete = self.deleteAction(text)
             
             return UIMenu(title: "", options: .displayInline, children: [edit, delete])
         }
